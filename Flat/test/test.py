@@ -26,8 +26,8 @@ monoh = monoh()
 skimmer.SetAnalysis(monoh)
 skimmer.SetPreselectionBit(root.PandaAnalyzer.kMonohiggs)
 
-skimmer.firstEvent=0
-skimmer.lastEvent=1000
+skimmer.firstEvent=1000
+skimmer.lastEvent=50000
 skimmer.isData=False
 if skimmer.isData:
     with open(getenv('CMSSW_BASE')+'/src/PandaAnalysis/data/certs/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt') as jsonFile:

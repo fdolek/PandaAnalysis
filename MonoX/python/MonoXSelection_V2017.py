@@ -26,8 +26,8 @@ for r in ['signal','zmm','zee']:
         cuts[r] = tAND(cuts[r],'isojetNBtags==0')
 
 for r in ['signal','wmn','tmn','wen','ten','zmm','zee']:
-	#cuts[r] = tAND(cuts[r],'fj1DoubleCSV>0.75')
-	cuts[r+'_fail'] = tAND(cuts[r],'fj1DoubleCSV<=0.75')
+	#cuts[r] = tAND(cuts[r],'fj1MinCSV>0.5426')
+	cuts[r+'_fail'] = tAND(cuts[r],'fj1MinCSV<=0.5426')
 	
 weights = {
   'signal'         : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_metTrig*sf_btag0',

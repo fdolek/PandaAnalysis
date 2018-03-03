@@ -56,7 +56,7 @@ public :
      kGenBosonPt =(1<<9),
      kVHBB       =(1<<10)
     };
-    
+
     enum LepSelectionBit {
      kLoose   =(1<<0),
      kFake    =(1<<1),

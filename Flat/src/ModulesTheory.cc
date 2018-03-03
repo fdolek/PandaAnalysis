@@ -12,8 +12,8 @@ using namespace std;
 
 void PandaAnalyzer::TopPTReweight()
 {
-      if (analysis->processType != kTT)
-        return;
+  if (analysis->processType != kTT)
+    return;
 
       gt->genWPlusPt = -1; gt->genWMinusPt = -1;
       for (auto& gen : event.genParticles) {
@@ -45,15 +45,15 @@ void PandaAnalyzer::TopPTReweight()
             continue; // must be first copy
         }
         if (gen.pdgid>0) {
-         pt_t = gen.pt();
-         gt->genTopPt = gen.pt();
-         gt->genTopEta = gen.eta();
-         vT.SetPtEtaPhiM(gen.pt(),gen.eta(),gen.phi(),gen.m());
+	  pt_t = gen.pt();
+	  gt->genTopPt = gen.pt();
+	  gt->genTopEta = gen.eta();
+	  vT.SetPtEtaPhiM(gen.pt(),gen.eta(),gen.phi(),gen.m());
         } else {
-         pt_tbar = gen.pt();
-         gt->genAntiTopPt = gen.pt();
-         gt->genAntiTopEta = gen.eta();
-         vTbar.SetPtEtaPhiM(gen.pt(),gen.eta(),gen.phi(),gen.m());
+	  pt_tbar = gen.pt();
+	  gt->genAntiTopPt = gen.pt();
+	  gt->genAntiTopEta = gen.eta();
+	  vTbar.SetPtEtaPhiM(gen.pt(),gen.eta(),gen.phi(),gen.m());
         }
         if (analysis->firstGen) {
           if (pt_t>0 && pt_tbar>0)
