@@ -127,7 +127,7 @@ void PandaAnalyzer::Recoil()
                                        || ( looseLep1PdgId==-13 && looseLep2PdgId==11 )
                                        ) ){
 	
-	std::cout<<"two W with opposite flavor"<<std::endl;                                                                                                                                                                       
+	//std::cout<<"two W with opposite flavor"<<std::endl;                      
 	panda::Lepton *lep2 = looseLeps.at(1);
         vObj2.SetPtEtaPhiM(lep2->pt(),lep2->eta(),lep2->phi(),lep2->m());
 

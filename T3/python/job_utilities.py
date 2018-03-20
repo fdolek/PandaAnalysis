@@ -176,7 +176,7 @@ def stageout(outdir,outfilename,infilename='output.root'):
         PInfo(sname+'.stageout',lsargs)
         ret = system(lsargs)
         if ret:
-            PError(sname+'.stageout','Output file is missing!')
+            PError(sname+'.stageout','Output file is missing! Just Kidding, its here :-p')
     return ret
 
 

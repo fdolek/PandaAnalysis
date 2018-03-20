@@ -29,7 +29,8 @@ import PandaAnalysis.Flat.fitting_forest as forest
 from PandaCore.Tools.Misc import *
 import PandaCore.Tools.Functions # kinematics
 #import PandaAnalysis.MonoX.MonoXSelection as sel
-import PandaAnalysis.MonoX.MonoJetSelection as sel
+import PandaAnalysis.MonoX.MonoXSelection_V2017 as sel
+#import PandaAnalysis.MonoX.MonoJetSelection as sel
 
 basedir = args.input
 lumi = 35900
@@ -137,6 +138,7 @@ vmap['met'] = 'min(%s,999.9999)'%u
 if nddt:
     vmap['fjpt'] = 'fj1Pt'
     vmap['fjmass'] = 'fj1MSD_corr'
+    #vmap['fjmass'] = 'fj1MSD'
     vmap['n2'] = 'fj1ECFN_2_3_10/pow(fj1ECFN_1_2_10,2.00)'
     vmap['doubleb'] = 'fj1DoubleCSV'
 
@@ -172,10 +174,10 @@ elif 'signal' not in region:
     factory.add_process(f('QCD'),'QCD')
     factory.add_process(f('TTbar'),'ttbar')
 
-    if 'zee' in region or 'te' in region or 'wen' in region:
+    if 'zee' in region or 'ten' in region or 'wen' in region:
         factory.add_process(f('SingleElectron'),'Data',is_data=True,extra_cut=sel.eleTrigger)
 
-    if 'zmm' in region or 'tm' in region or 'wmn' in region:
+    if 'zmm' in region or 'tmn' in region or 'wmn' in region:
         factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
 	
 elif 'signal' in region:
@@ -187,47 +189,171 @@ elif 'signal' in region:
     factory.add_process(f('SingleTop'),'ST')
     factory.add_process(f('Diboson'),'Diboson')
     factory.add_process(f('QCD'),'QCD')
-    factory.add_process(f('ZpA0h_med-600_dm-300'),'ZpA0_600')
-    factory.add_process(f('ZpA0h_med-800_dm-300'),'ZpA0_800')
-    factory.add_process(f('ZpA0h_med-1000_dm-300'),'ZpA0_1000')
-    factory.add_process(f('ZpA0h_med-1200_dm-300'),'ZpA0_1200')
-    factory.add_process(f('ZpA0h_med-1400_dm-300'),'ZpA0_1400')
-    factory.add_process(f('ZpA0h_med-1700_dm-300'),'ZpA0_1700')
-    factory.add_process(f('ZpA0h_med-2000_dm-300'),'ZpA0_2000')
-    factory.add_process(f('ZpA0h_med-2500_dm-300'),'ZpA0_2500')
-    factory.add_process(f('ZpBaryonic_med-10_dm-1'),'BarZp_10_1')
-    factory.add_process(f('ZpBaryonic_med-10_dm-10'),'BarZp_10_10')
-    factory.add_process(f('ZpBaryonic_med-10_dm-50'),'BarZp_10_50')
-    factory.add_process(f('ZpBaryonic_med-10_dm-150'),'BarZp_10_150')
-    factory.add_process(f('ZpBaryonic_med-10_dm-500'),'BarZp_10_500')
-    factory.add_process(f('ZpBaryonic_med-15_dm-10'),'BarZp_15_10')
-    factory.add_process(f('ZpBaryonic_med-20_dm-1'),'BarZp_20_1')
-    factory.add_process(f('ZpBaryonic_med-50_dm-1'),'BarZp_50_1')
-    factory.add_process(f('ZpBaryonic_med-50_dm-10'),'BarZp_50_10')
-    factory.add_process(f('ZpBaryonic_med-50_dm-50'),'BarZp_50_50')
-    factory.add_process(f('ZpBaryonic_med-95_dm-50'),'BarZp_95_50')
-    factory.add_process(f('ZpBaryonic_med-100_dm-1'),'BarZp_100_1')
-    factory.add_process(f('ZpBaryonic_med-100_dm-10'),'BarZp_100_10')
-    factory.add_process(f('ZpBaryonic_med-200_dm-1'),'BarZp_200_1')
-    factory.add_process(f('ZpBaryonic_med-200_dm-50'),'BarZp_200_50')
-    factory.add_process(f('ZpBaryonic_med-200_dm-150'),'BarZp_200_150')
-    factory.add_process(f('ZpBaryonic_med-295_dm-150'),'BarZp_295_150')
-    factory.add_process(f('ZpBaryonic_med-300_dm-1'),'BarZp_300_1')
-    factory.add_process(f('ZpBaryonic_med-300_dm-50'),'BarZp_300_50')
-    factory.add_process(f('ZpBaryonic_med-500_dm-1'),'BarZp_500_1')
-    factory.add_process(f('ZpBaryonic_med-500_dm-150'),'BarZp_500_150')
-    factory.add_process(f('ZpBaryonic_med-995_dm-500'),'BarZp_995_500')
-    factory.add_process(f('ZpBaryonic_med-1000_dm-1'),'BarZp_1000_1')
-    factory.add_process(f('ZpBaryonic_med-1000_dm-150'),'BarZp_1000_150')
-    factory.add_process(f('ZpBaryonic_med-1000_dm-1000'),'BarZp_1000_1000')
-    factory.add_process(f('ZpBaryonic_med-1995_dm-1000'),'BarZp_1995_1000')
-    factory.add_process(f('ZpBaryonic_med-2000_dm-1'),'BarZp_2000_1')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-1'),'BarZp_10000_1')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-10'),'BarZp_10000_10')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-50'),'BarZp_10000_50')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-150'),'BarZp_10000_150')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-500'),'BarZp_10000_500')
 
+    #hsDM
+    #Zprime -> 500 GeV
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-50_Mchi-50'),'hsDM_500_50_50')
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-50_Mchi-100'),'hsDM_500_50_100')
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-50_Mchi-150'),'hsDM_500_50_150')
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-50_Mchi-200'),'hsDM_500_50_200')
+
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-70_Mchi-50'),'hsDM_500_70_50')
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-70_Mchi-100'),'hsDM_500_70_100')
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-70_Mchi-150'),'hsDM_500_70_150')
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-70_Mchi-200'),'hsDM_500_70_200')
+#    #factory.add_process(f('BBbarDM_MZprime-500_Mhs-70_Mchi-250'),'hsDM_500_70_250')
+
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-90_Mchi-50'),'hsDM_500_90_50')
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-90_Mchi-100'),'hsDM_500_90_100')
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-90_Mchi-150'),'hsDM_500_90_150')
+#    factory.add_process(f('BBbarDM_MZprime-500_Mhs-90_Mchi-200'),'hsDM_500_90_200')
+#    #factory.add_process(f('BBbarDM_MZprime-500_Mhs-90_Mchi-250'),'hsDM_500_90_250')
+
+    #Zprime -> 1000 GeV
+    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-50_Mchi-50'),'hsDM_1000_50_50')
+    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-50_Mchi-100'),'hsDM_1000_50_100')
+    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-50_Mchi-150'),'hsDM_1000_50_150')
+    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-50_Mchi-200'),'hsDM_1000_50_200')
+    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-50_Mchi-250'),'hsDM_1000_50_250')
+    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-50_Mchi-300'),'hsDM_1000_50_300')
+
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-70_Mchi-50'),'hsDM_1000_70_50')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-70_Mchi-100'),'hsDM_1000_70_100')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-70_Mchi-150'),'hsDM_1000_70_150')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-70_Mchi-200'),'hsDM_1000_70_200')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-70_Mchi-250'),'hsDM_1000_70_250')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-70_Mchi-300'),'hsDM_1000_70_300')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-70_Mchi-400'),'hsDM_1000_70_400')
+
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-90_Mchi-50'),'hsDM_1000_90_50')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-90_Mchi-100'),'hsDM_1000_90_100')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-90_Mchi-150'),'hsDM_1000_90_150')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-90_Mchi-200'),'hsDM_1000_90_200')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-90_Mchi-250'),'hsDM_1000_90_250')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-90_Mchi-300'),'hsDM_1000_90_300')
+#    factory.add_process(f('BBbarDM_MZprime-1000_Mhs-90_Mchi-400'),'hsDM_1000_90_400')
+
+    #Zprime -> 1500 GeV
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-50'),'hsDM_1500_50_50')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-100'),'hsDM_1500_50_100')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-150'),'hsDM_1500_50_150')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-200'),'hsDM_1500_50_200')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-250'),'hsDM_1500_50_250')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-300'),'hsDM_1500_50_300')
+    
+
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-50'),'hsDM_1500_70_50')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-100'),'hsDM_1500_70_100')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-150'),'hsDM_1500_70_150')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-200'),'hsDM_1500_70_200')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-250'),'hsDM_1500_70_250')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-300'),'hsDM_1500_70_300')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-400'),'hsDM_1500_70_400')
+
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-50'),'hsDM_1500_90_50')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-100'),'hsDM_1500_90_100')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-150'),'hsDM_1500_90_150')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-200'),'hsDM_1500_90_200')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-250'),'hsDM_1500_90_250')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-300'),'hsDM_1500_90_300')
+#    factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-400'),'hsDM_1500_90_400')
+
+    #Zprime -> 2000 GeV
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-50_Mchi-50'),'hsDM_2000_50_50')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-50_Mchi-100'),'hsDM_2000_50_100')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-50_Mchi-150'),'hsDM_2000_50_150')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-50_Mchi-200'),'hsDM_2000_50_200')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-50_Mchi-250'),'hsDM_2000_50_250')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-50_Mchi-300'),'hsDM_2000_50_300')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-50_Mchi-400'),'hsDM_2000_50_400')
+
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-70_Mchi-50'),'hsDM_2000_70_50')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-70_Mchi-100'),'hsDM_2000_70_100')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-70_Mchi-150'),'hsDM_2000_70_150')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-70_Mchi-200'),'hsDM_2000_70_200')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-70_Mchi-250'),'hsDM_2000_70_250')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-70_Mchi-300'),'hsDM_2000_70_300')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-70_Mchi-400'),'hsDM_2000_70_400')
+
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-90_Mchi-50'),'hsDM_2000_90_50')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-90_Mchi-100'),'hsDM_2000_90_100')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-90_Mchi-150'),'hsDM_2000_90_150')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-90_Mchi-200'),'hsDM_2000_90_200')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-90_Mchi-250'),'hsDM_2000_90_250')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-90_Mchi-300'),'hsDM_2000_90_300')
+#    factory.add_process(f('BBbarDM_MZprime-2000_Mhs-90_Mchi-400'),'hsDM_2000_90_400')
+
+    #Zprime -> 2500 GeV
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-50_Mchi-50'),'hsDM_2500_50_50')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-50_Mchi-100'),'hsDM_2500_50_100')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-50_Mchi-150'),'hsDM_2500_50_150')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-50_Mchi-200'),'hsDM_2500_50_200')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-50_Mchi-250'),'hsDM_2500_50_250')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-50_Mchi-300'),'hsDM_2500_50_300')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-50_Mchi-400'),'hsDM_2500_50_400')
+
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-70_Mchi-50'),'hsDM_2500_70_50')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-70_Mchi-100'),'hsDM_2500_70_100')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-70_Mchi-150'),'hsDM_2500_70_150')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-70_Mchi-200'),'hsDM_2500_70_200')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-70_Mchi-250'),'hsDM_2500_70_250')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-70_Mchi-300'),'hsDM_2500_70_300')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-70_Mchi-400'),'hsDM_2500_70_400')
+
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-90_Mchi-50'),'hsDM_2500_90_50')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-90_Mchi-100'),'hsDM_2500_90_100')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-90_Mchi-150'),'hsDM_2500_90_150')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-90_Mchi-200'),'hsDM_2500_90_200')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-90_Mchi-250'),'hsDM_2500_90_250')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-90_Mchi-300'),'hsDM_2500_90_300')
+#    factory.add_process(f('BBbarDM_MZprime-2500_Mhs-90_Mchi-400'),'hsDM_2500_90_400')
+
+################
+    #Zprime -> 3000 GeV , guess we drop this
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-50'),'hsDM_1500_50_50')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-100'),'hsDM_1500_50_100')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-150'),'hsDM_1500_50_150')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-200'),'hsDM_1500_50_200')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-250'),'hsDM_1500_50_250')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-50_Mchi-300'),'hsDM_1500_50_300')
+
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-50'),'hsDM_1500_70_50')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-100'),'hsDM_1500_70_100')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-150'),'hsDM_1500_70_150')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-200'),'hsDM_1500_70_200')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-250'),'hsDM_1500_70_250')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-300'),'hsDM_1500_70_300')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-70_Mchi-400'),'hsDM_1500_70_400')
+
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-50'),'hsDM_1500_90_50')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-100'),'hsDM_1500_90_100')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-150'),'hsDM_1500_90_150')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-200'),'hsDM_1500_90_200')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-250'),'hsDM_1500_90_250')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-300'),'hsDM_1500_90_300')
+    #factory.add_process(f('BBbarDM_MZprime-1500_Mhs-90_Mchi-400'),'hsDM_1500_90_400')
+    
+    #ZpDM
+    #Zprime -> 500 GeV
+    #factory.add_process(f('DiJetsDM_MZprime-500_Mhs-150_Mchi-10'),'ZpDM_500_150_10')
+    #factory.add_process(f('DiJetsDM_MZprime-500_Mhs-50_Mchi-10'),'ZpDM_500_50_10')
+
+    #Zprime -> 1000 GeV
+    factory.add_process(f('DiJetsDM_MZprime-1000_Mhs-150_Mchi-10'),'ZpDM_1000_150_10')
+    factory.add_process(f('DiJetsDM_MZprime-1000_Mhs-50_Mchi-10'),'ZpDM_1000_50_10')
+
+    #Zprime -> 1500 GeV
+#    factory.add_process(f('DiJetsDM_MZprime-1500_Mhs-150_Mchi-10'),'ZpDM_1500_150_10')
+#    factory.add_process(f('DiJetsDM_MZprime-1500_Mhs-50_Mchi-10'),'ZpDM_1500_50_10')
+
+    #Zprime -> 2000 GeV 
+#    factory.add_process(f('DiJetsDM_MZprime-2000_Mhs-150_Mchi-10'),'ZpDM_2000_150_10')
+#    factory.add_process(f('DiJetsDM_MZprime-2000_Mhs-50_Mchi-10'),'ZpDM_2000_50_10')
+
+    #Zprime -> 2500 GeV
+#    factory.add_process(f('DiJetsDM_MZprime-2500_Mhs-150_Mchi-10'),'ZpDM_2500_150_10')
+#    factory.add_process(f('DiJetsDM_MZprime-2500_Mhs-50_Mchi-10'),'ZpDM_2500_50_10')
+    
 forestDir = basedir + '/limits/'
 os.system('mkdir -p %s'%(forestDir))
 factory.run(forestDir+'/fittingForest_%s.root'%region)
