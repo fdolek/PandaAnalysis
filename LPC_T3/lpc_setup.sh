@@ -2,23 +2,26 @@
 export PATH=${PATH}:${CMSSW_BASE}/src/PandaCore/bin/
 
 #submission number
-export SUBMIT_NAME="v_8026_monoj_v2"
+export SUBMIT_NAME="v_8029_April18v6"
 #scratch space
 export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
 #cfg file
-export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/20170905.cfg"
+#export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/20170905.cfg"
+export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/test_009.cfg"
 #skim
-export SUBMIT_TMPL="skim_monoj_tmpl.py"
+export SUBMIT_TMPL="skim_monojet_tmpl.py"
 #panda's 
 export PANDA_FLATDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/flat/"
-export SUBMIT_OUTDIR="/store/user/${USER}/panda/"${SUBMIT_NAME}"/batch/"
+export SUBMIT_OUTDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/batch/"
+#export SUBMIT_OUTDIR="/store/user/${USER}/panda/"${SUBMIT_NAME}"/batch/"
 #condor's
 export SUBMIT_WORKDIR="${scratch_area}/${USER}/condor/"${SUBMIT_NAME}"/work/"
 export SUBMIT_LOGDIR="${scratch_area}/${USER}/condor/"${SUBMIT_NAME}"/logs/"
-mkdir -p $PANDA_FLATDIR $SUBMIT_WORKDIR $SUBMIT_LOGDIR
-eosmkdir -p $SUBMIT_OUTDIR
+mkdir -p $PANDA_FLATDIR $SUBMIT_WORKDIR $SUBMIT_LOGDIR $SUBMIT_OUTDIR
+#eosmkdir -p $SUBMIT_OUTDIR
 
+#export SUBMIT_CONFIG=T2  # allow running on T3 or T2. if $SUBMIT_CONFIG==T3, then only run on T3
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo ""
 echo ""

@@ -28,7 +28,7 @@ def fn(input_name, isData, full_path):
     skimmer = root.PandaAnalyzer()
     analysis = monojet(True)
     analysis.processType = utils.classify_sample(full_path, isData)
-    analysis.genOnly = True
+    analysis.genOnly = False
     skimmer.SetAnalysis(analysis)
     skimmer.isData = isData
     skimmer.SetPreselectionBit(root.PandaAnalyzer.kMonojet)
