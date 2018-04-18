@@ -21,6 +21,7 @@ REMOTE_READ = True                                             # should we read 
 local_copy = bool(smart_getenv('SUBMIT_LOCALACCESS', True))    # should we always xrdcp from T2?
 
 stageout_protocol = None                                       # what stageout should we use?
+'''
 if _IS_T3:
     stageout_protocol = 'cp' 
 elif system('which gfal-copy') == 0:
@@ -63,6 +64,7 @@ _gsiftp_doors = [
         't3btch030.mit.edu',
         ]
 
+'''
 
 
 # global to keep track of how long things take
@@ -202,6 +204,26 @@ def drop_branches(to_drop=None, to_keep=None):
 # then, check if the file exists:
 #  - if _IS_T3, use os.path.isfile
 #  - else, use lcg-ls
+
+
+
+def stageout(outdir,outfilename):
+    mvargs = 'mv $PWD/output.root %s/%s'%(outdir,outfilename)
+    PInfo(_sname,mvargs)
+    ret = system(mvargs)
+    system('rm *.root')
+    if not ret:
+        PInfo(_sname+'.stageout','Move exited with code %i'%ret)
+    else:
+        PError(_sname+'.stageout','Move exited with code %i'%ret)
+        return ret 
+    if not path.isfile('%s/%s'%(outdir,outfilename)):
+        PError(_sname+'.stageout','Output file is missing!')
+        ret = 1 
+    return ret 
+
+
+'''
 def stageout(outdir,outfilename,infilename='output.root',n_attempts=10,ls=None):
     gsiftp_doors = _gsiftp_doors[:]
     if ls is None:
@@ -282,6 +304,7 @@ def stageout(outdir,outfilename,infilename='output.root',n_attempts=10,ls=None):
     PError(_sname+'.stagoeut', 'Copy failed after %i attempts'%(n_attempts))
     return ret
 
+'''
 
 # write a lock file, based on what succeeded,
 # and then stage it out to a lock directory
