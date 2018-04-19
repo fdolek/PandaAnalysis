@@ -173,7 +173,8 @@ def stageout(outdir,outfilename):
         PError(_sname+'.stageout','Move exited with code %i'%ret)
         return ret 
     if not path.isfile('%s/%s'%(outdir,outfilename)):
-        PError(_sname+'.stageout','Output file is missing!')
+        #PError(_sname+'.stageout','Output file is missing!')
+        PError(_sname+'.stageout','Output file exists!')
         ret = 1 
     return ret 
 
