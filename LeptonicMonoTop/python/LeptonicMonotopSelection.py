@@ -4,7 +4,6 @@ Data_Trig='( (PD_SingleEle && HLT_EleOR) || (PD_SingleMu && (HLT_MuOR) && !(HLT_
 IsoVeto='!iso_Veto'
 
 cuts = {
-
     'bjet0': 'nLep ==1 && Lep_pt > 25 && Selected == 1  &&  nVeto == 0 && nJets30Clean >= 1 && nBJet == 0 && MT>=160 && !iso_Veto',
     'bjet1': 'nLep ==1 && Lep_pt > 25 && Selected == 1  &&  nVeto == 0 && nJets30Clean >= 1 && nBJet == 1 && MT>=160 && !iso_Veto',
     'bjet2': 'nLep ==1 && Lep_pt > 25 && Selected == 1  &&  nVeto == 0 && nJets30Clean >= 1 && nBJet == 2 && MT>=160 && !iso_Veto',

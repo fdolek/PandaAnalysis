@@ -1,0 +1,37 @@
+from PandaCore.Tools.Misc import *
+from re import sub
+EleVeto='!ele.veto'
+
+metTrigger='(trigger&1)!=0'
+eleTrigger='(trigger&2)!=0'
+phoTrigger='(trigger&4)!=0'
+
+metFilter='metFilter==1'
+presel = 'nJet>0 && jet1Pt>25 && abs(jet1Eta)<2.5 && nTau==0 && Sum$(jetPt>30)' #Need to check
+
+calocutSR = '(abs(calomet-pfmet)/pfUmag)<0.5'
+calocutW  = '(abs(calomet-pfmet)/pfUWmag)<0.5'
+
+cuts = {
+    'signal': tAND(metFilter,tAND(presel,tAND(calocutSR,'nTightLep==1 && (nTightElectron + nTightMuon)==1 && pfUmag>250 && pfmet>=160 && !ele.veto'))),
+    'Wjets' : tAND(metFilter,tAND(presel,tAND(calocutW,'nTightLep==1 && nTightElectron==1 &&  nTightMuon==1 && pfUWmag>200 && pfmet>=160 && !ele.veto'))),
+    'ttbar' : tAND(metFilter,tAND(presel,'nTightLep==1 && nTightElectron==1 && nTightMuon==1 && looseLep1IsTight==1 && (nTightPhoton+nTau)==0 && pfUWmag>200 && pfmet>=160 && looseLep1PdgId*looseLep2PdgId<0 && !ele.veto')),
+#    'ttbar' : tAND(metFilter,tAND(presel,'nLooseLep==1 && nLooseElectron==1 && nLooseMuon==1 && looseLep1IsTight==1 && (nLoosePhoton+nTau)==0 && pfUWmag>200 && pfmet>=160 && looseLep1PdgId*looseLep2PdgId<0 && !ele.veto')),
+    'nLep2' : tAND(metFilter,tAND(presel,'nTightLep==2 && pfmet>=160 && !ele.veto')),
+    }
+
+for r in ['signal','Wjets','ttbar','nLep2']:
+    cuts['nbJet_'+r+'_0tag'] = tAND(cuts[r],'Sum$(jetCSV> && abs(jetEta)<2.5)==0')
+    cuts['nbJet_'+r+'_1tag'] = tAND(cuts[r],'Sum$(jetCSV> && abs(jetEta)<2.5)==1')
+    cuts['nbJet_'+r+'_2tag'] = tAND(cuts[r],'Sum$(jetCSV> && abs(jetEta)<2.5)==2')
+
+weights = {
+    'signal': '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_metTrig',
+    'Wjets' : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_metTrig',
+    'ttbar' : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcTT*sf_metTrig',
+    'nLep2 ': '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_metTrig',
+}
+
+
+
+
