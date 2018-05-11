@@ -22,15 +22,16 @@ from PandaAnalysis.Flat.analysis import *
 Load('PandaAnalyzer')
 
 skimmer = root.PandaAnalyzer(debug_level)
+
 #gghbb = gghbb()
 #gghbb.reclusterGen = False
 #gghbb.bjetRegression = False
 #gghbb.btagSFs = False
 #gghbb.deep = True
 #gghbb.dump()
-a = vv()
+a = monojet()
 skimmer.SetAnalysis(a)
-
+#analysis = monojet(True)
 skimmer.firstEvent=0
 skimmer.lastEvent=10
 skimmer.isData=False

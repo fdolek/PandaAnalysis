@@ -46,13 +46,13 @@ for k,v in processes.iteritems():
         pds[v[0]] = (k,-1)
 
 user = environ['USER']
-system('mkdir -p /tmp/%s/split'%user) # tmp dir
-system('mkdir -p /tmp/%s/merged'%user) # tmp dir
+system('mkdir -p /uscmst1b_scratch/lpc1/3DayLifetime/%s/split'%user) # tmp dir
+system('mkdir -p /uscmst1b_scratch/lpc1/3DayLifetime/%s/merged'%user) # tmp dir
 
 inbase = environ['SUBMIT_OUTDIR']
 outbase = environ['PANDA_FLATDIR']
 
-hadd_cmd = 'hadd -k -f '
+hadd_cmd = 'hadd -k -ff -n 100 -f '
 
 if VERBOSE:
     suffix = ''
@@ -150,8 +150,8 @@ def merge(shortnames,mergedname):
                     pd = pds[shortname_][0]
                     xsec = pds[shortname_][1]
                     break
-        inpath = inbase+shortname+'_*.root'
-        success = hadd(inpath,'/tmp/%s/split/%s.root'%(user,shortname))
+        inpath = '`xrdfs root://cmseos.fnal.gov ls -u ' + inbase + ' | grep \'' + shortname + '_\'`'
+        success = hadd(inpath,'/uscmst1b_scratch/lpc1/3DayLifetime/%s/split/%s.root'%(user,shortname))
         if xsec>0 and success:
             normalizeFast('/tmp/%s/split/%s.root'%(user,shortname),xsec)
         if not success:
@@ -160,8 +160,8 @@ def merge(shortnames,mergedname):
                 exit(1)
             else:
                 to_skip.append(shortname)
-    to_hadd = ['/tmp/%s/split/%s.root'%(user,x) for x in shortnames if x not in to_skip]
-    hadd(to_hadd, '/tmp/%s/merged/%s.root'%(user,mergedname))
+    to_hadd = ['/uscmst1b_scratch/lpc1/3DayLifetime/%s/split/%s.root'%(user,x) for x in shortnames if x not in to_skip]
+    hadd(to_hadd, '/uscmst1b_scratch/lpc1/3DayLifetime/%s/merged/%s.root'%(user,mergedname))
     for f in to_hadd:
         system('rm -f %s'%f)
 
@@ -176,7 +176,7 @@ for pd in arguments:
 
 for pd in args:
     merge(args[pd],pd)
-    merged_file = '/tmp/%s/merged/%s.root'%(user,pd)
+    merged_file = '/uscmst1b_scratch/lpc1/3DayLifetime/%s/merged/%s.root'%(user,pd)
     hadd(merged_file ,outbase) # really an mv
     system('rm -f %s'%merged_file)
     PInfo(sname,'finished with '+pd)

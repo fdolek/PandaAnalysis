@@ -17,7 +17,7 @@ from PandaCore.Tools.Load import *
 import PandaCore.Tools.job_config as cb
 import PandaAnalysis.Tagging.cfg_v8 as tagcfg
 import PandaAnalysis.LPC_T3.job_utilities as utils
-from PandaAnalysis.Flat.analysis import wlnhbb
+from PandaAnalysis.Flat.analysis import lepmonotop
 
 Load('PandaAnalyzer')
 data_dir = getenv('CMSSW_BASE') + '/src/PandaAnalysis/data/'
@@ -27,14 +27,14 @@ def fn(input_name, isData, full_path):
     PInfo(sname+'.fn','Starting to process '+input_name)
     # now we instantiate and configure the analyzer
     skimmer = root.PandaAnalyzer()
-    analysis = wlnhbb(True)
+    analysis = lepmonotop(True)
     analysis.processType = utils.classify_sample(full_path, isData)	
     #if analysis.processType == root.kTT or analysis.processType == root.kH:
     #    analysis.reclusterGen = True # only turn on if necessary
     analysis.reclusterGen = True
     skimmer.SetAnalysis(analysis)
     skimmer.isData=isData
-    skimmer.SetPreselectionBit(root.PandaAnalyzer.kVHBB)
+    skimmer.SetPreselectionBit(root.PandaAnalyzer.kLepMonoTop)
     skimmer.SetPreselectionBit(root.PandaAnalyzer.kPassTrig)  
 
     return utils.run_PandaAnalyzer(skimmer, isData, input_name)

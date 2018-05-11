@@ -119,22 +119,15 @@ public:
   bool btagWeights = false;
   bool complicatedLeptons = false;
   bool complicatedPhotons = false;
-  bool deep = false;
-  bool deepAntiKtSort = false;
-  bool deepGen = false;
-  bool deepGenGrid = false;
-  bool deepKtSort = false;
-  bool deepSVs = false;
-  bool deepTracks = false;
   bool fatjet = true;
   bool firstGen = true;
   bool genOnly = false;
-  bool hbb = false;
+  bool boson = false;
   bool hfCounting = false;
   bool jetFlavorPartons = true;
   bool jetFlavorJets = false;
- // bool monoh = false;
   bool boosted = false;
+  bool monojet = false;
   bool puppi_jets = true;
   bool recluster = false;
   bool reclusterGen = false;
@@ -143,6 +136,7 @@ public:
   bool useCMVA = false;
   bool varyJES = false;
   bool vbf = false;
+  bool lepmonotop= false;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////
