@@ -34,9 +34,9 @@ void PandaAnalyzer::CalcBJetSFs(BTagType bt, int flavor,
 }
 
 void PandaAnalyzer::EvalBTagSF(std::vector<btagcand> &cands, std::vector<double> &sfs,
-                               GeneralTree::BTagShift shift,GeneralTree::BTagJet jettype, bool do2) 
+                               GeneralTree::BTagShift shift,GeneralTree::BTagJet jettype, bool do2, bool do3) 
 {
-  float sf0 = 1, sf1 = 1, sfGT0 = 1, sf2=1;
+  float sf0 = 1, sf1 = 1, sfGT0 = 1, sf2=1, sf3=1;
   float prob_mc0=1, prob_data0=1;
   float prob_mc1=0, prob_data1=0;
   unsigned int nC = cands.size();
@@ -61,7 +61,7 @@ void PandaAnalyzer::EvalBTagSF(std::vector<btagcand> &cands, std::vector<double>
   if (nC>0) {
     sf0 = prob_data0/prob_mc0;
     sf1 = prob_data1/prob_mc1;
-    sfGT0 = (1-prob_data0)/(1-prob_mc0);
+    sfGT0 = (1-prob_data0)/(1-prob_mc0); 
   }
 
   GeneralTree::BTagParams p;
@@ -98,6 +98,34 @@ void PandaAnalyzer::EvalBTagSF(std::vector<btagcand> &cands, std::vector<double>
     p.tag=GeneralTree::b2; gt->sf_btags[p] = sf2;
   }
 
+  if (do3) {
+    float prob_mc3=0, prob_data3=0;
+    unsigned int nC = cands.size();
+    for (unsigned int iC=0; iC!=nC; ++iC) {
+      double sf_i = sfs[iC], eff_i = cands[iC].eff;
+      for (unsigned int jC=iC+1; jC!=nC; ++jC) {
+        double sf_j = sfs[jC], eff_j = cands[jC].eff;
+        for (unsigned int kC=iC+2; kC!=nC; ++kC) { 
+          double sf_k = sfs[kC], eff_k = cands[kC].eff;
+          float tmp_mc3=1, tmp_data3=1;
+          for (unsigned int lC=0; lC!=nC; ++lC) {
+	    if (lC==iC || lC==jC || lC==kC) continue;
+	    double sf_l = sfs[lC], eff_l = cands[lC].eff;
+	    tmp_mc3 *= (1-eff_l);
+	    tmp_data3 *= (1-eff_l*sf_l);
+          }
+          prob_mc3 += eff_i * eff_j * eff_k * tmp_mc3;
+          prob_data3 += eff_i * sf_i * eff_j * sf_j * eff_k * sf_k * tmp_data3;
+        }
+      }
+    }
+
+    if (nC>2) {
+      sf3 = prob_data3/prob_mc3;
+    }
+
+    p.tag=GeneralTree::b3; gt->sf_btags[p] = sf3;
+  }
 }
 
 
@@ -109,17 +137,29 @@ void PandaAnalyzer::JetBtagSFs()
       vector<double> sf_cent, sf_bUp, sf_bDown, sf_mUp, sf_mDown;
       vector<double> sf_cent_alt, sf_bUp_alt, sf_bDown_alt, sf_mUp_alt, sf_mDown_alt;
 
-      unsigned int nJ = bCandJets.size();
+      unsigned int nJ = centralJets.size();
       for (unsigned int iJ=0; iJ!=nJ; ++iJ) {
-        panda::Jet *jet = bCandJets.at(iJ);
+        panda::Jet *jet = centralJets.at(iJ);
         bool isIsoJet=false;
-      
-// 
-        if (!analysis->boosted || // if we do not consider fatjets, everything is an isojet 
-            std::find(isoJets.begin(), isoJets.end(), jet) != isoJets.end()) // otherwise, explicitly check isojet
+        if (std::find(isoJets.begin(), isoJets.end(), jet) != isoJets.end())
           isIsoJet = true;
-        int flavor = bCandJetGenFlavor[jet];
-        // float genpt = bCandJetGenPt[jet]; // not needed right now but it's here if it becomes needed
+        int flavor=0;
+        float genpt=0;
+        for (auto& gen : event.genParticles) {
+          int apdgid = abs(gen.pdgid);
+          if (apdgid==0 || (apdgid>5 && apdgid!=21)) // light quark or gluon
+            continue;
+          double dr2 = DeltaR2(jet->eta(),jet->phi(),gen.eta(),gen.phi());
+          if (dr2<0.09) {
+            genpt = gen.pt();
+            if (apdgid==4 || apdgid==5) {
+              flavor=apdgid;
+              break;
+            } else {
+              flavor=0;
+            }
+          }
+        } // finding the jet flavor
         float pt = jet->pt();
         float btagUncFactor = 1;
         float eta = jet->eta();
@@ -132,20 +172,21 @@ void PandaAnalyzer::JetBtagSFs()
           eff = ceff[bineta][binpt];
         else
           eff = lfeff[bineta][binpt];
+        if (jet==centralJets.at(0)) {
+          gt->jet1Flav = flavor;
+          gt->jet1GenPt = genpt;
+        } else if (jet==centralJets.at(1)) {
+          gt->jet2Flav = flavor;
+          gt->jet2GenPt = genpt;
+        }
         if (isIsoJet) {
-          if (analysis->boosted) {
-            if (jet==isoJets.at(0))
-              gt->isojet1Flav = flavor;
-            else if (jet==isoJets.at(1))
-              gt->isojet2Flav = flavor;
-          }
+          if (jet==isoJets.at(0))
+            gt->isojet1Flav = flavor;
+          else if (jet==isoJets.at(1))
+            gt->isojet2Flav = flavor;
 
-          BTagType wp = bJetM;
-          if (analysis->boosted) wp = bJetL;          
-
-
-          CalcBJetSFs(wp,flavor,eta,pt,eff,btagUncFactor,sf,sfUp,sfDown);
-          btagcands.emplace_back(iJ,flavor,eff,sf,sfUp,sfDown);
+          CalcBJetSFs(bJetL,flavor,eta,pt,eff,btagUncFactor,sf,sfUp,sfDown);
+          btagcands.push_back(btagcand(iJ,flavor,eff,sf,sfUp,sfDown));
           sf_cent.push_back(sf);
 
           if (flavor>0) {
@@ -180,11 +221,11 @@ void PandaAnalyzer::JetBtagSFs()
       EvalBTagSF(btagcands,sf_bDown,GeneralTree::bBDown,GeneralTree::bJet);
       EvalBTagSF(btagcands,sf_mUp,GeneralTree::bMUp,GeneralTree::bJet);
       EvalBTagSF(btagcands,sf_mDown,GeneralTree::bMDown,GeneralTree::bJet);
-      EvalBTagSF(btagcands_alt,sf_cent_alt,GeneralTree::bCent,GeneralTree::bMedJet,true);
-      EvalBTagSF(btagcands_alt,sf_bUp_alt, GeneralTree::bBUp, GeneralTree::bMedJet,true);
-      EvalBTagSF(btagcands_alt,sf_bDown_alt, GeneralTree::bBDown, GeneralTree::bMedJet,true);
-      EvalBTagSF(btagcands_alt,sf_mUp_alt, GeneralTree::bMUp, GeneralTree::bMedJet,true);
-      EvalBTagSF(btagcands_alt,sf_mDown_alt, GeneralTree::bMDown, GeneralTree::bMedJet,true);
+      EvalBTagSF(btagcands_alt,sf_cent_alt,GeneralTree::bCent,GeneralTree::bMedJet,true,true);
+      EvalBTagSF(btagcands_alt,sf_bUp_alt, GeneralTree::bBUp, GeneralTree::bMedJet,true,true);
+      EvalBTagSF(btagcands_alt,sf_bDown_alt, GeneralTree::bBDown, GeneralTree::bMedJet,true,true);
+      EvalBTagSF(btagcands_alt,sf_mUp_alt, GeneralTree::bMUp, GeneralTree::bMedJet,true,true);
+      EvalBTagSF(btagcands_alt,sf_mDown_alt, GeneralTree::bMDown, GeneralTree::bMedJet,true,true);
 
     tr->TriggerEvent("ak4 gen-matching");
 }
@@ -195,24 +236,28 @@ void PandaAnalyzer::JetCMVAWeights()
     GeneralTree::csvShift shift = gt->csvShifts[iShift];
     gt->sf_csvWeights[shift] = 1;
   }
-  if (bCandJets.size() < 1) return;
+  if (centralJets.size() < 1) return;
 
   //get vectors of jet properties
   std::vector<double> jetPts, jetEtas, jetCSVs, jetCMVAs;
   std::vector<int> jetFlavors;
-  unsigned int nJ = bCandJets.size();
-  jetPts.reserve(nJ);
-  jetEtas.reserve(nJ);
-  jetCSVs.reserve(nJ);
-  jetCMVAs.reserve(nJ);
-  jetFlavors.reserve(nJ);
-  for (unsigned int iJ=0; iJ!=nJ; ++iJ) {
-    panda::Jet *jet = bCandJets.at(iJ);
+  jetPts.reserve(centralJets.size());
+  jetEtas.reserve(centralJets.size());
+  jetCSVs.reserve(centralJets.size());
+  jetCMVAs.reserve(centralJets.size());
+  jetFlavors.reserve(centralJets.size());
+  for (auto *jet : centralJets) {
     jetPts.push_back(jet->pt());
     jetEtas.push_back(jet->eta());
     jetCSVs.push_back(jet->csv);
     jetCMVAs.push_back(jet->cmva);
-    int flavor = bCandJetGenFlavor[jet];
+    int flavor = 0;
+    for (auto &gen : event.ak4GenJets) {
+      if (DeltaR2(gen.eta(), gen.phi(), jet->eta(), jet->phi()) < 0.09) {
+        flavor=gen.pdgid;
+        break;
+      }
+    }
     jetFlavors.push_back(flavor);
   }
   // throwaway addresses
