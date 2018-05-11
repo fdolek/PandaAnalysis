@@ -1,3 +1,4 @@
+
 #include "../interface/PandaAnalyzer.h"
 #include "TVector2.h"
 #include "TMath.h"
@@ -34,9 +35,9 @@ void PandaAnalyzer::CalcBJetSFs(BTagType bt, int flavor,
 }
 
 void PandaAnalyzer::EvalBTagSF(std::vector<btagcand> &cands, std::vector<double> &sfs,
-                               GeneralTree::BTagShift shift,GeneralTree::BTagJet jettype, bool do2) 
+                               GeneralTree::BTagShift shift,GeneralTree::BTagJet jettype, bool do2, bool do3) 
 {
-  float sf0 = 1, sf1 = 1, sfGT0 = 1, sf2=1;
+  float sf0 = 1, sf1 = 1, sfGT0 = 1, sf2=1, sf3=1;
   float prob_mc0=1, prob_data0=1;
   float prob_mc1=0, prob_data1=0;
   unsigned int nC = cands.size();
@@ -96,6 +97,35 @@ void PandaAnalyzer::EvalBTagSF(std::vector<btagcand> &cands, std::vector<double>
     }
 
     p.tag=GeneralTree::b2; gt->sf_btags[p] = sf2;
+  }
+
+  if (do3) {
+    float prob_mc3=0, prob_data3=0;
+    unsigned int nC = cands.size();
+    for (unsigned int iC=0; iC!=nC; ++iC) {
+      double sf_i = sfs[iC], eff_i = cands[iC].eff;
+      for (unsigned int jC=iC+1; jC!=nC; ++jC) {
+        double sf_j = sfs[jC], eff_j = cands[jC].eff;
+        for (unsigned int kC=iC+2; kC!=nC; ++kC) { 
+          double sf_k = sfs[kC], eff_k = cands[kC].eff;
+          float tmp_mc3=1, tmp_data3=1;
+          for (unsigned int lC=0; lC!=nC; ++lC) {
+	    if (lC==iC || lC==jC || lC==kC) continue;
+	    double sf_l = sfs[lC], eff_l = cands[lC].eff;
+	    tmp_mc3 *= (1-eff_l);
+	    tmp_data3 *= (1-eff_l*sf_l);
+          }
+          prob_mc3 += eff_i * eff_j * eff_k * tmp_mc3;
+          prob_data3 += eff_i * sf_i * eff_j * sf_j * eff_k * sf_k * tmp_data3;
+        }
+      }
+    }
+
+    if (nC>2) {
+      sf3 = prob_data3/prob_mc3;
+    }
+
+    p.tag=GeneralTree::b3; gt->sf_btags[p] = sf3;
   }
 
 }
@@ -180,11 +210,11 @@ void PandaAnalyzer::JetBtagSFs()
       EvalBTagSF(btagcands,sf_bDown,GeneralTree::bBDown,GeneralTree::bJet);
       EvalBTagSF(btagcands,sf_mUp,GeneralTree::bMUp,GeneralTree::bJet);
       EvalBTagSF(btagcands,sf_mDown,GeneralTree::bMDown,GeneralTree::bJet);
-      EvalBTagSF(btagcands_alt,sf_cent_alt,GeneralTree::bCent,GeneralTree::bMedJet,true);
-      EvalBTagSF(btagcands_alt,sf_bUp_alt, GeneralTree::bBUp, GeneralTree::bMedJet,true);
-      EvalBTagSF(btagcands_alt,sf_bDown_alt, GeneralTree::bBDown, GeneralTree::bMedJet,true);
-      EvalBTagSF(btagcands_alt,sf_mUp_alt, GeneralTree::bMUp, GeneralTree::bMedJet,true);
-      EvalBTagSF(btagcands_alt,sf_mDown_alt, GeneralTree::bMDown, GeneralTree::bMedJet,true);
+      EvalBTagSF(btagcands_alt,sf_cent_alt,GeneralTree::bCent,GeneralTree::bMedJet,true,true);
+      EvalBTagSF(btagcands_alt,sf_bUp_alt, GeneralTree::bBUp, GeneralTree::bMedJet,true,true);
+      EvalBTagSF(btagcands_alt,sf_bDown_alt, GeneralTree::bBDown, GeneralTree::bMedJet,true,true);
+      EvalBTagSF(btagcands_alt,sf_mUp_alt, GeneralTree::bMUp, GeneralTree::bMedJet,true,true);
+      EvalBTagSF(btagcands_alt,sf_mDown_alt, GeneralTree::bMDown, GeneralTree::bMedJet,true,true);
 
     tr->TriggerEvent("ak4 gen-matching");
 }
