@@ -29,7 +29,8 @@ skimmer = root.PandaAnalyzer(debug_level)
 #gghbb.btagSFs = False
 #gghbb.deep = True
 #gghbb.dump()
-a = monojet()
+#a = monojet()
+a = lepmonotop()
 skimmer.SetAnalysis(a)
 #analysis = monojet(True)
 skimmer.firstEvent=0
