@@ -30,6 +30,6 @@ weights = {
 }
 
 for x in ['signal','wmn','wen','ttbar1e','ttbar1m','ttbar2le','ttbar2lm']:
-        for shift in ['BUp','BDown','MUp','MDown']:
-            for cent in ['sf_btag']:
-weights[r+'_'+cent+shift] = sub(cent+'0',cent+'0'+shift,sub(cent+'1',cent+'1'+shift,sub(cent+'2',cent+'2'+shift,weights[r])))
+ for shift in ['BUp','BDown','MUp','MDown']:
+  for cent in ['sf_btag']:
+   weights[r+'_'+cent+shift] = sub(cent+'0',cent+'0'+shift,sub(cent+'1',cent+'1'+shift,sub(cent+'2',cent+'2'+shift,weights[r])))
