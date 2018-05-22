@@ -27,7 +27,6 @@ argv=[]
 import PandaAnalysis.Flat.fitting_forest as forest 
 from PandaCore.Tools.Misc import *
 import PandaCore.Tools.Functions # kinematics
-#import PandaAnalysis.MonoX.MonoXSelection as sel
 import PandaAnalysis.LeptonicMonoTop.LeptonicMonotopSelection as sel
 
 basedir = args.input
@@ -61,8 +60,8 @@ def shift_btags(additional=None):
 
 #vmap definition
 vmap = {}
-#mc_vmap = {‘genBosonPt’:‘genBosonPt’}
-vmap[‘mt’] = ‘mT’
+#mc_vmap = {'genBosonPt':'genBosonPt'}
+vmap['mt'] = 'mT'
 
 #weights
 weights = {'nominal' : sel.weights[region]%lumi}
@@ -90,7 +89,15 @@ elif 'signal' not in region:
 
     if 'zmm' in region or 'tm' in region or 'wmn' in region:
         factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
-	
+
+elif 'signal' in region:
+    factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
+    factory.add_process(f('TTbar'),'ttbar')
+    factory.add_process(f('ZJets'),'Zll')
+    factory.add_process(f('WJets'),'Wlv')
+    factory.add_process(f('SingleTop'),'ST')
+    factory.add_process(f('Diboson'),'Diboson')
+    factory.add_process(f('QCD'),'QCD')	
 
 forestDir = basedir + '/limits/'
 os.system('mkdir -p %s'%(forestDir))
