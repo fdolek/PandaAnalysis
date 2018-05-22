@@ -23,20 +23,13 @@ cuts['ttbar2lm'] = tAND(nLep2,'nTightElectron==1 && Sum$(jetCSV>0.8 && abs(jetEt
 
 weights = {
     'signal'  : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag1',
-    'control'     : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT',
+    'wen'     : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag0',
+    'wmn'     : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag0',
+    'ttbar1e' : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag2',
+    'ttbar1m' : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag2',
+    'ttbar2le': '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag2',
+    'ttbar2lm': '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag2',
 }
-
-for x in ['wen','wmn','ttbar1e','ttbar1m','ttbar2le','ttbar2lm']:
-	if 'en' in x or '1e' in x or 'le' in x:
-	  weights[x] = tTIMES(weights['control'],'sf_eleTrig')
-	else:
-          weights[x] = tTIMES(weights['control'],'sf_muTrig')
-
-for x in ['wen','wmn','ttbar1e','ttbar1m','ttbar2le','ttbar2lm']:
-        if 'en' in x or 'mn' in x:
-          weights[x] = tTIMES(weights[x],'sf_btag0')
-        else 
-          weights[x] = tTIMES(weights[x],'sf_btag2')
 
 for x in ['signal','wmn','wen','ttbar1e','ttbar1m','ttbar2le','ttbar2lm']:
  for shift in ['BUp','BDown','MUp','MDown']:
