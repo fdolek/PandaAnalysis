@@ -86,10 +86,10 @@ elif 'signal' not in region:
         factory.add_process(f('SingleElectron'),'Data',is_data=True,extra_cut=sel.eleTrigger)
 
     if 'wmn' in region or 'ttbar1m' in region or 'ttbar2lm' in region:
-        factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.muTrigger)
+        factory.add_process(f('SingleMuon'),'Data',is_data=True,extra_cut=sel.muTrigger)
 
 elif 'signal' in region:
-    factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
+    factory.add_process(f('SingleMuon'),'Data',is_data=True,extra_cut=sel.muTrigger)
     factory.add_process(f('TTbar'),'ttbar')
     factory.add_process(f('ZJets'),'Zll')
     factory.add_process(f('WJets'),'Wlv')
