@@ -60,7 +60,6 @@ def shift_btags(additional=None):
 
 #vmap definition
 vmap = {}
-#mc_vmap = {'genBosonPt':'genBosonPt'}
 vmap['mt'] = 'mT'
 
 #weights
@@ -70,7 +69,6 @@ weights.update(shift_btags())
 factory = forest.RegionFactory(name = region if not(is_test) else 'test',
                                cut = sel.cuts[region],
                                variables = vmap, 
-                               mc_variables = mc_vmap, 
                                mc_weights = weights)
 
 #Process and creation of new ntuples process
@@ -84,11 +82,11 @@ elif 'signal' not in region:
     factory.add_process(f('QCD'),'QCD')
     factory.add_process(f('TTbar'),'ttbar')
 
-    if 'zee' in region or 'te' in region or 'wen' in region:
+    if 'wen' in region or 'ttbar1e' in region or 'ttbar2le' in region:
         factory.add_process(f('SingleElectron'),'Data',is_data=True,extra_cut=sel.eleTrigger)
 
-    if 'zmm' in region or 'tm' in region or 'wmn' in region:
-        factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
+    if 'wmn' in region or 'ttbar1m' in region or 'ttbar2lm' in region:
+        factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.muTrigger)
 
 elif 'signal' in region:
     factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
