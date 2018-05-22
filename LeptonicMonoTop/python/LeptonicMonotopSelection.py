@@ -16,7 +16,6 @@ cuts['signal'] = tAND(nLep1,'Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==1')
 cuts['ttbar1l'] = tAND(nLep1,'Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==2')
 cuts['ttbar2l'] = tAND(nLep2,'Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==2')
 
-
 weights = {
     'signal': '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag1',
     'wjets' : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag0',
