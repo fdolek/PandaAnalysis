@@ -7,7 +7,7 @@ import json
 
 debug_level = 0
 torun = argv[1]
-output = 'testskim.root'
+output = 'testskim2.root'
 if len(argv)>2:
     debug_level = int(argv[2])
     if len(argv)>3:
