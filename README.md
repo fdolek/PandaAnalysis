@@ -64,7 +64,6 @@ def fn(input_name, isData, full_path):
     skimmer = root.PandaAnalyzer()
     analysis = monojet(True)                                          # this is imported from PandaAnalysis.Flat.Analysis, where the defaults are set
     analysis.processType = utils.classify_sample(full_path, isData)  # set the type of the process
-    if analysis.processType == root.kTT or analysis.processType == root.kSignal:
     skimmer.SetAnalysis(analysis)
     skimmer.isData=isData
     skimmer.SetPreselectionBit(root.PandaAnalyzer.kMonojet)             # set the preselection
