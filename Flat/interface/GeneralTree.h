@@ -52,6 +52,7 @@ class GeneralTree : public genericTree {
         b0=0,
         b1,
         b2,
+	b3,
         bGT0,
         bNTags
       };
@@ -144,6 +145,8 @@ class GeneralTree : public genericTree {
               s += "1"; break;
             case b2:
               s += "2"; break;
+            case b3:
+              s += "3"; break;
             case bGT0:
               s += "GT0"; break;
             default:

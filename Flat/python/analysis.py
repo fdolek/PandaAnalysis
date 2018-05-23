@@ -78,10 +78,10 @@ lepmonotop = lambda v=False : _analysis(
         hfCounting = True,
         reclusterGen = True,
         bjetRegression = False,
-        varyJES = True,
-        rerunJES = True,
+        #varyJES = True,
+        #rerunJES = True,
         jetFlavorPartons = False,
-        jetFlavorJets = True,
+        jetFlavorJets = True
     )
 
 
