@@ -19,6 +19,13 @@ scram b -j8
 Explanation: `PandaTree` is the data format, `PandaCore` is some core utilities for dealing with ROOT and python, and `PandaAnalysis` implements the analyses.
 Most of your interaction should only be with `PandaAnalysis`, unless you find a bug, which you will.
 
+numpy_root installation: (you may need this dependency for makefittingforest.py)
+```bash
+cd ~
+```
+install from the link: http://scikit-hep.org/root_numpy/install.html
+
+
 ## Producing a flat tree for analysis
 
 There is a core analysis tool (`PandaAnalyzer`) that outputs a data format (`GeneralTree`).
@@ -112,63 +119,58 @@ export SUBMIT_LOGDIR="${scratch_area}/${USER}/condor/"${SUBMIT_NAME}"/logs/"  # 
 export SUBMIT_LOGDIR="${scratch_area}/${USER}/condor/"${SUBMIT_NAME}"/locks/"  # lock directory
 export SUBMIT_OUTDIR="/store/user/${USER}/panda/"${SUBMIT_NAME}"/batch/"  # location of unmerged files
 export PANDA_FLATDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/flat/"   # merged output
-export SUBMIT_CONFIG=T2  # allow running on T3 or T2. if $SUBMIT_CONFIG==T3, then only run on T3
+eosmkdir -p $SUBMIT_OUTDIR
 ```
 
 `LPC_T3/inputs/$SUBMIT_TMPL` should be the skimming configuration you wish to run your files through. 
 
-### Testing the jobs
-
-If you want, you can test-run a job locally:
+### Configure condor submission
 ```bash
-./task.py --build_only --nfiles 1   # just build the job, with one file per job
-cd $SUBMIT_WORKDIR                  # go to the working directory
-python skim.py 0 0                  # run the first job in the configuration
-cd -                                # back to bin
-./task.py --clean                   # clean up after yourself
+cd ~
+wget http://shoh.web.cern.ch/shoh/public/Panda/condor-8.6.3-x86_64_RedHat6-stripped.tar.gz .
+tar zxvf condor-8.6.3-x86_64_RedHat6-stripped.tar.gz
+```
+Please add the line below in you your bashrc
+```bash
+export PYTHONPATH=/uscms/home/USERNAME/condor-8.6.3-x86_64_RedHat6-stripped/lib/python:$PYTHONPATH
+```
+after,
+```bash
+source ~/.bashrc
 ```
 
-### Submitting and re-submitting
+### Submitting the Condor Jobs
+The Analyser make use of lpc computing infrastructure such as uscms_data space for storing processed ntuple; eos space for condor job output and scratch_3day space for tmp.
+the environment variables are configured in PandaAnalyzer/LPC_T3/lpc_setup.sh
 
 To submit jobs, simply do
 ```bash 
-./task.py --submit [--nfiles NFILES] [--clean]
+source lpc_setup.sh
 ```
-where NFILES is the number of files in each job. 
-The default is 25 files if that flag is not passed.
-The clean argument will make sure to wipe out all staging directories to ensure a clean release (it's optional because sometimes you don't want to do this).
-
-To check the status of your jobs, simply do:
+In order to prepare the job with grid authentication, go to PandaAnalyzer/LPC_T3/bin/
 ```bash
-./task.py --check [--silent] [--force] [--nfiles NFILES] [--monitor NSECONDS]
+sh buildMergedInputs.sh -t -n 40
 ```
-Note that the above command overwrites `$SUBMIT_WORKDIR/local.cfg`, with the intention of preparing it for resubmission.
-The file will be recreated as a configuration to rerun files that are not present in the output and not running.
-- `--silent` will skip the per-sample breakdown.
-- `--nfiles` will repackage `local.cfg` into a different number of files per job.
-- `--force` will re-catalog files that are incomplete, not just missing.
-- `--monitor` will capture the terminal screen and refresh the status if either (a) a job has completed succesfully or (b) `NSECONDS` has elapsed since the last refresh.
+where n = filesetSize and t = doTar
 
-To resubmit missing files, simply do
+To submit the job:
 ```bash
-./task.py --silent
+python submit.py
 ```
-In the case that you are using the `--force` option, make sure you have no running jobs before resubmitting, or you may end up with duplicated outputs.
-Forcing resubmission is generally discouraged and is largely included for historical reasons.
-The job framework is robust enough at this point that forcing should not be necessary.
-
-If you are having lots of failures, it may be interesting to analyze the logs located in `$SUBMIT_LOGDIR`. 
-You can do this manually, or:
+To check the job progress:
 ```bash
-./analyzeLogs.py [--dump]
+condor_q USERNAME | tail
 ```
-This will print to screen a basic analysis of the errors observed, which errors are correlated, and how frequently they occur.
-If the `--dump` flag is passed, then a directory `log_dumps/` is created, containing detailed information on each failure class (where it failed and on for what inputs).
 
+Output files reside in LPC EOS area. 
 
 ## Merging
 
 Make sure `$PANDA_FLATDIR` exists. Then, go into `LPC_T3/merging` and do:
+```bash
+./merge.py
+```
+or
 ```bash
 ./merge.py [--cfg CONFIG] [--silent] TTbar_Powheg
 ```
