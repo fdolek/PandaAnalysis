@@ -12,6 +12,11 @@ parser = argparse.ArgumentParser(description='make forest')
 parser.add_argument('--region',metavar='region',type=str,default=None)
 parser.add_argument('--input',metavar='input',type=str,default=getenv('PANDA_FLATDIR'))
 
+import PandaAnalysis.Flat.fitting_forest as forest
+from PandaCore.Tools.Misc import *
+import PandaCore.Tools.Functions # kinematics
+import PandaAnalysis.LeptonicMonoTop.LeptonicMonotopSelection as sel
+
 args = parser.parse_args()
 nddt = args.ddt
 region = args.region  
@@ -26,10 +31,6 @@ for x in ['signale', 'signalm']:
      is_test = False
 
  argv=[]
- import PandaAnalysis.Flat.fitting_forest as forest 
- from PandaCore.Tools.Misc import *
- import PandaCore.Tools.Functions # kinematics
- import PandaAnalysis.LeptonicMonoTop.LeptonicMonotopSelection as sel
 
  basedir = args.input
  lumi = 35900
@@ -75,30 +76,18 @@ for x in ['signale', 'signalm']:
 
 #Process and creation of new ntuples process
  if is_test:
+    factory.add_process(f('ZJets'),'Zll')
+    factory.add_process(f('WJets'),'Wlv')
+    factory.add_process(f('SingleTop'),'ST')
     factory.add_process(f('Diboson'),'Diboson')
+    factory.add_process(f('QCD'),'QCD')
+    factory.add_process(f('TTbar'),'ttbar')
 
- elif x not in region:
-     factory.add_process(f('ZJets'),'Zll')
-     factory.add_process(f('WJets'),'Wlv')
-     factory.add_process(f('SingleTop'),'ST')
-     factory.add_process(f('Diboson'),'Diboson')
-     factory.add_process(f('QCD'),'QCD')
-     factory.add_process(f('TTbar'),'ttbar')
-
-     if 'wen' in region or 'ttbar1e' in region or 'ttbar2le' in region:
+     if 'wen' in region or 'ttbar1e' in region or 'ttbar2le' in region or 'signale' in region:
          factory.add_process(f('SingleElectron'),'Data',is_data=True,extra_cut=sel.eleTrigger)
 
-     if 'wmn' in region or 'ttbar1m' in region or 'ttbar2lm' in region:
+     if 'wmn' in region or 'ttbar1m' in region or 'ttbar2lm' in region or 'signalm' in region:
          factory.add_process(f('SingleMuon'),'Data',is_data=True,extra_cut=sel.muTrigger)
-
- elif x in region:
-     factory.add_process(f('SingleMuon'),'Data',is_data=True,extra_cut=sel.muTrigger)
-     factory.add_process(f('TTbar'),'ttbar')
-     factory.add_process(f('ZJets'),'Zll')
-     factory.add_process(f('WJets'),'Wlv')
-     factory.add_process(f('SingleTop'),'ST')
-     factory.add_process(f('Diboson'),'Diboson')
-     factory.add_process(f('QCD'),'QCD')	
 
  forestDir = basedir + '/limits/'
  os.system('mkdir -p %s'%(forestDir))
