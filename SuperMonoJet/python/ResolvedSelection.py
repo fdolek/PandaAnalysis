@@ -15,8 +15,8 @@ baseline = 'metFilter==1 && nTau==0 && bosonpt>150 && Sum$(jetPt>30)>1 && Sum$(j
 
 #cuts for specific regions
 cuts['signal'] = tAND(baseline,'nLooseLep==0 && nLooseElectron==0 && nLoosePhoton==0 && pfmet>250 && dphipfmet>0.4')
-cuts['tm'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==1 && nTightMuon==1 && pfUWmag>250 && dphipfUW>0.4')
-cuts['te'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron==1 && nTightElectron==1 && pfUWmag>250 && dphipfUW>0.4 && pfmet>50')
+cuts['tmn'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==1 && nTightMuon==1 && pfUWmag>250 && dphipfUW>0.4')
+cuts['ten'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron==1 && nTightElectron==1 && pfUWmag>250 && dphipfUW>0.4 && pfmet>50')
 cuts['wmn'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==1 && nTightMuon==1 && pfUWmag>250 && dphipfUW>0.4')
 cuts['wen'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron==1 && nTightElectron==1 && pfUWmag>250 && dphipfUW>0.4 && pfmet>50')
 cuts['zmm'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==2 && nTightMuon==1 && pfUZmag>250 && dphipfUZ>0.4 && diLepMass>80 && diLepMass<100')
@@ -24,18 +24,21 @@ cuts['zee'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron
 cuts['pho'] = tAND(baseline,'(nLooseMuon+nLooseElectron+nTau)==0 && nLoosePhoton==1 && loosePho1IsTight==1 && pfUAmag>250 && dphipfUA>0.4')
 
 
-for r in ['signal','zmm','zee','wen','wmn','pho']:
-        cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==2')
-        cuts[r+'_fail'] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==0')
-
-for r in ['tm','te']:
-        cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==3')
-        cuts[r+'_fail'] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==1')
-
-for r in ['signal','tm','te','zmm','zee','wen','wmn','pho']:
+for r in ['signal','tmn','ten','zmm','zee','wen','wmn','pho']:
         cuts[r] = tAND(cuts[r],'min(jetCSV[bosonjtidx[0]],jetCSV[bosonjtidx[1]])>0.8484')
         cuts[r+'_fail'] = tAND(cuts[r],'min(jetCSV[bosonjtidx[0]],jetCSV[bosonjtidx[1]])<=0.8484')
 
+for r in ['signal','zmm','zee','wen','wmn','pho','signal_fail','wmn_fail','wen_fail','zmm_fail','zee_fail']:
+	if 'fail' in x:
+          cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==0')
+	else:
+          cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==2')
+
+for r in ['tmn','ten','tmn_fail','ten_fail']:
+	if 'fail' in x:
+          cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==1')
+	else:
+          cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==3')
 
 #weights for specific regions
 weights = {
@@ -45,7 +48,7 @@ weights = {
 for x in ['signal','signal_fail']:
 	  weights[x] = tTIMES(weights['base'],'%f*sf_metTrig*sf_tt')
         
-for x in ['tm','te','wmn','wen','zmm','zee','tm_fail','te_fail','wmn_fail','wen_fail','zmm_fail','zee_fail']:
+for x in ['tmn','ten','wmn','wen','zmm','zee','tmn_fail','ten_fail','wmn_fail','wen_fail','zmm_fail','zee_fail']:
 	if 'e' in x:
 	  weights[x] = tTIMES(weights['base'],'%f*sf_eleTrig*sf_lepID*sf_lepIso*sf_lepTrack*sf_tt')
 	else:
@@ -60,14 +63,14 @@ for x in ['wmn','wen','zmm','zee','wmn_fail','wen_fail','zmm_fail','zee_fail']:
         else:
 	  weights[x] = tTIMES(weights[x],'sf_btag2')
    
-for x in ['tm','te','tm_fail','te_fail']:
+for x in ['tmn','ten','tmn_fail','ten_fail']:
 	if 'fail' in x:
 	  weights[x] = tTIMES(weights[x],'sf_btag1')
         else:
 	  weights[x] = tTIMES(weights[x],'sf_btag3')
 
 
-for r in ['signal','tm','te','wmn','wen','zmm','zee','signal_fail','tm_fail','te_fail','wmn_fail','wen_fail','zmm_fail','zee_fail']:
+for r in ['signal','tmn','ten','wmn','wen','zmm','zee','signal_fail','tmn_fail','ten_fail','wmn_fail','wen_fail','zmm_fail','zee_fail']:
     for shift in ['BUp','BDown','MUp','MDown']:
         for cent in ['sf_btag']:
             if 'btag0' in weights[r]:
