@@ -24,7 +24,7 @@ region = args.region
 
 if region=='test':
     is_test = True 
-    region = 'signal'
+    region = 'signale'
 else:
     is_test = False
 
@@ -74,12 +74,15 @@ factory = forest.RegionFactory(name = region if not(is_test) else 'test',
 
 #Process and creation of new ntuples process
 if is_test:
-   factory.add_process(f('ZJets'),'Zll')
-   factory.add_process(f('WJets'),'Wlv')
-   factory.add_process(f('SingleTop'),'ST')
-   factory.add_process(f('Diboson'),'Diboson')
-   factory.add_process(f('QCD'),'QCD')
-   factory.add_process(f('TTbar'),'ttbar')
+    factory.add_process(f('Diboson'),'Diboson')
+
+elif 'signale' in region:
+    factory.add_process(f('ZJets'),'Zll')
+    factory.add_process(f('WJets'),'Wlv')
+    factory.add_process(f('SingleTop'),'ST')
+    factory.add_process(f('Diboson'),'Diboson')
+    factory.add_process(f('QCD'),'QCD')
+    factory.add_process(f('TTbar'),'ttbar')
 
     if 'wen' in region or 'ttbar1e' in region or 'ttbar2le' in region or 'signale' in region:
         factory.add_process(f('SingleElectron'),'Data',is_data=True,extra_cut=sel.eleTrigger)
@@ -89,4 +92,4 @@ if is_test:
 
 forestDir = basedir + '/limits/'
 os.system('mkdir -p %s'%(forestDir))
-factory.run(forestDir+'/fittingForest_%s.root'%region)
+factoy.run(forestDir+'/fittingForest_%s.root'%region)
