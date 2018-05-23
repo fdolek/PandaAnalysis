@@ -76,7 +76,7 @@ factory = forest.RegionFactory(name = region if not(is_test) else 'test',
 if is_test:
     factory.add_process(f('Diboson'),'Diboson')
 
-elif 'signale' in region:
+else:
     factory.add_process(f('ZJets'),'Zll')
     factory.add_process(f('WJets'),'Wlv')
     factory.add_process(f('SingleTop'),'ST')
