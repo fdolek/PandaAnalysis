@@ -36,7 +36,7 @@ for x in ['wen','wmn','ttbar1e','ttbar1m','ttbar2le','ttbar2lm']:
 for x in ['wen','wmn','ttbar1e','ttbar1m','ttbar2le','ttbar2lm']:
         if 'en' in x or 'mn' in x:
           weights[x] = tTIMES(weights[x],'sf_btag0')
-        else 
+        else: 
           weights[x] = tTIMES(weights[x],'sf_btag2')
 
 for r in ['signale','signalm','wmn','wen','ttbar1e','ttbar1m','ttbar2le','ttbar2lm']:
