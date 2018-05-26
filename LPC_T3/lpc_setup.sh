@@ -2,17 +2,16 @@
 export PATH=${PATH}:${CMSSW_BASE}/src/PandaCore/bin/
 
 #submission number
-export SUBMIT_NAME="panda009-test"
+export SUBMIT_NAME="panda009-bkg-data"
 #scratch space
 export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
 #cfg file
-#export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/20170905.cfg"
 #export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/test_009.cfg"
 #export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/test2_009.cfg"
-export PANDA_CFG="http://home.fnal.gov/~shoh/panda009/Diboson_20180525.cfg"
+export PANDA_CFG="http://home.fnal.gov/~shoh/panda009/panda009-bkg-data.cfg"
 #skim
-export SUBMIT_TMPL="skim_monojet_tmpl.py"
+export SUBMIT_TMPL="skim_boosted_tmpl.py"
 #panda's 
 export PANDA_FLATDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/flat/"
 #export SUBMIT_OUTDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/batch/"
@@ -23,7 +22,7 @@ export SUBMIT_LOGDIR="${scratch_area}/${USER}/condor/"${SUBMIT_NAME}"/logs/"
 mkdir -p $PANDA_FLATDIR $SUBMIT_WORKDIR $SUBMIT_LOGDIR
 eosmkdir -p $SUBMIT_OUTDIR
 
-#export SUBMIT_CONFIG=T2  # allow running on T3 or T2. if $SUBMIT_CONFIG==T3, then only run on T3
+export SUBMIT_CONFIG=T2  # allow running on T3 or T2. if $SUBMIT_CONFIG==T3, then only run on T3
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo ""
 echo ""

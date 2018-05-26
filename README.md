@@ -119,6 +119,8 @@ export SUBMIT_LOGDIR="${scratch_area}/${USER}/condor/"${SUBMIT_NAME}"/locks/"  #
 export SUBMIT_OUTDIR="/store/user/${USER}/panda/"${SUBMIT_NAME}"/batch/"  # location of unmerged files
 export PANDA_FLATDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/flat/"   # merged output
 eosmkdir -p $SUBMIT_OUTDIR
+
+export SUBMIT_CONFIG=T2  # allow running on T3 or T2. if $SUBMIT_CONFIG==T3, then only run on T3
 ```
 
 `LPC_T3/inputs/$SUBMIT_TMPL` should be the skimming configuration you wish to run your files through. 
