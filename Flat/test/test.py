@@ -16,26 +16,19 @@ if len(argv)>2:
 argv = []
 
 import ROOT as root
+from PandaCore.Tools.Misc import *
 from PandaCore.Tools.Load import *
 from PandaAnalysis.Flat.analysis import *
 
 Load('PandaAnalyzer')
 
 skimmer = root.PandaAnalyzer(debug_level)
-
-#gghbb = gghbb()
-#gghbb.reclusterGen = False
-#gghbb.bjetRegression = False
-#gghbb.btagSFs = False
-#gghbb.deep = True
-#gghbb.dump()
-#a = monojet()
-a = lepmonotop()
-skimmer.SetAnalysis(a)
-#analysis = monojet(True)
+analysis = resolved(True)
+skimmer.SetAnalysis(analysis)
 skimmer.firstEvent=0
 skimmer.lastEvent=10
 skimmer.isData=False
+skimmer.SetPreselectionBit(root.PandaAnalyzer.kResolved)
 if skimmer.isData:
     with open(getenv('CMSSW_BASE')+'/src/PandaAnalysis/data/certs/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt') as jsonFile:
         payload = json.load(jsonFile)
