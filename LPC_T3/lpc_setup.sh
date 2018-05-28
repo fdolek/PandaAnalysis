@@ -2,13 +2,21 @@
 export PATH=${PATH}:${CMSSW_BASE}/src/PandaCore/bin/
 
 #submission number
-export SUBMIT_NAME="v_8029_May24v3"
+export SUBMIT_NAME="v_8029_May26_diboson"
 #scratch space
 export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
 #cfg file
 #export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/test_009.cfg"
-export PANDA_CFG="http://home.fnal.gov/~sudha/LPC-DM/20180521.cfg"
+#export PANDA_CFG="http://home.fnal.gov/~sudha/LPC-DM/20180521.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/DYJets_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/QCD_20180525.cfg"
+export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/Diboson_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/Top_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/WJets_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/ZtoNuNu_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/MET_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/SingleElectron_20180525.cfg"
 #skim
 export SUBMIT_TMPL="skim_monojet_tmpl.py"
 #panda's 
