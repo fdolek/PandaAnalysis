@@ -38,24 +38,6 @@ def fn(input_name, isData, full_path):
 
     return utils.run_PandaAnalyzer(skimmer, isData, input_name)
 
-
-def add_bdt():
-    # now run the BDT
-    Load('TMVABranchAdder')
-    ba = root.TMVABranchAdder()
-    ba.treename = 'events'
-    ba.defaultValue = -1.2
-    ba.presel = 'fj1ECFN_2_4_20>0'
-    for v in tagcfg.variables:
-        ba.AddVariable(v[0],v[2])
-    for v in tagcfg.formulae:
-        ba.AddFormula(v[0],v[2])
-    for s in tagcfg.spectators:
-        ba.AddSpectator(s[0])
-    ba.BookMVA('top_ecf_bdt',data_dir+'/trainings/top_ecfbdt_v8_BDT.weights.xml')
-    ba.RunFile('output.root')
-
-
 if __name__ == "__main__":
     sample_list = cb.read_sample_config('local.cfg',as_dict=False)
     to_run = None #sample_list[which]
