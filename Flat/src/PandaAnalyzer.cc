@@ -561,9 +561,9 @@ void PandaAnalyzer::SetDataDir(const char *s)
     bjetregReader->AddVariable("jetEMFrac[bosonjtidx[0]]",&bjetreg_vars[8]);
     bjetregReader->AddVariable("jetHadFrac[bosonjtidx[0]]",&bjetreg_vars[9]);
 
-    //gSystem->Exec(
-    //    Form("wget -O %s/trainings/bjet_regression_v0.weights.xml http://t3serv001.mit.edu/~snarayan/pandadata/trainings/bjet_regression_v0.weights.xml",dirPath.Data())
-    //  );
+    gSystem->Exec(
+        Form("wget -O %s/trainings/bjet_regression_v0.weights.xml http://home.fnal.gov/~matteoc/bjet_regression_v0.weights.xml",dirPath.Data())
+      );
     bjetregReader->BookMVA( "BDT method", dirPath+"trainings/bjet_regression_v0.weights.xml" );
 
     if (DEBUG) PDebug("PandaAnalyzer::SetDataDir","Loaded bjet regression weights");
