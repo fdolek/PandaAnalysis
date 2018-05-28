@@ -52,21 +52,11 @@ class PandaAnalyzer {
 public :
     // configuration enums
     enum PreselectionBit {
-     kMonotop    =(1<<0),
-     kMonohiggs  =(1<<2),
-     kMonojet    =(1<<3),
-     kPassTrig   =(1<<4),
-     kVBF        =(1<<5),
-     kRecoil     =(1<<6),
-     kFatjet     =(1<<7),
-     kFatjet450  =(1<<8),
-     kRecoil50   =(1<<9),
-     kGenBosonPt =(1<<10),
-     kGenFatJet  =(1<<11),
-     kVHBB       =(1<<12),
-     kLepton     =(1<<13),
-     kLeptonFake =(1<<14),
-     kLepMonoTop    =(1<<15),
+     kMonojet    =(1<<0),
+     kBoosted    =(1<<1),
+     kResolved   =(1<<2),
+     kPassTrig   =(1<<3),
+     kLepMonoTop =(1<<4)
     };
     
     enum LepSelectionBit {

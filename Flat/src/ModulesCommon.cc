@@ -141,8 +141,8 @@ void PandaAnalyzer::RegisterTriggers()
 
 bool PandaAnalyzer::RecoilPresel() 
 {
-    if ( (preselBits&kMonotop) || (preselBits&kMonohiggs) || 
-         (preselBits&kMonojet) || (preselBits&kRecoil) ) 
+    if ( (preselBits&kBoosted) || (preselBits&kResolved) || 
+         (preselBits&kMonojet) || (preselBits&kLepMonoTop) ) 
     {
        if (event.recoil.max<175)
          return false;
