@@ -2,13 +2,12 @@
 
 # imports and load libraries
 from array import array
-from glob import glob
+import glob
+import fnmatch
 from re import sub
-from sys import argv,exit
 import os
 import sys
 import subprocess
-from os import environ,system,path,remove
 from argparse import ArgumentParser
 
 import ROOT as root
@@ -17,52 +16,62 @@ from PandaCore.Tools.Load import Load
 
 parser = ArgumentParser(description='Parsing dataset folder')
 parser.add_argument('--folder',type=str,default=None)
+parser.add_argument('--panda',type=str,default="80X-v1")
+parser.add_argument('--mit',type=bool,default=None)
+parser.add_argument('--test',type=bool,default=None)
 args = parser.parse_args()
 
-inbase="/store/user/paus/pandaf/009/"
-inpath = 'xrdfs root://xrootd.cmsaf.mit.edu ls ' + inbase
-files = subprocess.check_output(inpath,shell=True)
-file = files.split()
+outpath = "/uscms_data/d3/lpcmetx/"+args.panda+"/"
+if args.test:
+    outpath = "/uscms_data/d3/lpcmetx/test/"
+
+xrd = "root://cmseos.fnal.gov/" 
+inbase="/eos/uscms/store/group/lpcmetx/pandaprod/"+args.panda
+if args.mit:
+    xrd = "root://xrootd.cmsaf.mit.edu/"
+    inbase="/store/user/paus/pandaf/009/"
+
+xrdls = "xrdfs "+xrd+" ls "
+folders = subprocess.check_output(xrdls+inbase,shell=True).split()
+
+def scan(starting_path):
+    if '.root' in starting_path:
+        return [starting_path]
+    elif '.' not in starting_path:
+        for x in subprocess.check_output(xrdls+starting_path,shell=True).split():
+            if '.root' in x:
+                try:
+                    rootfiles.append(x)
+                except:
+                    rootfiles = [x]
+            elif '.' not in x:
+                rootfiles = scan(x)
+    try: 
+        return rootfiles
+    except:
+        return
 
 def runAll():
-    for f in file:
+    for f in folders:
         split = f.split('/')
-        direc =  split[-1]
-        print direc
- #path = "/uscms_data/d3/lpcmetx/catalog/80x-v1/test/"
-        path = "/uscms_data/d3/lpcmetx/test-shoh/"
-        os.makedirs(path + direc)
+        folder =  split[-1]
+        runOneFolder(folder)
 
-        subfiles=subprocess.check_output("xrdfs root://xrootd.cmsaf.mit.edu ls "+f,shell=True)
-        subfile = subfiles.split()
-        with open(path + direc +"/RawFiles.00","w") as f:
-            for s in subfile:
-                rootfile = root.TFile.Open("root://xrootd.cmsaf.mit.edu/" + s)
-                tree = rootfile.Get("events")
-                nevents = tree.GetEntriesFast()
-                rootfile.Close()
-                print "root://xrootd.cmsaf.mit.edu/" + s + " " + str(nevents) + " " + str(nevents) + " 1 1 1 1"
-                f.write("root://xrootd.cmsaf.mit.edu/" + s + " " + str(nevents) + " " + str(nevents) + " 1 1 1 1" + '\n')
-            f.close()
-
-def runOneFolder(folderName):
-    f=inbase+'/'+folderName
-    if f in file:
-        split = f.split('/')
-        direc =  split[-1]
-        print direc
-        path = "/uscms_data/d3/lpcmetx/test-shoh/"
-        os.makedirs(path + direc)
-        subfiles=subprocess.check_output("xrdfs root://xrootd.cmsaf.mit.edu ls "+f,shell=True)
-        subfile = subfiles.split()
-        with open(path + direc +"/RawFiles.00","w") as f:
-            for s in subfile:
-                rootfile = root.TFile.Open("root://xrootd.cmsaf.mit.edu/" + s)
-                tree = rootfile.Get("events")
-                nevents = tree.GetEntriesFast()
-                rootfile.Close()
-                print "root://xrootd.cmsaf.mit.edu/" + s + " " + str(nevents) + " " + str(nevents) + " 1 1 1 1"
-                f.write("root://xrootd.cmsaf.mit.edu/" + s + " " + str(nevents) + " " + str(nevents) + " 1 1 1 1" + '\n')
+def runOneFolder(folder):
+    f=inbase+'/'+folder
+    if f in folders:
+        subprocess.Popen(['mkdir', '-p', outpath + folder])
+        subfolders = subprocess.check_output(xrdls+f,shell=True).split()
+        with open(outpath + folder +"/RawFiles.00","w") as f:
+            for s in subfolders:
+                for r in scan(s): 
+                    print r
+                    rootfile = root.TFile.Open(xrd+r)
+                    tree = rootfile.Get("events")
+                    nevents = tree.GetEntriesFast()
+                    rootfile.Close()
+                    print xrd + r + " " + str(nevents) + " " + str(nevents) + " 1 1 1 1"
+                    f.write(xrd + r + " " + str(nevents) + " " + str(nevents) + " 1 1 1 1" + '\n')
             f.close()
 
 
