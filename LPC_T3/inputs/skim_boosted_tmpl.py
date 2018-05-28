@@ -16,7 +16,7 @@ from PandaCore.Tools.Misc import *
 from PandaCore.Tools.Load import *
 import PandaCore.Tools.job_config as cb
 import PandaAnalysis.LPC_T3.job_utilities as utils
-from PandaAnalysis.Flat.analysis import vbf
+from PandaAnalysis.Flat.analysis import boosted
 
 Load('PandaAnalyzer')
 data_dir = getenv('CMSSW_BASE') + '/src/PandaAnalysis/data/'
@@ -26,12 +26,12 @@ def fn(input_name, isData, full_path):
     PInfo(sname+'.fn','Starting to process '+input_name)
     # now we instantiate and configure the analyzer
     skimmer = root.PandaAnalyzer()
-    analysis = vbf(True)
+    analysis = boosted(True)
     analysis.processType = utils.classify_sample(full_path, isData)
-    analysis.genOnly = True
+    analysis.genOnly = False
     skimmer.SetAnalysis(analysis)
     skimmer.isData = isData
-    skimmer.SetPreselectionBit(root.PandaAnalyzer.kGenBosonPt)
+    skimmer.SetPreselectionBit(root.PandaAnalyzer.kBoosted)
 
     return utils.run_PandaAnalyzer(skimmer, isData, input_name)
 

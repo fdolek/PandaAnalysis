@@ -8,7 +8,6 @@ export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
 #cfg file
 #export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/test_009.cfg"
-#export PANDA_CFG="http://home.fnal.gov/~sudha/LPC-DM/20180521.cfg"
 #export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/DYJets_20180525.cfg"
 #export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/QCD_20180525.cfg"
 export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/Diboson_20180525.cfg"
@@ -17,8 +16,10 @@ export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/Diboson_2018
 #export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/ZtoNuNu_20180525.cfg"
 #export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/MET_20180525.cfg"
 #export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/SingleElectron_20180525.cfg"
+#export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/test2_009.cfg"
+#export PANDA_CFG="http://home.fnal.gov/~shoh/panda009/panda009-bkg-data.cfg"
 #skim
-export SUBMIT_TMPL="skim_monojet_tmpl.py"
+export SUBMIT_TMPL="skim_boosted_tmpl.py"
 #panda's 
 export PANDA_FLATDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/flat/"
 #export SUBMIT_OUTDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/batch/"

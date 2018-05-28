@@ -63,11 +63,11 @@ else:
 def hadd(inpath,outpath):
     if type(inpath)==type('str'):
         infiles = glob(inpath)
-        if len(infiles) > 1: # if 1 file, use mv
-            PInfo(sname,'hadding %s into %s'%(inpath,outpath))
-            cmd = '%s %s %s %s'%(hadd_cmd, outpath,inpath,suffix)
-            system(cmd)
-            return True
+        #if len(infiles) > 1: # if 1 file, use mv
+        PInfo(sname,'hadding %s into %s'%(inpath,outpath))
+        cmd = '%s %s %s %s'%(hadd_cmd, outpath,inpath,suffix)
+        system(cmd)
+        return True
     else:
         infiles = inpath
     if len(infiles)==0:
@@ -153,7 +153,7 @@ def merge(shortnames,mergedname):
         inpath = '`xrdfs root://cmseos.fnal.gov ls -u ' + inbase + ' | grep \'' + shortname + '_\'`'
         success = hadd(inpath,'/uscmst1b_scratch/lpc1/3DayLifetime/%s/split/%s.root'%(user,shortname))
         if xsec>0 and success:
-            normalizeFast('/tmp/%s/split/%s.root'%(user,shortname),xsec)
+            normalizeFast('/uscmst1b_scratch/lpc1/3DayLifetime/%s/split/%s.root'%(user,shortname),xsec)
         if not success:
             if not skip_missing:
                 PError(sname, 'Could not merge %s, exiting!'%shortname)
@@ -177,7 +177,7 @@ for pd in arguments:
 for pd in args:
     merge(args[pd],pd)
     merged_file = '/uscmst1b_scratch/lpc1/3DayLifetime/%s/merged/%s.root'%(user,pd)
-    hadd(merged_file ,outbase) # really an mv
+    hadd(merged_file ,outbase+pd+'.root') # really an mv
     system('rm -f %s'%merged_file)
     PInfo(sname,'finished with '+pd)
 

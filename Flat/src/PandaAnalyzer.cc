@@ -691,64 +691,11 @@ bool PandaAnalyzer::PassPreselection()
     return true;
   bool isGood=false;
 
-  if (preselBits & kLepton) {
-    if (looseLeps.size() >= 2 && looseLeps[0]->pt() > 20 && looseLeps[1]->pt() > 20) isGood = true;
-  }
-
-  else if (preselBits & kLeptonFake) {
-    bool passFakeTrigger = (gt->trigger & (1<<kMuFakeTrig)) != 0 || (gt->trigger & (1<<kEleFakeTrig)) != 0;
-    if (passFakeTrigger == true) {
-      double mll = 0.0;
-      if (gt->nLooseLep == 2) {
-        mll = gt->diLepMass;
-      }
-      if (mll > 70.0 || gt->nLooseLep == 1) 
-        isGood = true;
-    }
-  }
-
-  if (preselBits & kGenBosonPt) {
-    if (gt->trueGenBosonPt > 100)
-      isGood = true; 
-  }
-
-  if (preselBits & kFatjet) {
-    if (gt->fj1Pt>250)
-      isGood = true;
-  }
-
-  if (preselBits & kFatjet450) {
-    if (gt->fj1RawPt>400 && gt->fj1MSD>10)
-      isGood = true;
-  }
-
-  if (preselBits & kGenFatJet) {
-    if (gt->genFatJetPt>400)
-      isGood = true;
-  }
-
   float max_puppi = std::max({gt->puppimet, gt->puppiUZmag, gt->puppiUWmag, gt->puppiUAmag});
   float max_pf = std::max({gt->pfmet, gt->pfUZmag, gt->pfUWmag, gt->pfUAmag, gt->pfUWWmag});
   float max_pfUp = std::max({gt->pfmetUp, gt->pfUZmagUp, gt->pfUWmagUp, gt->pfUAmagUp, gt->pfUWWmagUp});
   float max_pfDown = std::max({gt->pfmetDown, gt->pfUZmagDown, gt->pfUWmagDown, gt->pfUAmagDown, gt->pfUWWmagDown});
 
-  if (preselBits & kRecoil) {
-    if ( max_pfDown>200 || max_pf>200 || max_pfUp>200 || max_puppi>200 ) {
-      isGood = true;
-    }
-  }
-  if (preselBits & kRecoil50) {
-    if ( gt->pfmet>100 ) { // this will never cause any confusion, I'm sure
-      isGood = true;
-    }
-  }
-  if (preselBits & kMonotop) {
-    if (gt->nFatjet>=1 && gt->fj1Pt>200) {
-      if ( max_pf>200 || max_puppi>200) {
-        isGood = true;
-      }
-    }
-  }
   if (preselBits & kMonojet) {
     if (gt->nJet>=1 && gt->jet1Pt>100) {
       if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
@@ -756,8 +703,15 @@ bool PandaAnalyzer::PassPreselection()
       }
     }
   }
-  if (preselBits & kMonohiggs) {
+  if (preselBits & kBoosted) {
     if (gt->nFatjet>=1 && gt->fj1Pt>150) {
+      if ( max_pf>250 || max_puppi>250) {
+        isGood = true;
+      }
+    }
+  }
+  if (preselBits & kResolved) {
+    if (gt->bosonpt>150) {
       if ( max_pf>250 || max_puppi>250) {
         isGood = true;
       }
@@ -774,46 +728,6 @@ bool PandaAnalyzer::PassPreselection()
       }
     }
   }
-
-  if (preselBits & kVHBB) {
-    double bestMet = TMath::Max(TMath::Max(gt->pfmetUp, gt->pfmetDown), gt->pfmet);
-    double bestLeadingJet = TMath::Max(TMath::Max(gt->jet1PtUp, gt->jet1PtDown), gt->jet1Pt);
-    double bestSubLeadingJet = TMath::Max(TMath::Max(gt->jet2PtUp, gt->jet2PtDown), gt->jet2Pt);
-    // ZnnHbb
-    if (
-      bestMet>150 && 
-      bestLeadingJet>50 && bestSubLeadingJet>25 &&
-      (gt->bosonpt>50 || gt->nFatjet>0)
-    ) isGood=true;
-    // WlnHbb
-    else if (
-      bestLeadingJet>25 && bestSubLeadingJet>25 &&
-      (
-       (gt->nTightElectron >0 && gt->electronPt[0]>25) ||
-       (gt->nTightMuon > 0 && gt->muonPt[0]>25)
-      ) &&
-      (gt->bosonpt>50 || gt->nFatjet>0)
-    ) isGood=true;
-    // ZllHbb
-    else if (
-      bestLeadingJet>25 && bestSubLeadingJet>25 &&
-      (
-       (
-        gt->nTightElectron>0 && 
-        gt->nLooseElectron>1 &&
-        gt->electronPt[0]>25 && 
-        gt->electronPt[1]>20
-       ) || (
-        gt->nTightMuon > 0 && 
-        gt->nLooseMuon>1 &&
-        gt->muonPt[0]>25 &&
-        gt->muonPt[1]>20 
-       )
-      ) &&
-      (gt->bosonpt>50 || gt->nFatjet>0)
-    ) isGood=true;
-  }
-
   if (preselBits & kPassTrig) {
     isGood &= (!isData) || (gt->trigger != 0);
   }
