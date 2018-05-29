@@ -52,11 +52,9 @@ class PandaAnalyzer {
 public :
     // configuration enums
     enum PreselectionBit {
-     kMonojet    =(1<<0),
-     kBoosted    =(1<<1),
-     kResolved   =(1<<2),
-     kPassTrig   =(1<<3),
-     kLepMonoTop =(1<<4)
+     kRecoil    =(1<<0),
+     kPassTrig   =(1<<1),
+     kLepMonoTop =(1<<2)
     };
     
     enum LepSelectionBit {
@@ -97,6 +95,13 @@ public :
 
     PandaAnalyzer(int debug_=0);
     ~PandaAnalyzer();
+
+    // public configuration
+    void SetAnalysis(Analysis *a) { analysis = a; }
+    bool isData=false;              // to do gen matching, etc
+    int firstEvent=-1;
+    int lastEvent=-1;               // max events to process; -1=>all
+
     int Init(TTree *tree, TH1D *hweights, TTree *weightNames=0);
     void SetOutputFile(TString fOutName);
     void ResetBranches();
@@ -110,12 +115,6 @@ public :
             preselBits &= ~b;
     }
     void AddGoodLumiRange(int run, int l0, int l1);
-
-    // public configuration
-    void SetAnalysis(Analysis *a) { analysis = a; }
-    bool isData=false;              // to do gen matching, etc
-    int firstEvent=-1;
-    int lastEvent=-1;               // max events to process; -1=>all
 
 private:
     enum CorrectionType { //!< enum listing relevant corrections applied to MC
