@@ -21,8 +21,6 @@ export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180528.cfg
 #export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/ZtoNuNu_20180525.cfg"
 #export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/MET_20180525.cfg"
 #export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/SingleElectron_20180525.cfg"
-#export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/test2_009.cfg"
-#export PANDA_CFG="http://home.fnal.gov/~shoh/panda009/panda009-bkg-data.cfg"
 
 #skim
 export SUBMIT_TMPL="skim_${ANALYSIS}_tmpl.py"
