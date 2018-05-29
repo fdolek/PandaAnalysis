@@ -7,7 +7,7 @@ import json
 
 debug_level = 0
 torun = argv[1]
-output = 'testskim2.root'
+output = 'testskim2_Zjets.root'
 if len(argv)>2:
     debug_level = int(argv[2])
     if len(argv)>3:
@@ -28,7 +28,7 @@ skimmer.SetAnalysis(analysis)
 skimmer.firstEvent=0
 skimmer.lastEvent=1000
 skimmer.isData=False
-skimmer.SetPreselectionBit(root.PandaAnalyzer.kResolved)
+skimmer.SetPreselectionBit(root.PandaAnalyzer.kLepMonoTop)
 if skimmer.isData:
     with open(getenv('CMSSW_BASE')+'/src/PandaAnalysis/data/certs/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt') as jsonFile:
         payload = json.load(jsonFile)
