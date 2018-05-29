@@ -66,7 +66,7 @@ def fn(input_name, isData, full_path):
     analysis.processType = utils.classify_sample(full_path, isData)  # set the type of the process
     skimmer.SetAnalysis(analysis)
     skimmer.isData=isData
-    skimmer.SetPreselectionBit(root.PandaAnalyzer.kMonojet)             # set the preselection
+    skimmer.SetPreselectionBit(root.PandaAnalyzer.kRecoil)             # set the preselection
     skimmer.SetPreselectionBit(root.PandaAnalyzer.kPassTrig)         # only save data events that trip a trigger
 
     return utils.run_PandaAnalyzer(skimmer, isData, input_name)      # run the analysis 
