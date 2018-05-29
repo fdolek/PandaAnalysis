@@ -8,6 +8,7 @@ Load('PandaAnalyzer')
 
 def _dump(a):
     PInfo('PandaAnalysis.Flat.analysis','Summary of analysis %s:'%(a.name))
+    print a.monojet
     for k in dir(a):
         if k[0] == '_':
             continue
@@ -41,6 +42,7 @@ boosted = lambda v=False : _analysis(
         btagWeights = True,
         useCMVA = True,
         hfCounting = True,
+        rerunJES = False,
         jetFlavorJets = True
     )
 
@@ -48,10 +50,12 @@ resolved = lambda v=False : _analysis(
         name = 'resolved',
         verbose = v,
         boson = True,
+        resolved = True,
         bjetRegression = True,
         btagWeights = True,
         useCMVA = True,
         hfCounting = True,
+        rerunJES = False,
         jetFlavorJets = True
     )
 
@@ -62,6 +66,7 @@ monojet = lambda v=False : _analysis(
         btagWeights = True,
         useCMVA = True,
         hfCounting = True,
+        rerunJES = False,
         jetFlavorJets = True
     )
 
@@ -78,8 +83,7 @@ lepmonotop = lambda v=False : _analysis(
         hfCounting = True,
         reclusterGen = True,
         bjetRegression = False,
-        #varyJES = True,
-        #rerunJES = True,
+        rerunJES = False,
         jetFlavorPartons = False,
         jetFlavorJets = True
     )

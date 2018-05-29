@@ -28,13 +28,17 @@ skimmer = root.PandaAnalyzer(debug_level)
 analysis = boosted(True)
 #analysis = resolved(True)
 #analysis = monojet(True)
+=======
+analysis = monojet(True)
+>>>>>>> b4c5ee56dc683a0af843c730153b5ad7ebf476c2
 skimmer.SetAnalysis(analysis)
 skimmer.firstEvent=0
 skimmer.lastEvent=1000
 skimmer.isData=False
-skimmer.SetPreselectionBit(root.PandaAnalyzer.kBoosted)
+#skimmer.SetPreselectionBit(root.PandaAnalyzer.kBoosted)
 #skimmer.SetPreselectionBit(root.PandaAnalyzer.kResolved)
 #skimmer.SetPreselectionBit(root.PandaAnalyzer.kMonojet)
+skimmer.SetPreselectionBit(root.PandaAnalyzer.kRecoil)
 if skimmer.isData:
     with open(getenv('CMSSW_BASE')+'/src/PandaAnalysis/data/certs/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt') as jsonFile:
         payload = json.load(jsonFile)
@@ -42,16 +46,13 @@ if skimmer.isData:
             for l in lumis:
                 skimmer.AddGoodLumiRange(int(run),l[0],l[1])
 fin = root.TFile.Open(torun)
-
 tree = fin.FindObjectAny("events")
 hweights = fin.FindObjectAny("hSumW")
 weights = fin.FindObjectAny('weights')
 if not weights:
     weights = None
-
 skimmer.SetDataDir(getenv('CMSSW_BASE')+'/src/PandaAnalysis/data/')
 skimmer.Init(tree,hweights,weights)
 skimmer.SetOutputFile(output)
-
 skimmer.Run()
 skimmer.Terminate()

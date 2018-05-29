@@ -1,8 +1,13 @@
-#!/bin/bash                                                                                                                                                                                                 
+#!/bin/bash                                                                     
+
+ANALYSIS=$1
+                                                                                                                            
 export PATH=${PATH}:${CMSSW_BASE}/src/PandaCore/bin/
 
 #submission number
-export SUBMIT_NAME="v_8029_May29"
+export SUBMIT_NAME="80X-v1dot0"
+#analysis
+#export ANALYSIS="boosted"
 #scratch space
 export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
@@ -18,15 +23,15 @@ export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/Diboson_2018
 #export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/SingleElectron_20180525.cfg"
 #export PANDA_CFG="http://t3serv001.mit.edu/~mcremone/eoscatalog/test2_009.cfg"
 #export PANDA_CFG="http://home.fnal.gov/~shoh/panda009/panda009-bkg-data.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180528.cfg"
 #skim
-export SUBMIT_TMPL="skim_boosted_tmpl.py"
+export SUBMIT_TMPL="skim_${ANALYSIS}_tmpl.py"
 #panda's 
-export PANDA_FLATDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/flat/"
-#export SUBMIT_OUTDIR="${scratch_area}/${USER}/panda/"${SUBMIT_NAME}"/batch/"
-export SUBMIT_OUTDIR="/store/user/${USER}/panda/"${SUBMIT_NAME}"/batch/"
+export PANDA_FLATDIR="${scratch_area}/lpcmetx/panda/${SUBMIT_NAME}/${ANALYSIS}/flat/"
+export SUBMIT_OUTDIR="/store/user/lpcmetx/panda/${SUBMIT_NAME}/${ANALYSIS}/batch/"
 #condor's
-export SUBMIT_WORKDIR="${scratch_area}/${USER}/condor/"${SUBMIT_NAME}"/work/"
-export SUBMIT_LOGDIR="${scratch_area}/${USER}/condor/"${SUBMIT_NAME}"/logs/"
+export SUBMIT_WORKDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}/work/"
+export SUBMIT_LOGDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}/logs/"
 mkdir -p $PANDA_FLATDIR $SUBMIT_WORKDIR $SUBMIT_LOGDIR
 eosmkdir -p $SUBMIT_OUTDIR
 

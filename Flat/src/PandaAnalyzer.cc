@@ -79,7 +79,10 @@ void PandaAnalyzer::SetOutputFile(TString fOutName)
   gt->hfCounting     = analysis->hfCounting;
   gt->btagWeights    = analysis->btagWeights;
   gt->useCMVA        = analysis->useCMVA;
-
+  gt->boosted        = analysis->boosted;
+  gt->resolved       = analysis->resolved;
+  gt->monojet        = analysis->monojet;
+  gt->lepmonotop     = analysis->lepmonotop;
 
   // fill the signal weights
   for (auto& id : wIDs) 
@@ -686,7 +689,6 @@ bool PandaAnalyzer::PassPreselection()
   // TODO: refactor this function
   // was originally written this way to handle more complex conditions
   // like triggers, but could probably clean it up with a Condition class
-  
   if (preselBits==0)
     return true;
   bool isGood=false;
@@ -696,25 +698,9 @@ bool PandaAnalyzer::PassPreselection()
   float max_pfUp = std::max({gt->pfmetUp, gt->pfUZmagUp, gt->pfUWmagUp, gt->pfUAmagUp, gt->pfUWWmagUp});
   float max_pfDown = std::max({gt->pfmetDown, gt->pfUZmagDown, gt->pfUWmagDown, gt->pfUAmagDown, gt->pfUWWmagDown});
 
-  if (preselBits & kMonojet) {
-    if (gt->nJet>=1 && gt->jet1Pt>100) {
-      if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
-        isGood = true;
-      }
-    }
-  }
-  if (preselBits & kBoosted) {
-    if (gt->nFatjet>=1 && gt->fj1Pt>150) {
-      if ( max_pf>250 || max_puppi>250) {
-        isGood = true;
-      }
-    }
-  }
-  if (preselBits & kResolved) {
-    if (gt->bosonpt>150) {
-      if ( max_pf>250 || max_puppi>250) {
-        isGood = true;
-      }
+  if (preselBits & kRecoil) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      isGood = true;
     }
   }
   if (preselBits & kLepMonoTop){
@@ -1011,7 +997,6 @@ void PandaAnalyzer::Run()
         }
       }
     }
-
     if (analysis->rerunJES)
       SetupJES();
 
