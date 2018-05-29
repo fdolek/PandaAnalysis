@@ -28,7 +28,6 @@ skimmer = root.PandaAnalyzer(debug_level)
 analysis = boosted(True)
 #analysis = resolved(True)
 #analysis = monojet(True)
-=======
 analysis = monojet(True)
 >>>>>>> b4c5ee56dc683a0af843c730153b5ad7ebf476c2
 skimmer.SetAnalysis(analysis)
