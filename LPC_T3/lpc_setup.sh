@@ -2,7 +2,7 @@
 export PATH=${PATH}:${CMSSW_BASE}/src/PandaCore/bin/
 
 #submission number
-export SUBMIT_NAME="v_8029_May26_diboson"
+export SUBMIT_NAME="v_8029_May29"
 #scratch space
 export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
