@@ -45,9 +45,11 @@ class Process:
     def __write_out(self, f_out, xarr, fields, postfix):
         repl = {self.all_branches[f] : (f if f in self.variables else 'weight') for f in fields}
         varr = xarr[list(set(repl.keys()))]
+        split = self.name.split('_')
+        tree_n = split[0]
         root_interface.rename_dtypes(varr, repl)
         root_interface.array_as_tree(xarr = varr, 
-                                     treename = self.name+postfix, 
+                                     treename = tree_n+postfix, 
                                      fcontext = f_out)
     def run(self, f_out):
         PInfo('fitting_forest.Process.run', 'Running '+self.name)

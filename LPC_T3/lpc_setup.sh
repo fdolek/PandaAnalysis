@@ -13,6 +13,15 @@ export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
 #cfg file
 export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180528.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/DYJets_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/QCD_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/Diboson_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/Top_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/WJets_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/ZtoNuNu_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/MET_20180525.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/SingleElectron_20180525.cfg"
+
 #skim
 export SUBMIT_TMPL="skim_${ANALYSIS}_tmpl.py"
 #panda's 
