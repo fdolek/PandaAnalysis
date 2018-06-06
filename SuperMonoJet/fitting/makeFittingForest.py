@@ -29,14 +29,14 @@ import PandaAnalysis.Flat.fitting_forest as forest
 from PandaCore.Tools.Misc import *
 import PandaCore.Tools.Functions # kinematics
 #import PandaAnalysis.MonoX.MonoXSelection as sel
-import PandaAnalysis.MonoX.MonoJetSelection as sel
+import PandaAnalysis.SuperMonoJet.MonoJetSelection as sel
 
 basedir = args.input
 lumi = 35900
 
 def f(x):
     return basedir + x + '.root'
-
+    print basedir + x + '.root'
 def addN2DDT(rootfile):
         #load the map
 	trans = r.TFile('DDT.root')
@@ -187,46 +187,6 @@ elif 'signal' in region:
     factory.add_process(f('SingleTop'),'ST')
     factory.add_process(f('Diboson'),'Diboson')
     factory.add_process(f('QCD'),'QCD')
-    factory.add_process(f('ZpA0h_med-600_dm-300'),'ZpA0_600')
-    factory.add_process(f('ZpA0h_med-800_dm-300'),'ZpA0_800')
-    factory.add_process(f('ZpA0h_med-1000_dm-300'),'ZpA0_1000')
-    factory.add_process(f('ZpA0h_med-1200_dm-300'),'ZpA0_1200')
-    factory.add_process(f('ZpA0h_med-1400_dm-300'),'ZpA0_1400')
-    factory.add_process(f('ZpA0h_med-1700_dm-300'),'ZpA0_1700')
-    factory.add_process(f('ZpA0h_med-2000_dm-300'),'ZpA0_2000')
-    factory.add_process(f('ZpA0h_med-2500_dm-300'),'ZpA0_2500')
-    factory.add_process(f('ZpBaryonic_med-10_dm-1'),'BarZp_10_1')
-    factory.add_process(f('ZpBaryonic_med-10_dm-10'),'BarZp_10_10')
-    factory.add_process(f('ZpBaryonic_med-10_dm-50'),'BarZp_10_50')
-    factory.add_process(f('ZpBaryonic_med-10_dm-150'),'BarZp_10_150')
-    factory.add_process(f('ZpBaryonic_med-10_dm-500'),'BarZp_10_500')
-    factory.add_process(f('ZpBaryonic_med-15_dm-10'),'BarZp_15_10')
-    factory.add_process(f('ZpBaryonic_med-20_dm-1'),'BarZp_20_1')
-    factory.add_process(f('ZpBaryonic_med-50_dm-1'),'BarZp_50_1')
-    factory.add_process(f('ZpBaryonic_med-50_dm-10'),'BarZp_50_10')
-    factory.add_process(f('ZpBaryonic_med-50_dm-50'),'BarZp_50_50')
-    factory.add_process(f('ZpBaryonic_med-95_dm-50'),'BarZp_95_50')
-    factory.add_process(f('ZpBaryonic_med-100_dm-1'),'BarZp_100_1')
-    factory.add_process(f('ZpBaryonic_med-100_dm-10'),'BarZp_100_10')
-    factory.add_process(f('ZpBaryonic_med-200_dm-1'),'BarZp_200_1')
-    factory.add_process(f('ZpBaryonic_med-200_dm-50'),'BarZp_200_50')
-    factory.add_process(f('ZpBaryonic_med-200_dm-150'),'BarZp_200_150')
-    factory.add_process(f('ZpBaryonic_med-295_dm-150'),'BarZp_295_150')
-    factory.add_process(f('ZpBaryonic_med-300_dm-1'),'BarZp_300_1')
-    factory.add_process(f('ZpBaryonic_med-300_dm-50'),'BarZp_300_50')
-    factory.add_process(f('ZpBaryonic_med-500_dm-1'),'BarZp_500_1')
-    factory.add_process(f('ZpBaryonic_med-500_dm-150'),'BarZp_500_150')
-    factory.add_process(f('ZpBaryonic_med-995_dm-500'),'BarZp_995_500')
-    factory.add_process(f('ZpBaryonic_med-1000_dm-1'),'BarZp_1000_1')
-    factory.add_process(f('ZpBaryonic_med-1000_dm-150'),'BarZp_1000_150')
-    factory.add_process(f('ZpBaryonic_med-1000_dm-1000'),'BarZp_1000_1000')
-    factory.add_process(f('ZpBaryonic_med-1995_dm-1000'),'BarZp_1995_1000')
-    factory.add_process(f('ZpBaryonic_med-2000_dm-1'),'BarZp_2000_1')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-1'),'BarZp_10000_1')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-10'),'BarZp_10000_10')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-50'),'BarZp_10000_50')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-150'),'BarZp_10000_150')
-    factory.add_process(f('ZpBaryonic_med-10000_dm-500'),'BarZp_10000_500')
 
 forestDir = basedir + '/limits/'
 os.system('mkdir -p %s'%(forestDir))
