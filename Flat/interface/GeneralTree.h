@@ -133,8 +133,8 @@ class GeneralTree : public genericTree {
         }
         TString makeBTagSFString(BTagParams p) {
           TString s = "sf_";
-          if (p.jet==bSubJet)
-            s += "sj";
+         // if (p.jet==bSubJet)
+         //   s += "sj";
 	  if (p.jet==bMedJet)
 	    s += "Med";
           s += "btag";
