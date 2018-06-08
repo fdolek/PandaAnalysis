@@ -493,21 +493,14 @@ void PandaAnalyzer::JetBosonReco()
          double bosondaughter1theta = 2*atan(exp(-bosondaughter1.Eta()));
          double term1 = (bosondaughter1.M()/bosondaughter1.Pt())*(bosondaughter1.M()/bosondaughter1.Pt());
          double repidity1 = (bosondaughter1.Eta() - (cos(bosondaughter1theta)/2)*term1);
-         cout<<" bosondaughter1theta "<<bosondaughter1theta<<endl; 
-         cout<<" TERM "<<term1<<endl; 
-         cout<<" repidity1 "<<repidity1<<endl; 
          for (unsigned int j = i+1;j<cleanedJets.size();j++){
              panda::Jet *jet_2 = cleanedJets.at(j);
              bosondaughter2.SetPtEtaPhiM(jet_2->pt(),jet_2->eta(),jet_2->phi(),jet_2->m());
              double bosondaughter2theta = 2*atan(exp(-bosondaughter2.Eta()));
              double term2 = (bosondaughter2.M()/bosondaughter2.Pt())*(bosondaughter2.M()/bosondaughter2.Pt());
              double repidity2 = (bosondaughter2.Eta() - (cos(bosondaughter2theta)/2)*term2);
-             cout<<" bosondaughter2theta "<<bosondaughter2theta<<endl; 
-             cout<<" TERM2 "<<term2<<endl; 
-             cout<<" repidity2 "<<repidity2<<endl; 
              bosonsystem = bosondaughter1 + bosondaughter2;
              double bosonDeltaR = sqrt(((repidity1-repidity2)*(repidity1-repidity2))+((bosondaughter1.Phi()-bosondaughter2.Phi())*(bosondaughter1.Phi()-bosondaughter2.Phi())));
-             cout<<" bosonDeltaR "<<bosonDeltaR<<endl; 
             // double tmp_bosoness = (bosonsystem.Pt()*bosonDeltaR)/(2*bosonsystem.M());
              if (bosonsystem.Pt()>tmp_bosonpt){
                 tmp_bosoness = (bosonsystem.Pt()*bosonDeltaR)/(2*bosonsystem.M());
