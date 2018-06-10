@@ -24,7 +24,7 @@ Load('PandaAnalyzer')
 
 skimmer = root.PandaAnalyzer(debug_level)
 analysis = lepmonotop(True)
-analysis = monojet(True)
+#analysis = monojet(True)
 skimmer.SetAnalysis(analysis)
 skimmer.firstEvent=0
 skimmer.lastEvent=1000
