@@ -84,10 +84,10 @@ else:
     factory.add_process(f('QCD'),'QCD')
     factory.add_process(f('TTbar'),'ttbar')
 
-    if 'wen' in region or 'ttbar1e' in region or 'ttbar2le' in region or 'signale' in region:
+    if 'wen' in region or 'ten' in region or 'tee' in region or 'signale' in region:
         factory.add_process(f('SingleElectron'),'Data',is_data=True,extra_cut=sel.eleTrigger)
 
-    if 'wmn' in region or 'ttbar1m' in region or 'ttbar2lm' in region or 'signalm' in region:
+    if 'wmn' in region or 'tmn' in region or 'tmm' in region or 'signalm' in region:
         factory.add_process(f('SingleMuon'),'Data',is_data=True,extra_cut=sel.muTrigger)
 
 forestDir = basedir + '/limits/'
