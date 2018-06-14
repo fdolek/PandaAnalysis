@@ -5,6 +5,7 @@
 #include <vector>
 #include "PandaAnalysis/Utilities/src/NeutrinoSolver.cc"
 #include "PandaAnalysis/Utilities/interface/Helicity.h"
+#include "TLorentzRotation.h"
 #define EGMSCALE 1
 #define TWOPI 6.28318531
 
@@ -497,7 +498,7 @@ void PandaAnalyzer::JetBosonReco()
              bosondaughter2.SetPtEtaPhiM(jet_2->pt(),jet_2->eta(),jet_2->phi(),jet_2->m());
              bosonsystem = bosondaughter1 + bosondaughter2;
              double bosondr = sqrt(DeltaR2(bosondaughter1.Eta(),bosondaughter1.Phi(),bosondaughter2.Eta(),bosondaughter2.Phi()));
-             cout<<" bosondr "<<bosondr<<endl; 
+            // cout<<" bosondr "<<bosondr<<endl; 
             // double bosoness = (bosonsystem.Pt()*bosondr)/(2*bosonsystem.M());
             // cout<<" bosoness "<<bosoness<<endl; 
             // if (bosoness>tmp_bosoness){
@@ -832,6 +833,7 @@ void PandaAnalyzer::JetHbbSoftActivity() {
     }
     tr->TriggerEvent("Soft activity");
   }
+}
   double PandaAnalyzer::dPhiBRF(TLorentzVector v1, TLorentzVector v2, TLorentzVector v3){
    TVector3 hVelocity = v3.BoostVector();
    TLorentzRotation Boost(hVelocity);
@@ -845,5 +847,4 @@ void PandaAnalyzer::JetHbbSoftActivity() {
    Float_t b2 = TMath::Pi() - acos(cos(v2Dir.Phi()-angle_mht));
 
    return TMath::Min(b1,b2);
-  }
 }
