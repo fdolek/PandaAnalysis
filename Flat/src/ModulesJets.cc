@@ -482,7 +482,7 @@ void PandaAnalyzer::JetBosonReco()
   float tmp_bosonm=-99;
   int tmp_bosonjtidx1=-1;
   int tmp_bosonjtidx2=-1;
-  float tmp_bosoness=-99;
+  float tmp_bosoness=-999;
   if (cleanedJets.size() > 1) {
      TLorentzVector bosondaughter1, bosondaughter2, bosonsystem,
                     bosondaughter1_jesUp, bosondaughter2_jesUp, bosonsystem_jesUp,
@@ -490,27 +490,26 @@ void PandaAnalyzer::JetBosonReco()
      for (unsigned int i = 0;i<cleanedJets.size();i++){
          panda::Jet *jet_1 = cleanedJets.at(i);
          bosondaughter1.SetPtEtaPhiM(jet_1->pt(),jet_1->eta(),jet_1->phi(),jet_1->m());
-         double bosondaughter1theta = 2*atan(exp(-bosondaughter1.Eta()));
-         double term1 = (bosondaughter1.M()/bosondaughter1.Pt())*(bosondaughter1.M()/bosondaughter1.Pt());
-         double repidity1 = (bosondaughter1.Eta() - (cos(bosondaughter1theta)/2)*term1);
          for (unsigned int j = i+1;j<cleanedJets.size();j++){
              panda::Jet *jet_2 = cleanedJets.at(j);
              bosondaughter2.SetPtEtaPhiM(jet_2->pt(),jet_2->eta(),jet_2->phi(),jet_2->m());
-             double bosondaughter2theta = 2*atan(exp(-bosondaughter2.Eta()));
-             double term2 = (bosondaughter2.M()/bosondaughter2.Pt())*(bosondaughter2.M()/bosondaughter2.Pt());
-             double repidity2 = (bosondaughter2.Eta() - (cos(bosondaughter2theta)/2)*term2);
              bosonsystem = bosondaughter1 + bosondaughter2;
-             double bosonDeltaR = sqrt(((repidity1-repidity2)*(repidity1-repidity2))+((bosondaughter1.Phi()-bosondaughter2.Phi())*(bosondaughter1.Phi()-bosondaughter2.Phi())));
-            // double tmp_bosoness = (bosonsystem.Pt()*bosonDeltaR)/(2*bosonsystem.M());
+             double bosondr = sqrt(DeltaR2(bosondaughter1.Eta(),bosondaughter1.Phi(),bosondaughter2.Eta(),bosondaughter2.Phi()));
+             cout<<" bosondr "<<bosondr<<endl; 
+            // double bosoness = (bosonsystem.Pt()*bosondr)/(2*bosonsystem.M());
+            // cout<<" bosoness "<<bosoness<<endl; 
+            // if (bosoness>tmp_bosoness){
              if (bosonsystem.Pt()>tmp_bosonpt){
-                tmp_bosoness = (bosonsystem.Pt()*bosonDeltaR)/(2*bosonsystem.M());
-                cout<<" bosoness "<<tmp_bosoness<<endl; 
+             double bosoness = (bosonsystem.Pt()*bosondr)/(2*bosonsystem.M());
+                tmp_bosoness = bosoness;  
+              //  cout<<" bosoness2 "<<tmp_bosoness<<endl; 
                 tmp_bosonpt = bosonsystem.Pt();
                 tmp_bosoneta = bosonsystem.Eta();
                 tmp_bosonphi = bosonsystem.Phi();
                 tmp_bosonm = bosonsystem.M();
                 tmp_bosonjtidx1 = i;
                 tmp_bosonjtidx2 = j;
+                tmp_bosondphibrf = dPhiBRF(bosondaughter1, bosondaughter2, bosonsystem);
              }
          }
      }
@@ -830,5 +829,18 @@ void PandaAnalyzer::JetHbbSoftActivity() {
     }
     tr->TriggerEvent("Soft activity");
   }
+  double PandaAnalyzer::dPhiBRF(TLorentzVector v1, TLorentzVector v2, TLorentzVector v3){
+   TVector3 hVelocity = v3.BoostVector();
+   TLorentzRotation Boost(hVelocity);
+   TLorentzRotation tosubjetRest = Boost.Inverse();
+   TVector3 v1Dir = (tosubjetRest*v1).Vect();
+   TVector3 v2Dir = (tosubjetRest*v2).Vect();
 
+   float angle_mht = atan2((v1.Py()+v2.Py()),(v1.Px()+v2.Px())) + TMath::Pi();
+
+   Float_t b1 = TMath::Pi() - acos(cos(v1Dir.Phi()-angle_mht));
+   Float_t b2 = TMath::Pi() - acos(cos(v2Dir.Phi()-angle_mht));
+
+   return TMath::Min(b1,b2);
+  }
 }
