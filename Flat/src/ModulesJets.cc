@@ -498,10 +498,6 @@ void PandaAnalyzer::JetBosonReco()
              bosondaughter2.SetPtEtaPhiM(jet_2->pt(),jet_2->eta(),jet_2->phi(),jet_2->m());
              bosonsystem = bosondaughter1 + bosondaughter2;
              double bosondr = sqrt(DeltaR2(bosondaughter1.Eta(),bosondaughter1.Phi(),bosondaughter2.Eta(),bosondaughter2.Phi()));
-            // cout<<" bosondr "<<bosondr<<endl; 
-            // double bosoness = (bosonsystem.Pt()*bosondr)/(2*bosonsystem.M());
-            // cout<<" bosoness "<<bosoness<<endl; 
-            // if (bosoness>tmp_bosoness){
              if (bosonsystem.Pt()>tmp_bosonpt){
                 tmp_bosoness = (bosonsystem.Pt()*bosondr)/(2*bosonsystem.M());  
                 tmp_bosondr = bosondr;
