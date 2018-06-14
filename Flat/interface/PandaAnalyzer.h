@@ -288,6 +288,7 @@ private:
     bool RecoilPresel();
     void SaveGenLeptons();
     void SetupJES();
+    void dPhiBRF(TLorentzVector&, TLorentzVector&, TLorentzVector&);
     void SignalInfo();
     void SignalReweights();
     void SimpleLeptons();
