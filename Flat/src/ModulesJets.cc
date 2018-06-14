@@ -483,6 +483,8 @@ void PandaAnalyzer::JetBosonReco()
   int tmp_bosonjtidx1=-1;
   int tmp_bosonjtidx2=-1;
   float tmp_bosoness=-999;
+  float tmp_bosondr=-99;
+  float tmp_bosondphibrf=-99;
   if (cleanedJets.size() > 1) {
      TLorentzVector bosondaughter1, bosondaughter2, bosonsystem,
                     bosondaughter1_jesUp, bosondaughter2_jesUp, bosonsystem_jesUp,
@@ -500,9 +502,8 @@ void PandaAnalyzer::JetBosonReco()
             // cout<<" bosoness "<<bosoness<<endl; 
             // if (bosoness>tmp_bosoness){
              if (bosonsystem.Pt()>tmp_bosonpt){
-             double bosoness = (bosonsystem.Pt()*bosondr)/(2*bosonsystem.M());
-                tmp_bosoness = bosoness;  
-              //  cout<<" bosoness2 "<<tmp_bosoness<<endl; 
+                tmp_bosoness = (bosonsystem.Pt()*bosondr)/(2*bosonsystem.M());  
+                tmp_bosondr = bosondr;
                 tmp_bosonpt = bosonsystem.Pt();
                 tmp_bosoneta = bosonsystem.Eta();
                 tmp_bosonphi = bosonsystem.Phi();
@@ -518,6 +519,8 @@ void PandaAnalyzer::JetBosonReco()
       gt->bosoneta = tmp_bosoneta;
       gt->bosonphi = tmp_bosonphi;
       gt->bosonm = tmp_bosonm;
+      gt->bosondr = tmp_bosondr;
+      gt->bosondphibrf = tmp_bosondphibrf;
       gt->bosonjtidx[0] = tmp_bosonjtidx1;
       gt->bosonjtidx[1] = tmp_bosonjtidx2;
 
