@@ -498,7 +498,10 @@ void PandaAnalyzer::JetBosonReco()
              bosondaughter2.SetPtEtaPhiM(jet_2->pt(),jet_2->eta(),jet_2->phi(),jet_2->m());
              bosonsystem = bosondaughter1 + bosondaughter2;
              double bosondr = sqrt(DeltaR2(bosondaughter1.Eta(),bosondaughter1.Phi(),bosondaughter2.Eta(),bosondaughter2.Phi()));
-             if (bosonsystem.Pt()>tmp_bosonpt){
+                double bosondphibrf = dPhiBRF(bosondaughter1, bosondaughter2, bosonsystem);
+            // if (bosonsystem.Pt()>tmp_bosonpt){
+             if (bosondphibrf>tmp_bosondphibrf){
+                tmp_bosondphibrf = bosondphibrf;
                 tmp_bosoness = (bosonsystem.Pt()*bosondr)/(2*bosonsystem.M());  
                 tmp_bosondr = bosondr;
                 tmp_bosonpt = bosonsystem.Pt();
@@ -507,7 +510,7 @@ void PandaAnalyzer::JetBosonReco()
                 tmp_bosonm = bosonsystem.M();
                 tmp_bosonjtidx1 = i;
                 tmp_bosonjtidx2 = j;
-                tmp_bosondphibrf = dPhiBRF(bosondaughter1, bosondaughter2, bosonsystem);
+                //tmp_bosondphibrf = dPhiBRF(bosondaughter1, bosondaughter2, bosonsystem);
              }
          }
      }
