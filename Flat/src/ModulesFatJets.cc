@@ -205,9 +205,9 @@ void PandaAnalyzer::FatjetBasics()
     float rawpt = fj.rawPt;
     float eta = fj.eta();
     float mass = fj.m();
-    float ptcut = 200;
+    float ptcut = 100;
     if (analysis->boosted)
-      ptcut = 200;
+      ptcut = 100;
     
     // Here, we require the Fatjet pt's to be larger than some nominal value, ptcut
     // if flag rerunJES is on, Fatjets will pass if their JES uncertainties could
