@@ -729,6 +729,9 @@ class GeneralTree : public genericTree {
     float bosoneta = -1;
     float bosonphi = -1;
     float bosonm = -1;
+    float bosoness = -1;
+    float bosondr = -1;
+    float bosondphibrf = -1;
     float bosonm_reg = -1;
     float bosonpt_reg = -1;
     float bosonpt_jesUp = -1;

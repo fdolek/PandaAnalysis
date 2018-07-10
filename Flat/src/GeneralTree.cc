@@ -548,6 +548,9 @@ void GeneralTree::Reset() {
     bosoneta = -1;
     bosonphi = -1;
     bosonm = -1;
+    bosoness = -1;
+    bosondr = -1;
+    bosondphibrf = -1;
     bosonm_reg = -1;
     bosonpt_reg = -1;
     bosonpt_jesUp = -1;
@@ -666,6 +669,9 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("bosoneta",&bosoneta,"bosoneta/F");
     Book("bosonphi",&bosonphi,"bosonphi/F");
     Book("bosonm",&bosonm,"bosonm/F");
+    Book("bosoness",&bosoness,"bosoness/F");
+    Book("bosondr",&bosondr,"bosondr/F");
+    Book("bosondphibrf",&bosondphibrf,"bosondphibrf/F");
     Book("bosonm_reg",&bosonm_reg,"bosonm_reg/F");
     Book("bosonpt_reg",&bosonpt_reg,"bosonpt_reg/F");
     Book("bosonjtidx",bosonjtidx,"bosonjtidx[2]/I");
