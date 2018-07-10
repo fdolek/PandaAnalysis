@@ -40,7 +40,6 @@ GeneralTree::GeneralTree() {
     csvShift shift = csvShifts[iShift];
     sf_csvWeights[shift] = 1;
   }
-
   for (unsigned int iSJ=0; iSJ!=NSUBJET; ++iSJ) {
     fj1sjPt[iSJ] = -1;
     fj1sjEta[iSJ] = -1;
@@ -549,6 +548,9 @@ void GeneralTree::Reset() {
     bosoneta = -1;
     bosonphi = -1;
     bosonm = -1;
+    bosoness = -1;
+    bosondr = -1;
+    bosondphibrf = -1;
     bosonm_reg = -1;
     bosonpt_reg = -1;
     bosonpt_jesUp = -1;
@@ -615,25 +617,36 @@ void GeneralTree::WriteTree(TTree *t) {
   Book("electronPhi",electronPhi,"electronPhi[nLooseElectron]/F");
   Book("electronSelBit",electronSelBit,"electronSelBit[nLooseElectron]/I");
   Book("electronPdgId",electronPdgId,"electronPdgId[nLooseElectron]/I");
-  if (monohiggs || leptonic) {
-    Book("nJet_jesUp",&nJet_jesUp,"nJet_jesUp/I");
-    Book("nJet_jesDown",&nJet_jesDown,"nJet_jesDown/I");
-  }
-  if (monohiggs) {
-    Book("pfmetUp",&pfmetUp,"pfmetUp/F");
-    Book("pfmetDown",&pfmetDown,"pfmetDown/F");
-    Book("jetPt",jetPt,"jetPt[nJot]/F");
-    Book("jetPtUp",jetPtUp,"jetPtUp[nJot]/F");
-    Book("jetPtDown",jetPtDown,"jetPtDown[nJot]/F");
-    Book("jetEta",jetEta,"jetEta[nJot]/F");
-    Book("jetPhi",jetPhi,"jetPhi[nJot]/F");
-    Book("jetM",jetM,"jetM[nJot]/F");
-    Book("jetE",jetE,"jetE[nJot]/F");
-    Book("jetCSV",jetCSV,"jetCSV[nJot]/F");
-    Book("jetCMVA",jetCMVA,"jetCMVA[nJot]/F");
-    Book("jetIso",jetIso,"jetIso[nJot]/F");
-    Book("jetQGL",jetQGL,"jetQGL[nJot]/F");
-    Book("jetLeadingLepPt",jetLeadingLepPt,"jetLeadingLepPt[nJot]/F");
+  Book("nJet_jesUp",&nJet_jesUp,"nJet_jesUp/I");
+  Book("nJet_jesDown",&nJet_jesDown,"nJet_jesDown/I");
+  Book("pfmetUp",&pfmetUp,"pfmetUp/F");
+  Book("pfmetDown",&pfmetDown,"pfmetDown/F");
+  Book("jetPt",jetPt,"jetPt[nJot]/F");
+  Book("jetPtUp",jetPtUp,"jetPtUp[nJot]/F");
+  Book("jetPtDown",jetPtDown,"jetPtDown[nJot]/F");
+  Book("jetEta",jetEta,"jetEta[nJot]/F");
+  Book("jetPhi",jetPhi,"jetPhi[nJot]/F");
+  Book("jetM",jetM,"jetM[nJot]/F");
+  Book("jetE",jetE,"jetE[nJot]/F");
+  Book("jetCSV",jetCSV,"jetCSV[nJot]/F");
+  Book("jetCMVA",jetCMVA,"jetCMVA[nJot]/F");
+  Book("jetIso",jetIso,"jetIso[nJot]/F");
+  Book("jetQGL",jetQGL,"jetQGL[nJot]/F");
+  Book("jetLeadingLepPt",jetLeadingLepPt,"jetLeadingLepPt[nJot]/F");
+  Book("jetEMFrac",jetEMFrac,"jetEMFrac[nJot]/F");
+  Book("jetHadFrac",jetHadFrac,"jetHadFrac[nJot]/F");
+  Book("jetNLep",jetNLep,"jetNLep[nJot]/I");
+  Book("jetGenPt",jetGenPt,"jetGenPt[nJot]/F");
+  Book("jetGenFlavor",jetGenFlavor,"jetGenFlavor[nJot]/I");
+  Book("jet1EtaUp",&jet1EtaUp,"jet1EtaUp/F");
+  Book("jet1EtaDown",&jet1EtaDown,"jet1EtaDown/F");
+  Book("jet1PtUp",&jet1PtUp,"jet1PtUp/F");
+  Book("jet1PtDown",&jet1PtDown,"jet1PtDown/F");
+  Book("jet2EtaUp",&jet2EtaUp,"jet2EtaUp/F");
+  Book("jet2EtaDown",&jet2EtaDown,"jet2EtaDown/F");
+  Book("jet2PtUp",&jet2PtUp,"jet2PtUp/F");
+  Book("jet2PtDown",&jet2PtDown,"jet2PtDown/F");
+/*
     Book("jetLeadingLepPtRel",jetLeadingLepPtRel,"jetLeadingLepPtRel[nJot]/F");
     Book("jetLeadingLepDeltaR",jetLeadingLepDeltaR,"jetLeadingLepDeltaR[nJot]/F");
     Book("jetLeadingTrkPt",jetLeadingTrkPt,"jetLeadingTrkPt[nJot]/F");
@@ -642,11 +655,6 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("jetvtx3Dval",jetvtx3Dval,"jetvtx3Dval[nJot]/F");
     Book("jetvtx3Derr",jetvtx3Derr,"jetvtx3Derr[nJot]/F");
     Book("jetvtxNtrk",jetvtxNtrk,"jetvtxNtrk[nJot]/I");
-    Book("jetEMFrac",jetEMFrac,"jetEMFrac[nJot]/F");
-    Book("jetHadFrac",jetHadFrac,"jetHadFrac[nJot]/F");
-    Book("jetNLep",jetNLep,"jetNLep[nJot]/I");
-    Book("jetGenPt",jetGenPt,"jetGenPt[nJot]/F");
-    Book("jetGenFlavor",jetGenFlavor,"jetGenFlavor[nJot]/I");
     Book("fj1sjPt",fj1sjPt,"fj1sjPt[2]/F");
     Book("fj1sjPhi",fj1sjPhi,"fj1sjPhi[2]/F");
     Book("fj1sjEta",fj1sjEta,"fj1sjEta[2]/F");
@@ -655,10 +663,15 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("fj1sjQGL",fj1sjQGL,"fj1sjQGL[2]/F");
     Book("fj1Nbs",&fj1Nbs,"fj1Nbs/I");
     Book("fj1gbb",&fj1gbb,"fj1gbb/I");
+*/
+  if (resolved) {
     Book("bosonpt",&bosonpt,"bosonpt/F");
     Book("bosoneta",&bosoneta,"bosoneta/F");
     Book("bosonphi",&bosonphi,"bosonphi/F");
     Book("bosonm",&bosonm,"bosonm/F");
+    Book("bosoness",&bosoness,"bosoness/F");
+    Book("bosondr",&bosondr,"bosondr/F");
+    Book("bosondphibrf",&bosondphibrf,"bosondphibrf/F");
     Book("bosonm_reg",&bosonm_reg,"bosonm_reg/F");
     Book("bosonpt_reg",&bosonpt_reg,"bosonpt_reg/F");
     Book("bosonjtidx",bosonjtidx,"bosonjtidx[2]/I");
@@ -677,6 +690,8 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("bosonjtidx",bosonjtidx,"bosonjtidx[2]/I");
     Book("bosonCosThetaJJ",&bosonCosThetaJJ,"bosonCosThetaJJ/F");
     Book("bosonCosThetaCSJ1",&bosonCosThetaCSJ1,"bosonCosThetaCSJ1/F");
+  }
+/*
     Book("topMassLep1Met",&topMassLep1Met,"topMassLep1Met/F");
     Book("topMassLep1Met_jesUp",&topMassLep1Met_jesUp,"topMassLep1Met_jesUp/F");
     Book("topMassLep1Met_jesDown",&topMassLep1Met_jesDown,"topMassLep1Met_jesDown/F");
@@ -689,15 +704,7 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("nSoft5",&nSoft5,"nSoft5/I");
     Book("nSoft10",&nSoft10,"nSoft10/I");
     Book("jetRegFac",jetRegFac,"jetRegFac[2]/F");
-    Book("jet1EtaUp",&jet1EtaUp,"jet1EtaUp/F");
-    Book("jet1EtaDown",&jet1EtaDown,"jet1EtaDown/F");
-    Book("jet1PtUp",&jet1PtUp,"jet1PtUp/F");
-    Book("jet1PtDown",&jet1PtDown,"jet1PtDown/F");
-    Book("jet2EtaUp",&jet2EtaUp,"jet2EtaUp/F");
-    Book("jet2EtaDown",&jet2EtaDown,"jet2EtaDown/F");
-    Book("jet2PtUp",&jet2PtUp,"jet2PtUp/F");
-    Book("jet2PtDown",&jet2PtDown,"jet2PtDown/F");
-  }
+*/
 
   if (vbf || leptonic) {
     Book("jot1Phi",&jot1Phi,"jot1Phi/F");
@@ -764,11 +771,12 @@ void GeneralTree::WriteTree(TTree *t) {
   }
   Book("scale",scale,"scale[6]/F");
 
+  if (boosted) {
   for (auto p : ecfParams) { 
     TString ecfn(makeECFString(p));
     Book("fj1"+ecfn,&(fj1ECFNs[p]),"fj1"+ecfn+"/F");
+    }
   }
-
   for (auto p : btagParams) {
     TString btagn(makeBTagSFString(p));
     Book(btagn,&(sf_btags[p]),btagn+"/F");
@@ -831,6 +839,20 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("sf_lepTrack",&sf_lepTrack,"sf_lepTrack/F");
   }
   if (fatjet) {
+    Book("fj1Pt",&fj1Pt,"fj1Pt/F");
+    Book("fj1Phi",&fj1Phi,"fj1Phi/F");
+    Book("fj1Eta",&fj1Eta,"fj1Eta/F");
+    Book("fj1M",&fj1M,"fj1M/F");
+    Book("nFatjet",&nFatjet,"nFatjet/I");
+    Book("nIsoJet",&nIsoJet,"nIsoJet/I");
+    Book("nAK8jet",&nAK8jet,"nAK8jet/I");
+    Book("ak81Pt",&ak81Pt,"ak81Pt/F");
+    Book("ak81Eta",&ak81Eta,"ak81Eta/F");
+    Book("ak81Phi",&ak81Phi,"ak81Phi/F");
+  }
+  if (boosted) {
+    Book("fj1Nbs",&fj1Nbs,"fj1Nbs/I");
+    Book("fj1gbb",&fj1gbb,"fj1gbb/I");
     Book("fj1Tau32",&fj1Tau32,"fj1Tau32/F");
     Book("fj1Tau21",&fj1Tau21,"fj1Tau21/F");
     Book("fj1Tau32SD",&fj1Tau32SD,"fj1Tau32SD/F");
@@ -842,15 +864,11 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("fj1MSDSmearedUp",&fj1MSDSmearedUp,"fj1MSDSmearedUp/F");
     Book("fj1MSDSmearedDown",&fj1MSDSmearedDown,"fj1MSDSmearedDown/F");
     Book("fj1MSD_corr",&fj1MSD_corr,"fj1MSD_corr/F");
-    Book("fj1Pt",&fj1Pt,"fj1Pt/F");
     Book("fj1PtScaleUp",&fj1PtScaleUp,"fj1PtScaleUp/F");
     Book("fj1PtScaleDown",&fj1PtScaleDown,"fj1PtScaleDown/F");
     Book("fj1PtSmeared",&fj1PtSmeared,"fj1PtSmeared/F");
     Book("fj1PtSmearedUp",&fj1PtSmearedUp,"fj1PtSmearedUp/F");
     Book("fj1PtSmearedDown",&fj1PtSmearedDown,"fj1PtSmearedDown/F");
-    Book("fj1Phi",&fj1Phi,"fj1Phi/F");
-    Book("fj1Eta",&fj1Eta,"fj1Eta/F");
-    Book("fj1M",&fj1M,"fj1M/F");
     Book("fj1MaxCSV",&fj1MaxCSV,"fj1MaxCSV/F");
     Book("fj1MinCSV",&fj1MinCSV,"fj1MinCSV/F");
     Book("fj1DoubleCSV",&fj1DoubleCSV,"fj1DoubleCSV/F");
@@ -866,13 +884,14 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("fj1IsLoose",&fj1IsLoose,"fj1IsLoose/I");
     Book("fj1RawPt",&fj1RawPt,"fj1RawPt/F");
     Book("fj1NHF",&fj1NHF,"fj1NHF/I");
-    Book("fj1HTTMass",&fj1HTTMass,"fj1HTTMass/F");
-    Book("fj1HTTFRec",&fj1HTTFRec,"fj1HTTFRec/F");
+  //  Book("fj1HTTMass",&fj1HTTMass,"fj1HTTMass/F");
+  //  Book("fj1HTTFRec",&fj1HTTFRec,"fj1HTTFRec/F");
     Book("fj1IsClean",&fj1IsClean,"fj1IsClean/I");
     Book("fj1NConst",&fj1NConst,"fj1NConst/I");
     Book("fj1NSDConst",&fj1NSDConst,"fj1NSDConst/I");
     Book("fj1EFrac100",&fj1EFrac100,"fj1EFrac100/F");
     Book("fj1SDEFrac100",&fj1SDEFrac100,"fj1SDEFrac100/F");
+/*
     Book("fj1MSDScaleUp_sj",&fj1MSDScaleUp_sj,"fj1MSDScaleUp_sj/F");
     Book("fj1MSDScaleDown_sj",&fj1MSDScaleDown_sj,"fj1MSDScaleDown_sj/F");
     Book("fj1MSDSmeared_sj",&fj1MSDSmeared_sj,"fj1MSDSmeared_sj/F");
@@ -883,6 +902,7 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("fj1PtSmeared_sj",&fj1PtSmeared_sj,"fj1PtSmeared_sj/F");
     Book("fj1PtSmearedUp_sj",&fj1PtSmearedUp_sj,"fj1PtSmearedUp_sj/F");
     Book("fj1PtSmearedDown_sj",&fj1PtSmearedDown_sj,"fj1PtSmearedDown_sj/F");
+*/
     Book("fj1SubMaxCSV",&fj1SubMaxCSV,"fj1SubMaxCSV/F");
     Book("isojet1Pt",&isojet1Pt,"isojet1Pt/F");
     Book("isojet1CSV",&isojet1CSV,"isojet1CSV/F");
@@ -891,8 +911,15 @@ void GeneralTree::WriteTree(TTree *t) {
     Book("isojet2CSV",&isojet2CSV,"isojet2CSV/F");
     Book("isojet2Flav",&isojet2Flav,"isojet2Flav/I");
     Book("isojetNBtags",&isojetNBtags,"isojetNBtags/I");
-    Book("nFatjet",&nFatjet,"nFatjet/I");
-    Book("nIsoJet",&nIsoJet,"nIsoJet/I");
+    Book("fj1NPartons",&fj1NPartons,"fj1NPartons/I");
+    Book("fj1PartonM",&fj1PartonM,"fj1PartonM/F");
+    Book("fj1PartonPt",&fj1PartonPt,"fj1PartonPt/F");
+    Book("fj1PartonEta",&fj1PartonEta,"fj1PartonEta/F");
+    Book("ak81MaxCSV",&ak81MaxCSV,"ak81MaxCSV/F");
+    Book("genFatJetPt",&genFatJetPt,"genFatJetPt/F");
+    Book("fj1NBPartons",&fj1NBPartons,"fj1NBPartons/I");
+    Book("fj1NCPartons",&fj1NCPartons,"fj1NCPartons/I");
+    Book("genFatJetNProngs",&genFatJetNProngs,"genFatJetNProngs/I");
   }
   if (hfCounting) {
     Book("nHF",&nHF,"nHF/I");
@@ -912,7 +939,7 @@ void GeneralTree::WriteTree(TTree *t) {
   }
 //ENDCUSTOMWRITE
 
-  Book("genFatJetNProngs",&genFatJetNProngs,"genFatJetNProngs/I");
+ // Book("genFatJetNProngs",&genFatJetNProngs,"genFatJetNProngs/I");
   Book("genJet1Pt",&genJet1Pt,"genJet1Pt/F");
   Book("genJet2Pt",&genJet2Pt,"genJet2Pt/F");
   Book("genJet1Eta",&genJet1Eta,"genJet1Eta/F");
@@ -933,22 +960,12 @@ void GeneralTree::WriteTree(TTree *t) {
   Book("jet2Eta",&jet2Eta,"jet2Eta/F");
   Book("jet2CSV",&jet2CSV,"jet2CSV/F");
   Book("jet2CMVA",&jet2CMVA,"jet2CMVA/F");
-  Book("genFatJetPt",&genFatJetPt,"genFatJetPt/F");
-  Book("fj1NBPartons",&fj1NBPartons,"fj1NBPartons/I");
-  Book("fj1NCPartons",&fj1NCPartons,"fj1NCPartons/I");
+/*
   Book("fj1Rho2",&fj1Rho2,"fj1Rho2/F");
   Book("fj1RawRho2",&fj1RawRho2,"fj1RawRho2/F");
   Book("fj1Rho",&fj1Rho,"fj1Rho/F");
   Book("fj1RawRho",&fj1RawRho,"fj1RawRho/F");
-  Book("fj1NPartons",&fj1NPartons,"fj1NPartons/I");
-  Book("fj1PartonM",&fj1PartonM,"fj1PartonM/F");
-  Book("fj1PartonPt",&fj1PartonPt,"fj1PartonPt/F");
-  Book("fj1PartonEta",&fj1PartonEta,"fj1PartonEta/F");
-  Book("nAK8jet",&nAK8jet,"nAK8jet/I");
-  Book("ak81Pt",&ak81Pt,"ak81Pt/F");
-  Book("ak81Eta",&ak81Eta,"ak81Eta/F");
-  Book("ak81Phi",&ak81Phi,"ak81Phi/F");
-  Book("ak81MaxCSV",&ak81MaxCSV,"ak81MaxCSV/F");
+*/
   Book("puppiUWmag",&puppiUWmag,"puppiUWmag/F");
   Book("puppiUWphi",&puppiUWphi,"puppiUWphi/F");
   Book("puppiUZmag",&puppiUZmag,"puppiUZmag/F");
@@ -977,8 +994,8 @@ void GeneralTree::WriteTree(TTree *t) {
   Book("dphipfUA",&dphipfUA,"dphipfUA/F");
   Book("dphipuppiU",&dphipuppiU,"dphipuppiU/F");
   Book("dphipfU",&dphipfU,"dphipfU/F");
-  Book("isGS",&isGS,"isGS/I");
-  Book("trkmetphi",&trkmetphi,"trkmetphi/F");
+//  Book("isGS",&isGS,"isGS/I");
+//  Book("trkmetphi",&trkmetphi,"trkmetphi/F");
   Book("whichRecoil",&whichRecoil,"whichRecoil/I");
   Book("badECALFilter",&badECALFilter,"badECALFilter/I");
   Book("jetNMBtags",&jetNMBtags,"jetNMBtags/I");
@@ -1022,9 +1039,9 @@ void GeneralTree::WriteTree(TTree *t) {
   Book("puppimetsig",&puppimetsig,"puppimetsig/F");
   Book("calomet",&calomet,"calomet/F");
   Book("calometphi",&calometphi,"calometphi/F");
-  Book("pfcalobalance",&pfcalobalance,"pfcalobalance/F");
+//  Book("pfcalobalance",&pfcalobalance,"pfcalobalance/F");
   Book("sumET",&sumET,"sumET/F");
-  Book("trkmet",&trkmet,"trkmet/F");
+//  Book("trkmet",&trkmet,"trkmet/F");
   Book("dphipfmet",&dphipfmet,"dphipfmet/F");
   Book("dphipuppimet",&dphipuppimet,"dphipuppimet/F");
   Book("trueGenBosonPt",&trueGenBosonPt,"trueGenBosonPt/F");
