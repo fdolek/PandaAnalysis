@@ -49,7 +49,7 @@ class Process:
         tree_n = split[0]
         root_interface.rename_dtypes(varr, repl)
         root_interface.array_as_tree(xarr = varr, 
-                                     treename = tree_n+postfix, 
+                                     treename = self.name+postfix, 
                                      fcontext = f_out)
     def run(self, f_out):
         PInfo('fitting_forest.Process.run', 'Running '+self.name)
