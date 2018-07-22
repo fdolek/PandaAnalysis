@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 ANALYSIS=$1
 
 if [ -z "$ANALYSIS" ];then
@@ -26,7 +24,9 @@ export SUBMIT_NAME="80X-v1dot1"
 export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
 #cfg file
-export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180710.cfg"
+#export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180710.cfg"
+##DY-400-600
+export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180713.cfg"
 
 #skim
 export SUBMIT_TMPL="skim_${ANALYSIS}_tmpl.py"
