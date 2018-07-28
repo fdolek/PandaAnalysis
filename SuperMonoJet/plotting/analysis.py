@@ -51,7 +51,7 @@ if args.masscut1:
 ### LOAD PLOTTING UTILITY ###
 plot = PlotUtility()
 plot.Stack(True)
-plot.Ratio(False)
+plot.Ratio(True)
 plot.FixRatio(0.4)
 if 'qcd' in region:
     plot.FixRatio(1)
@@ -277,8 +277,15 @@ def fromLimit(region):
 
     recoilBins = [250,280,310,350,400,450,600,1000]
     nRecoilBins = len(recoilBins)-1
+    plot.add_distribution(FDistribution('fjpt',200,700,15,'fatjet p_{T} [GeV]','Events/25 GeV'))
+    plot.add_distribution(FDistribution('fjmass',0,600,20,'fatjet m_{SD} [GeV]','Events'))
+    plot.add_distribution(FDistribution('doubleb',0,1,20,'fatjet 1 DoubleCSV','Events'))
+    plot.add_distribution(FDistribution('n2',0,0.5,10,'n2','Events'))
+    plot.add_distribution(FDistribution('n2ddt56',0,0.5,10,'n2ddt56','Events'))
+    plot.add_distribution(FDistribution('n2ddt53',0,0.5,10,'n2ddt53','Events'))
     recoil=VDistribution("met",recoilBins,"PF MET [GeV]","Events/GeV")
     plot.add_distribution(recoil)
+
     system('mkdir -p %s/%s/' %(args.outdir,region))
     plot.draw_all(args.outdir+'/'+region+'/')
 
