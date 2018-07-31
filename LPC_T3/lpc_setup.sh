@@ -4,13 +4,13 @@ ANALYSIS=$1
 
 if [ -z "$ANALYSIS" ];then
     echo -e "\033[0;31m Environment is not correctly setup \033[0m"
-    echo -e "Please specify Analysis: \033[0;33m boosted \033[0m ; \033[1;36m resolve \033[0m ; \033[1;35m monojet \033[0m"
+    echo -e "Please specify Analysis: \033[0;33m boosted \033[0m ; \033[1;36m resolved \033[0m ; \033[1;35m monojet \033[0m"
     exit 0
 fi
 
 if [ "$ANALYSIS" == "boosted" ];then
     COLOR="\033[0;33m"
-elif [ "$ANALYSIS" == "resolve" ];then
+elif [ "$ANALYSIS" == "resolved" ];then
     COLOR="\033[1;36m"
 elif [ "$ANALYSIS" == "monojet" ];then
     COLOR="\033[1;35m"
@@ -32,7 +32,8 @@ export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180713.cfg
 export SUBMIT_TMPL="skim_${ANALYSIS}_tmpl.py"
 #panda's 
 export PANDA_FLATDIR="/uscms_data/d1/${USER}/panda/${SUBMIT_NAME}/${ANALYSIS}/flat/"
-export SUBMIT_OUTDIR="/store/user/lpcmetx/panda/${SUBMIT_NAME}/${ANALYSIS}/batch/"
+export SUBMIT_OUTDIR="/store/user/lpcmetx/panda/${SUBMIT_NAME}/${ANALYSIS}/batch/" 
+
 #condor's
 export SUBMIT_WORKDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}/work/"
 export SUBMIT_LOGDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}/logs/"
