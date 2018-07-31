@@ -58,7 +58,7 @@ for x in ['tmn','ten','wmn','wen','zmm','zee','tmn_fail','ten_fail','wmn_fail','
 for x in ['pho','pho_fail']:
 	  weights[x] = tTIMES(weights['base'],'%f*sf_phoTrig*1.0')
 
-for x in ['wmn','wen','zmm','zee','wmn_fail','wen_fail','zmm_fail','zee_fail']:
+for x in ['signal','signal_fail','wmn','wen','zmm','zee','wmn_fail','wen_fail','zmm_fail','zee_fail','pho','pho_fail']:
 	if 'fail' in x:
 	  weights[x] = tTIMES(weights[x],'sf_btag0')
         else:
