@@ -699,11 +699,66 @@ bool PandaAnalyzer::PassPreselection()
   float max_pfUp = std::max({gt->pfmetUp, gt->pfUZmagUp, gt->pfUWmagUp, gt->pfUAmagUp, gt->pfUWWmagUp});
   float max_pfDown = std::max({gt->pfmetDown, gt->pfUZmagDown, gt->pfUWmagDown, gt->pfUAmagDown, gt->pfUWWmagDown});
 
-  if (preselBits & kRecoil) {
-    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 || max_dphipf>0.4 || max_dphipuppi>0.4) {
-      isGood = true;
+  if (preselBits & kMET) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( nLooseMuon = 0 && nLooseElectron = 0 && nLoosePhoton = 0 && nTau = 0 ) {
+	  isGood = true;
+	}
+      }
     }
   }
+
+  if (preselBits & kSingleEle) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( nLooseMuon = 0 && nLooseElectron = 1 && nLoosePhoton = 0 && nTau = 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
+  if (preselBits & kSingleMu) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( nLooseMuon = 1 && nLooseElectron = 0 && nLoosePhoton = 0 && nTau = 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
+  if (preselBits & kDiEle) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( nLooseMuon = 0 && nLooseElectron = 2 && nLoosePhoton = 0 && nTau = 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
+  if (preselBits & kDiMu) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( nLooseMuon = 2 && nLooseElectron = 0 && nLoosePhoton = 0 && nTau = 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
+  if (preselBits & kPho) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( nLooseMuon = 0 && nLooseElectron = 0 && nLoosePhoton = 1 && nTau = 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
   if (preselBits & kLepMonoTop){
     if (gt->nJet>=1 && gt->jet1Pt>25){
       if
@@ -715,9 +770,11 @@ bool PandaAnalyzer::PassPreselection()
       }
     }
   }
+
   if (preselBits & kPassTrig) {
     isGood &= (!isData) || (gt->trigger != 0);
   }
+
   tr->TriggerEvent("presel");
   return isGood;
 }
