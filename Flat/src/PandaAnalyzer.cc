@@ -702,7 +702,7 @@ bool PandaAnalyzer::PassPreselection()
   if (preselBits & kMET) {
     if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
       if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
-	if ( nLooseMuon = 0 && nLooseElectron = 0 && nLoosePhoton = 0 && nTau = 0 ) {
+	if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
 	  isGood = true;
 	}
       }
@@ -712,7 +712,7 @@ bool PandaAnalyzer::PassPreselection()
   if (preselBits & kSingleEle) {
     if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
       if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
-	if ( nLooseMuon = 0 && nLooseElectron = 1 && nLoosePhoton = 0 && nTau = 0 ) {
+	if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 1 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
 	  isGood = true;
 	}
       }
@@ -722,7 +722,7 @@ bool PandaAnalyzer::PassPreselection()
   if (preselBits & kSingleMu) {
     if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
       if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
-	if ( nLooseMuon = 1 && nLooseElectron = 0 && nLoosePhoton = 0 && nTau = 0 ) {
+	if ( gt->nLooseMuon == 1 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
 	  isGood = true;
 	}
       }
@@ -732,7 +732,7 @@ bool PandaAnalyzer::PassPreselection()
   if (preselBits & kDiEle) {
     if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
       if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
-	if ( nLooseMuon = 0 && nLooseElectron = 2 && nLoosePhoton = 0 && nTau = 0 ) {
+	if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 2 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
 	  isGood = true;
 	}
       }
@@ -742,7 +742,7 @@ bool PandaAnalyzer::PassPreselection()
   if (preselBits & kDiMu) {
     if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
       if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
-	if ( nLooseMuon = 2 && nLooseElectron = 0 && nLoosePhoton = 0 && nTau = 0 ) {
+	if ( gt->nLooseMuon == 2 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
 	  isGood = true;
 	}
       }
@@ -752,7 +752,7 @@ bool PandaAnalyzer::PassPreselection()
   if (preselBits & kPho) {
     if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
       if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
-	if ( nLooseMuon = 0 && nLooseElectron = 0 && nLoosePhoton = 1 && nTau = 0 ) {
+	if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 1 && gt->nTau == 0 ) {
 	  isGood = true;
 	}
       }
