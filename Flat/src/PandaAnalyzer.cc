@@ -51,7 +51,7 @@ void PandaAnalyzer::ResetBranches()
   fj1 = 0;
   for (TLorentzVector v_ : {vPFMET, vPuppiMET, vpfUW, vpfUZ, vpfUA, vpfU, vpfUWW,
 	                    vpuppiUW, vpuppiUWW ,vpuppiUZ, vpuppiUA, vpuppiU,
-                            vJet, vBarrelJets})
+                            vJet})
   {
     v_.SetPtEtaPhiM(0,0,0,0);
   }
@@ -70,7 +70,6 @@ void PandaAnalyzer::SetOutputFile(TString fOutName)
 
   fOut->WriteTObject(hDTotalMCWeight);    
 
-  gt->monohiggs      = (analysis->boosted || analysis->boson);
   gt->monojet        = analysis->monojet;
   gt->vbf            = analysis->vbf;
   gt->fatjet         = analysis->fatjet;
