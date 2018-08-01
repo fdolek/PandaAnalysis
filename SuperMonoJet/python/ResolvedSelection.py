@@ -29,20 +29,21 @@ for r in ['signal','tmn','ten','zmm','zee','wen','wmn','pho']:
         cuts[r+'_fail'] = tAND(cuts[r],'min(jetCSV[bosonjtidx[0]],jetCSV[bosonjtidx[1]])<=0.8484')
 
 for r in ['signal','zmm','zee','wen','wmn','pho','signal_fail','wmn_fail','wen_fail','zmm_fail','zee_fail']:
-	if 'fail' in x:
+	if 'fail' in r:
           cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==0')
 	else:
           cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==2')
 
 for r in ['tmn','ten','tmn_fail','ten_fail']:
-	if 'fail' in x:
+	if 'fail' in r:
           cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==1')
 	else:
           cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.5)==3')
 
 #weights for specific regions
 weights = {
-   'base'  : '%f*normalizedWeight*sf_pu*sf_ewkV*sf_qcdV',
+   'base'  : 'normalizedWeight*sf_pu*sf_ewkV*sf_qcdV',
+#   'base'  : '%f*normalizedWeight*sf_pu*sf_ewkV*sf_qcdV',
 }
 
 for x in ['signal','signal_fail']:
@@ -57,7 +58,7 @@ for x in ['tmn','ten','wmn','wen','zmm','zee','tmn_fail','ten_fail','wmn_fail','
 for x in ['pho','pho_fail']:
 	  weights[x] = tTIMES(weights['base'],'%f*sf_phoTrig*1.0')
 
-for x in ['wmn','wen','zmm','zee','wmn_fail','wen_fail','zmm_fail','zee_fail']:
+for x in ['signal','signal_fail','wmn','wen','zmm','zee','wmn_fail','wen_fail','zmm_fail','zee_fail','pho','pho_fail']:
 	if 'fail' in x:
 	  weights[x] = tTIMES(weights[x],'sf_btag0')
         else:

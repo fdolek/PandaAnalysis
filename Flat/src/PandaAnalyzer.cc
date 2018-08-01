@@ -51,7 +51,7 @@ void PandaAnalyzer::ResetBranches()
   fj1 = 0;
   for (TLorentzVector v_ : {vPFMET, vPuppiMET, vpfUW, vpfUZ, vpfUA, vpfU, vpfUWW,
 	                    vpuppiUW, vpuppiUWW ,vpuppiUZ, vpuppiUA, vpuppiU,
-                            vJet, vBarrelJets})
+                            vJet})
   {
     v_.SetPtEtaPhiM(0,0,0,0);
   }
@@ -70,7 +70,6 @@ void PandaAnalyzer::SetOutputFile(TString fOutName)
 
   fOut->WriteTObject(hDTotalMCWeight);    
 
-  gt->monohiggs      = (analysis->boosted || analysis->boson);
   gt->monojet        = analysis->monojet;
   gt->vbf            = analysis->vbf;
   gt->fatjet         = analysis->fatjet;
@@ -701,11 +700,66 @@ bool PandaAnalyzer::PassPreselection()
   float max_pfUp = std::max({gt->pfmetUp, gt->pfUZmagUp, gt->pfUWmagUp, gt->pfUAmagUp, gt->pfUWWmagUp});
   float max_pfDown = std::max({gt->pfmetDown, gt->pfUZmagDown, gt->pfUWmagDown, gt->pfUAmagDown, gt->pfUWWmagDown});
 
-  if (preselBits & kRecoil) {
-    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 || max_dphipf>0.4 || max_dphipuppi>0.4) {
-      isGood = true;
+  if (preselBits & kMET) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
+	  isGood = true;
+	}
+      }
     }
   }
+
+  if (preselBits & kSingleEle) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 1 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
+  if (preselBits & kSingleMu) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( gt->nLooseMuon == 1 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
+  if (preselBits & kDiEle) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 2 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
+  if (preselBits & kDiMu) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( gt->nLooseMuon == 2 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
+  if (preselBits & kPho) {
+    if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
+      if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
+	if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 1 && gt->nTau == 0 ) {
+	  isGood = true;
+	}
+      }
+    }
+  }
+
   if (preselBits & kLepMonoTop){
     if (gt->nJet>=1 && gt->jet1Pt>25){
       if
@@ -717,9 +771,11 @@ bool PandaAnalyzer::PassPreselection()
       }
     }
   }
+
   if (preselBits & kPassTrig) {
     isGood &= (!isData) || (gt->trigger != 0);
   }
+
   tr->TriggerEvent("presel");
   return isGood;
 }

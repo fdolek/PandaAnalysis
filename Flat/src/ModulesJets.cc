@@ -687,8 +687,6 @@ void PandaAnalyzer::JetBosonReco()
 
 
   }
-  
-  tr->TriggerEvent("monohiggs");
 }
 
 

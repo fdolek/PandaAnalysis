@@ -35,6 +35,10 @@ def analysis(name, **kwargs):
 
 
 # predefined!
+supermonojet = lambda v=False : _analysis(
+        name = 'supermonojet',
+        verbose = v,
+    )
 boosted = lambda v=False : _analysis(
         name = 'boosted',
         verbose = v,
