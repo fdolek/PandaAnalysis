@@ -149,7 +149,7 @@ To submit jobs, simply do
 source lpc_setup.sh $ANALYSIS $REGION
 ```
 ```bash 
-where $ANALYSIS can be one of [boosted, resolved and monojet] 
+where $ANALYSIS can be one of [boosted, resolved monojet] 
 ```
 and
 ```
