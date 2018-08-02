@@ -149,13 +149,13 @@ To submit jobs, simply do
 source lpc_setup.sh $ANALYSIS $REGION
 ```
 ```bash 
-where `$ANALYSIS` can be one of `[boosted resolved monojet]` 
+$ANALYSIS can be one of [boosted resolved monojet]
 ```
 and
 ```
-`$REGION` can be one of `[met singleele singlemu diele dimu pho]` 
+$REGION can be one of [met singleele singlemu diele dimu pho] 
 ```
-e.g. in order to run the job for monojet analysis in met region do as follows:
+e.g. in order to run the job for monojet analysis in met region do the setup as follows:
 ```
 source lpc_setup.sh monojet met
 ```
