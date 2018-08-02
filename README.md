@@ -149,11 +149,15 @@ To submit jobs, simply do
 source lpc_setup.sh $ANALYSIS $REGION
 ```
 ```bash 
-where $ANALYSIS can be one of [boosted, resolved monojet] 
+where $ANALYSIS can be one of [boosted resolved monojet] 
 ```
 and
 ```
 $REGION can be one of [met singleele singlemu diele dimu pho] 
+```
+e.g. in order to run the job for monojet analysis in met region do as follows:
+```
+source lpc_setup.sh monojet met
 ```
 In order to prepare the job with grid authentication, go to PandaAnalyzer/LPC_T3/bin/
 ```bash
