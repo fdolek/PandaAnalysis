@@ -26,9 +26,9 @@ d = {
 
     'ZHbb'                : ['ZHbb_mH125'],
     'ggZHbb'              : ['ggZHbb_mH125'],
-    'ggHbb'               : ['ggHbb_mH125'],
-    'ttHbb'               : ['ttHbb_mH125'],
-    'VBFHbb'              : ['VBFHbb_mH125'],
+    'ggH'                 : ['ggHbb_mH125'],
+    'ttH'                 : ['ttHbb_mH125'],
+    'VBFH'                : ['VBFHbb_mH125'],
     'WpH'                 : ['WpLNuHbb'],
     'WmH'                 : ['WmLNuHbb'],
 
