@@ -35,7 +35,7 @@ if args.analysis == "boosted":
 if args.analysis == "resolved":
     import PandaAnalysis.SuperMonoJet.ResolvedSelection as sel
 if args.analysis == "monojet":
-    import PandaAnalysis.SuperMonoJet.MonojetSelection as sel
+    import PandaAnalysis.SuperMonoJet.MonoJetSelection as sel
 
 ### SET GLOBAL VARIABLES ###
 if not args.fromlimit:
@@ -47,6 +47,8 @@ else:
     baseDir = getenv('PANDA_FLATDIR')+'/limits/'
     dataDir = baseDir
     cut = '1==1'
+
+print "PLOTTER: input directory is:", baseDir
 
 if args.bdtcut:
     cut = tAND(cut,'top_ecf_bdt>%f'%args.bdtcut)
@@ -117,9 +119,9 @@ def normalPlotting(region):
     ### ASSIGN FILES TO PROCESSES ###
     if 'qcd' in region:
         processes = [diboson,singletop,wjets,ttbar,zjets,qcd]
-    if 'zee' or 'zmm' in region:
-        processes = [qcd,diboson,singletop,ttbar,wjets,zjets]
-    if 'wen' or 'wmn' in region:
+    if 'zee' in region or 'zmm' in region:
+        processes = [diboson,ttbar,zjets]
+    if 'wen'in region or 'wmn' in region:
         processes = [qcd,diboson,singletop,zjets,ttbar,wjets]
     ### ASSIGN FILES TO PROCESSES ###
     if 'signal' in region or 'qcd' in region:
@@ -127,10 +129,8 @@ def normalPlotting(region):
         znunu.add_file(baseDir+'ZtoNuNu.root')
 
     zjets.add_file(baseDir+'ZJets.root')
-    wjets.add_file(baseDir+'WJets.root')
     diboson.add_file(baseDir+'Diboson.root')
     ttbar.add_file(baseDir+'TTbar%s.root'%(args.tt)); print 'TTbar%s.root'%(args.tt)
-    singletop.add_file(baseDir+'SingleTop.root')
     if 'pho' in region:
        #processes = [qcd,singletopg,ttg,gjets]
         processes = [qcd,gjets]
@@ -139,9 +139,12 @@ def normalPlotting(region):
         qcd.additional_cut = sel.phoTrigger
         qcd.use_common_weight = False
         qcd.additional_weight = 'sf_phoPurity'
-    else:
+    elif 'signal' in region or 'wen' in region or 'wmn' in region:
+        print "fuuuuuuuck", region
         qcd.add_file(baseDir+'QCD.root')
-
+        singletop.add_file(baseDir+'SingleTop.root')
+        wjets.add_file(baseDir+'WJets.root')
+    
     if any([x in region for x in ['signal','wmn','zmm','tmn','qcd']]):
         if not blind:
             data.add_file(dataDir+'MET.root')
@@ -217,7 +220,8 @@ def normalPlotting(region):
     #plot.add_distribution(FDistribution('jet2Eta',-2.5,2.5,20,'Sub-Leading Jet #eta','Events/bin'))
     #plot.add_distribution(FDistribution('jetCSV[0]',0,1,20,'jet 1 CSV','Events'))
     #plot.add_distribution(FDistribution('jetCSV[1]',0,1,20,'jet 2 CSV','Events'))
-    plot.add_distribution(FDistribution('fj1DoubleCSV',0,1,20,'fatjet 1 DoubleCSV','Events'))
+    if args.analysis == "boosted":
+        plot.add_distribution(FDistribution('fj1DoubleCSV',0,1,20,'fatjet 1 DoubleCSV','Events'))
     #plot.add_distribution(FDistribution('isojetNBtags',-0.5,9.5,9,'N_{isoBtagjet}','Events'))
     #global lepton
     #plot.add_distribution(FDistribution('nTightLep',-0.5,4.5,5,'Number of tight lepton','Events/bin'))
@@ -227,7 +231,8 @@ def normalPlotting(region):
     #plot.add_distribution(FDistribution('nLooseMuon',-0.5,4.5,5,'Number of loose Muon','Events/bin'))
 
     #fatjet
-    plot.add_distribution(FDistribution('fj1MSD',0,600,20,'fatjet m_{SD} [GeV]','Events'))
+    if args.analysis == "boosted":
+        plot.add_distribution(FDistribution('fj1MSD',0,600,20,'fatjet m_{SD} [GeV]','Events'))
 
     #fjmass=VDistribution("fj1MSD",fatjetBins,"fatjet m_{SD} [GeV]","Events")
     #plot.add_distribution(fjmass)
@@ -264,9 +269,9 @@ def fromLimit(region):
     
     if 'qcd' in region:
         processes = [diboson,singletop,wjets,ttbar,zjets,qcd]
-    if 'zee' or 'zmm' in region:
-        processes = [qcd,diboson,singletop,ttbar,wjets,zjets]
-    if 'wen' or 'wmn' in region:
+    if 'zee' in region or 'zmm' in region:
+        processes = [diboson,ttbar,zjets]
+    if 'wen' in region or 'wmn' in region:
         processes = [qcd,diboson,singletop,zjets,ttbar,wjets]
     ### ASSIGN FILES TO PROCESSES ###
     if 'signal' in region or 'qcd' in region:
