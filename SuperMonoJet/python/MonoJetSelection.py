@@ -30,15 +30,11 @@ weights = {
   'pho'            : '%f*sf_pu*normalizedWeight*sf_ewkV*sf_qcdV*sf_pho*sf_phoTrig *sf_qcdV2j', # add the additional 2-jet kfactor
 }
 
-for x in ['tme','tem','wmn','wen','zee','zmm','pho']:
-	if 'en' in x or 'ee' in x:
+for x in ['tme','tem','wmn','wen','zee','zmm']:
+	if 'em' in x or 'en' in x or 'ee' in x:
 	  weights[x] = tTIMES(weights['control'],'sf_eleTrig')
-	elif 'em' in x or 'me' in x:
-	  weights[x] = tTIMES(weights['control'],'sf_eleTrig*sf_metTrig')
-	elif 'mn' in x or 'mm' in x:
-	  weights[x] = tTIMES(weights['control'],'sf_metTrig')
 	else:
-	  weights[x] = tTIMES(weights['pho'],'sf_phoTrig')
+	  weights[x] = tTIMES(weights['control'],'sf_metTrig')
 
 for x in ['signal','tme','tem','wmn','wen','zee','zmm','pho']:
     weights[x+'_0tag'] = tTIMES(weights[x],'sf_btag0')
