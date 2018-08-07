@@ -33,23 +33,26 @@ export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
 #cfg file
 if [ $REGION = 'elemu' ]
 then
-    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_ele.cfg"
-elif [ $REGION = 'singleele' ]
-then
-    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_ele.cfg"
+    export PANDA_CFG="/uscms_data/d1/lpcmetx/catalog/20180801_singleele.cfg"
 elif [ $REGION = 'muele' ]
 then
-    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_mu.cfg"
-elif [ $REGION = 'singlemu' ]
-then
-    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_mu.cfg"
+    export PANDA_CFG="/uscms_data/d1/lpcmetx/catalog/20180801_singlemu.cfg"
 else
-    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_${REGION}.cfg"
+    export PANDA_CFG="/uscms_data/d1/lpcmetx/catalog/20180801_${REGION}.cfg"
+fi
+#export PANDA_CFG="http://home.fnal.gov/~shoh//DarkHiggs_cfg/versionControl/panda009/COMPLETE-BASED-ON-UI/DarkHiggs-MZprim-1K_Mhs-90_Mchi-50-100-250-400.cfg"
+ 
+#skim
+if [ $REGION = 'elemu' ]
+then
+    export SUBMIT_TMPL="skim_monojet_oppositesign_tmpl.py"
+elif [ $REGION = 'muele' ]
+then
+export SUBMIT_TMPL="skim_monojet_oppositesign_tmpl.py"
+else
+    export SUBMIT_TMPL="skim_${ANALYSIS}_${REGION}_tmpl.py"
 fi
 
-#PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_mu.cfg" 
-#skim
-export SUBMIT_TMPL="skim_${ANALYSIS}_${REGION}_tmpl.py"
 #panda's 
 export PANDA_FLATDIR="/uscms_data/d3/${USER}/panda/${SUBMIT_NAME}/${ANALYSIS}_${REGION}/flat/"
 #export PANDA_FLATDIR="/uscms_data/d3/naina25/panda/${SUBMIT_NAME}/${ANALYSIS}_${REGION}/flat/"
