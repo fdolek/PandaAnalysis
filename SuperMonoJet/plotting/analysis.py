@@ -108,8 +108,9 @@ def normalPlotting(region):
     singletop     = Process('Single t',root.kST,None,root.kRed-9)
     #singletopg    = Process('t#gamma',root.kST,root.kRed-9)
     qcd           = Process("QCD",root.kQCD,None,root.kMagenta-10)
-    gjets         = Process('#gamma+jets',root.kGjets)
+    gjets         = Process('#gamma+jets',root.kGjets,None,root.kBlue)
     data          = Process("Data",root.kData)
+    signal        = Process('m_{Zp}=1.0 TeV,m_{h}=90 GeV, m_{#chi}=400 GeV',root.kSignal)
     #signal        = Process('m_{V}=1.75 TeV, m_{#chi}=1 GeV',root.kSignal)
     processes = [qcd,diboson,singletop,wjets,ttbar,zjets]
 
@@ -162,7 +163,9 @@ def normalPlotting(region):
 
     if not blind:
         processes.append(data)
-    if SIGNAL:
+    if 'signal' in region:
+        SIGNAL=True
+        signal.add_file(baseDir+'BBbarDM_MZprime-1000_Mhs-90_Mchi-400.root')
         processes.append(signal)
     #    #processes.append(signal1)
 
@@ -170,7 +173,10 @@ def normalPlotting(region):
        #print "processess considered -> ", p
         plot.add_process(p)
 
-    recoilBins = [250,270,350,475,1000]
+    if args.analysis == "monojet" or args.analysis == "resolved":
+        recoilBins = [250,280,310,340,370,400,430,470,510,550,590,640,690,740,790,840,900,960,1020,1090,1160,1250,1400]
+    if args.analysis == "boosted":
+        recoilBins = [250,270,350,475,1000]
     fatjetBins = [25,75,100,150,600]
     nRecoilBins = len(recoilBins)-1
 
@@ -197,7 +203,7 @@ def normalPlotting(region):
             plot.add_distribution(FDistribution('muonEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
         else:
             plot.add_distribution(FDistribution('electronPt[0]',0,400,15,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
-            plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
+            #plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
         plot.add_distribution(FDistribution('dphipfUZ',0,3.14,10,'min#Delta#phi(AK4 jet,E_{T}^{miss})','Events'))
 
     elif any([x in region for x in ['tem','tme']]):
@@ -273,9 +279,9 @@ def fromLimit(region):
     singletop     = Process('Single t',root.kST,'ST_'+region,root.kRed-9)
     #singletopg    = Process('t#gamma',root.kST,args.region)
     qcd           = Process('QCD',root.kQCD,'QCD_'+region,root.kMagenta-10)
-    #gjets         = Process('#gamma+jets',root.kGjets,args.region)
+    gjets         = Process('#gamma+jets',root.kGjets,None,root.kBlue)
     data          = Process("Data",root.kData,'Data_'+region)
-    #signal        = Process('m_{V}=1.75 TeV, m_{#chi}=1 GeV',root.kSignal,args.region)
+    signal        = Process('m_{Zp}=1.0 TeV,m_{h}=90 GeV, m_{#chi}=400 GeV',root.kSignal)
     processes = [qcd,diboson,singletop,wjets,ttbar,zjets]
 
     
@@ -299,8 +305,10 @@ def fromLimit(region):
     data.additional_weight='weight'
     processes.append(data)
     plot.add_process(data)
-
-    recoilBins = [250,280,310,350,400,450,600,1000]
+    if args.analysis == "monojet":
+        recoilBins = [250,280,310,340,370,400,430,470,510,550,590,640,690,740,790,840,900,960,1020,1090,1160,1250,1400]
+    if args.analysis == "boosted":
+        recoilBins = [250,280,310,350,400,450,600,1000]
     nRecoilBins = len(recoilBins)-1
     plot.add_distribution(FDistribution('fjpt',200,700,15,'fatjet p_{T} [GeV]','Events/25 GeV'))
     plot.add_distribution(FDistribution('fjmass',0,600,20,'fatjet m_{SD} [GeV]','Events'))
