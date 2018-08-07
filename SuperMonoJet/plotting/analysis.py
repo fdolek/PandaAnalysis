@@ -172,7 +172,7 @@ def normalPlotting(region):
        #print "processess considered -> ", p
         plot.add_process(p)
 
-    if args.analysis == "monojet":
+    if args.analysis == "monojet" or args.analysis == "resolved":
         recoilBins = [250,280,310,340,370,400,430,470,510,550,590,640,690,740,790,840,900,960,1020,1090,1160,1250,1400]
     if args.analysis == "boosted":
         recoilBins = [250,270,350,475,1000]
