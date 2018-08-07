@@ -18,29 +18,46 @@ fi
 
 if [ -z "$REGION" ];then
     echo -e "\033[0;31m Environment is not correctly setup \033[0m"
-    echo -e "Please specify region: \033[0;33m met \033[0m ; \033[1;36m singleele \033[0m ; \033[1;35m singlemu \033[0m ; \033[1;35m diele \033[0m ; \033[1;35m dimu \033[0m ; \033[1;35m pho \033[0m"
+    echo -e "Please specify region: \033[0;33m met \033[0m ; \033[1;36m singleele \033[0m ; \033[1;35m singlemu \033[0m ; \033[1;35m diele \033[0m ; \033[1;35m dimu \033[0m ; \033[1;35m elemu \033[0m ; \033[1;35m muele \033[0m ; \\\033[1;35m pho \033[0m"
     exit 0
 fi
                                                                                                                             
 export PATH=${PATH}:${CMSSW_BASE}/src/PandaCore/bin/
 
 #submission number
-export SUBMIT_NAME="80X-v1dot1"
+export SUBMIT_NAME="80X-v1.2"
 #scratch space
 export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
-#cfg file
-export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_${REGION}.cfg"
 
+#cfg file
+if [ $REGION = 'elemu' ]
+then
+    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_ele.cfg"
+elif [ $REGION = 'singleele' ]
+then
+    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_ele.cfg"
+elif [ $REGION = 'muele' ]
+then
+    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_mu.cfg"
+elif [ $REGION = 'singlemu' ]
+then
+    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_mu.cfg"
+else
+    export PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_${REGION}.cfg"
+fi
+
+#PANDA_CFG="http://sundleeb.web.cern.ch/sundleeb/panda_config/20180801_mu.cfg" 
 #skim
 export SUBMIT_TMPL="skim_${ANALYSIS}_${REGION}_tmpl.py"
 #panda's 
 export PANDA_FLATDIR="/uscms_data/d3/${USER}/panda/${SUBMIT_NAME}/${ANALYSIS}_${REGION}/flat/"
+#export PANDA_FLATDIR="/uscms_data/d3/naina25/panda/${SUBMIT_NAME}/${ANALYSIS}_${REGION}/flat/"
 export SUBMIT_OUTDIR="/store/user/lpcmetx/panda/${SUBMIT_NAME}/${ANALYSIS}_${REGION}/batch/" 
 
 #condor's
-export SUBMIT_WORKDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}_${REGION}_1/work/"
-export SUBMIT_LOGDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}_${REGION}_1/logs/"
+export SUBMIT_WORKDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}_${REGION}_2/work/"
+export SUBMIT_LOGDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}_${REGION}_2/logs/"
 mkdir -p $PANDA_FLATDIR $SUBMIT_WORKDIR $SUBMIT_LOGDIR
 eosmkdir -p $SUBMIT_OUTDIR
 

@@ -20,5 +20,9 @@ elif [ "$REGION" == "diele" ];then
     echo SingleElectron TTbar ZJets Diboson ZllH ttH | xargs -n 1 -P 10 python merge.py
 elif [ "$REGION" == "dimu" ];then
     echo MET TTbar ZJets Diboson ZllH ttH | xargs -n 1 -P 10 python merge.py
+elif [ "$REGION" == "muele" ];then
+    echo MET TTbar Diboson ttH | xargs -n 1 -P 10 python merge.py
+elif [ "$REGION" == "elemu" ];then
+    echo SingleElectron TTbar Diboson ttH | xargs -n 1 -P 10 python merge.py
 fi
 

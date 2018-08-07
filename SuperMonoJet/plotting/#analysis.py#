@@ -119,10 +119,8 @@ def normalPlotting(region):
     ### ASSIGN FILES TO PROCESSES ###
     if 'qcd' in region:
         processes = [diboson,singletop,wjets,ttbar,zjets,qcd]
-    if 'zee' in region or 'zmm' in region:
+    if 'zee' in region or 'zmm' in region or 'tme' in region or 'tem' in region:
         processes = [diboson,ttbar,zjets]
-    if 'tme' in region or 'tem' in region:
-        processes = [diboson,ttbar]
     if 'wen'in region or 'wmn' in region:
         processes = [qcd,diboson,singletop,zjets,ttbar,wjets]
     ### ASSIGN FILES TO PROCESSES ###
@@ -199,17 +197,6 @@ def normalPlotting(region):
             plot.add_distribution(FDistribution('electronPt[0]',0,400,15,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
             plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
         plot.add_distribution(FDistribution('dphipfUZ',0,3.14,10,'min#Delta#phi(AK4 jet,E_{T}^{miss})','Events'))
-
-    elif any([x in region for x in ['tem','tme']]):
-        recoil=VDistribution("pfUWWmag",recoilBins,"PF U(%s%s) [GeV]"%(lep,lep),"Events/GeV")
-        #plot.add_distribution(FDistribution('diLepMass',60,120,20,'m_{ll} [GeV]','Events/3 GeV'))
-        if not lep=="e":
-            plot.add_distribution(FDistribution('muonPt[0]',0,400,15,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
-            plot.add_distribution(FDistribution('muonEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
-        else:
-            plot.add_distribution(FDistribution('electronPt[0]',0,400,15,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
-            plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
-        plot.add_distribution(FDistribution('dphipfUWW',0,3.14,10,'min#Delta#phi(AK4 jet,E_{T}^{miss})','Events'))
 
     elif 'pho' in region:
         recoil=VDistribution("pfUAmag",recoilBins,"PF U(#gamma) [GeV]","Events/GeV")
@@ -318,3 +305,6 @@ if not args.fromlimit:
     normalPlotting(region)
 else:
     fromLimit(region)
+
+#  LocalWords:  muonPt GeV lep FDistribution muonEta electronPt electronEta AK4
+#  LocalWords:  dphipfUZ

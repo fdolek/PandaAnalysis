@@ -187,6 +187,7 @@ void PandaAnalyzer::JetBasics()
         }
 
         // compute dphi wrt mets
+	nJetDPhi = cleanedJets.size();
         if (cleanedJets.size() <= nJetDPhi) {
           gt->dphipuppimet = std::min(fabs(vJet.DeltaPhi(vPuppiMET)),(double)gt->dphipuppimet);
           gt->dphipfmet = std::min(fabs(vJet.DeltaPhi(vPFMET)),(double)gt->dphipfmet);
