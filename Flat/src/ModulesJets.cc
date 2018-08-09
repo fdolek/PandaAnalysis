@@ -146,11 +146,11 @@ void PandaAnalyzer::JetBasics()
         }
 
         //if (analysis->fatjet)
-        if (analysis->boosted)
+        if (analysis->boosted || analysis->boson)
           IsoJet(jet);
 
-        float csv = (fabs(jet.eta())<2.5) ? jet.csv : -1;
-        float cmva = (fabs(jet.eta())<2.5) ? jet.cmva : -1;
+        float csv = (fabs(jet.eta())<2.4) ? jet.csv : -1;
+        float cmva = (fabs(jet.eta())<2.4) ? jet.cmva : -1;
         if (fabs(jet.eta())<2.4) {
           centralJets.push_back(&jet  );
           if (centralJets.size()==1) {
@@ -344,15 +344,15 @@ void PandaAnalyzer::JetVBFBasics(panda::Jet& jet)
 
 void PandaAnalyzer::IsoJet(panda::Jet& jet) 
 {
-  float maxIsoEta = (analysis->boosted) ? 4.5 : 2.5;
-  bool isIsoJet = ( (gt->nFatjet==0) || 
-      (fabs(jet.eta())<maxIsoEta 
-       && DeltaR2(gt->fj1Eta,gt->fj1Phi,jet.eta(),jet.phi())>FATJETMATCHDR2) ); 
+  float maxIsoEta = (analysis->boosted || analysis->boson) ? 4.5 : 2.4;
+  bool isIsoJet = ( (gt->nFatjet==0) || (bosonpt<0) ||
+      (fabs(jet.eta())<maxIsoEta && DeltaR2(gt->fj1Eta,gt->fj1Phi,jet.eta(),jet.phi())>FATJETMATCHDR2) ||
+      (DeltaR2(gt->jetEta[gt->bosonjtidx[0]],gt->jetPhi[gt->bosonjtidx[0]],jet.eta(),jet.phi())>0.01 && DeltaR2(gt->jetEta[gt->bosonjtidx[1]],gt->jetPhi[gt->bosonjtidx[1]],jet.eta(),jet.phi())>0.01); 
 
   if (isIsoJet) {
     isoJets.push_back(&jet);
     gt->nIsoJet++;
-    float csv = (fabs(jet.eta())<2.5) ? jet.csv : -1;
+    float csv = (fabs(jet.eta())<2.4) ? jet.csv : -1;
     if (csv>0.5426)
       ++gt->isojetNBtags;
     if (isoJets.size()==1) {
@@ -501,8 +501,8 @@ void PandaAnalyzer::JetBosonReco()
              bosonsystem = bosondaughter1 + bosondaughter2;
              double bosondr = sqrt(DeltaR2(bosondaughter1.Eta(),bosondaughter1.Phi(),bosondaughter2.Eta(),bosondaughter2.Phi()));
              double bosondphibrf = dPhiBRF(bosondaughter1, bosondaughter2, bosonsystem);
-            // if (bosonsystem.Pt()>tmp_bosonpt){
-             if (bosondphibrf>tmp_bosondphibrf){
+	     if (bosonsystem.Pt()>tmp_bosonpt){
+	       //if (bosondphibrf>tmp_bosondphibrf){
                 tmp_bosondphibrf = bosondphibrf;
                 tmp_bosoness = (bosonsystem.Pt()*bosondr)/(2*bosonsystem.M());  
                 tmp_bosondr = bosondr;

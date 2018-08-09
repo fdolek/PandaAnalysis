@@ -12,7 +12,7 @@ then
     for SEL in signal wmn wen tmn ten zmm zee pho
     do
 	source analysis.sh $ANALYSIS ${array[$SEL]} $SEL $FROMLIMIT
-	source analysis.sh $ANALYSIS ${array[$SEL]} $SEL_fail $FROMLIMIT
+	source analysis.sh $ANALYSIS ${array[$SEL]} ${SEL}_fail $FROMLIMIT
     done
 fi
 
