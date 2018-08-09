@@ -58,7 +58,7 @@ public :
      kDiEle      =(1<<3),
      kDiMu       =(1<<4),
      kPho        =(1<<5),
-     kOppositeSign =(1<<6),
+     kOpposite   =(1<<6),
      kLepMonoTop =(1<<7),
      kPassTrig   =(1<<8)
     };
