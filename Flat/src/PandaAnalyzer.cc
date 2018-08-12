@@ -771,6 +771,11 @@ bool PandaAnalyzer::PassPreselection()
     }
   }
 
+  if (preselBits & kHad) {
+    if (fj1Pt>450) {
+      isGood = true;
+    }
+  }
 
   if (preselBits & kLepMonoTop){
     if (gt->nJet>=1 && gt->jet1Pt>25){
