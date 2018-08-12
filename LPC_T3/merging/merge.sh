@@ -7,9 +7,9 @@ source ../lpc_setup.sh $ANALYSIS $REGION
 
 if [ "$REGION" == "met" ];then
     echo MET TTbar ZtoNuNu ZJets WJets SingleTop QCD Diboson ZnunuH ZllH WmH WpH ttH ggH VBFH| xargs -n 1 -P 10 python merge.py
-    while read p; do                                                                                                                                                                                     
-	echo $p  | xargs -n 1 -P 10 python merge.py                                                                                                                                                    
-    done <signals.txt
+#    while read p; do                                                                                                                                                                                     
+#	echo $p  | xargs -n 1 -P 10 python merge.py                                                                                                                                                    
+#    done <signals.txt
 elif [ "$REGION" == "pho" ];then
     echo SinglePhoton GJets QCD | xargs -n 1 -P 5 python merge.py 
 elif [ "$REGION" == "singleele" ];then

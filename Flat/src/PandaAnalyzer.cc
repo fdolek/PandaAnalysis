@@ -761,7 +761,7 @@ bool PandaAnalyzer::PassPreselection()
     }
   }
 
-  if (preselBits & kOppositeSign) {
+  if (preselBits & kOpposite) {
     if ( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ) {
       if (  max_dphipf>0.4 || max_dphipuppi>0.4) {
 	if ( gt->nLooseMuon == 1 && gt->nLooseElectron == 1 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {

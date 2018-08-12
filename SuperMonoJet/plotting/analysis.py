@@ -142,7 +142,7 @@ def normalPlotting(region):
         qcd.additional_cut = sel.phoTrigger
         qcd.use_common_weight = False
         qcd.additional_weight = 'sf_phoPurity'
-    elif 'signal' in region or 'wen' in region or 'wmn' in region:
+    elif 'signal' in region or 'wen' in region or 'wmn' in region or 'ten' in region or 'tmn' in region:
         qcd.add_file(baseDir+'QCD.root')
         singletop.add_file(baseDir+'SingleTop.root')
         wjets.add_file(baseDir+'WJets.root')
@@ -150,7 +150,6 @@ def normalPlotting(region):
     if any([x in region for x in ['signal','wmn','zmm','tmn','qcd','tme']]):
         if not blind:
             data.add_file(dataDir+'MET.root')
-
         data.additional_cut = sel.metTrigger
         lep='#mu'
     elif any([x in region for x in ['wen','zee','ten','tem']]):
@@ -194,6 +193,8 @@ def normalPlotting(region):
             plot.add_distribution(FDistribution('electronPt[0]',0,400,15,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
             plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
         plot.add_distribution(FDistribution('dphipfUW',0,3.14,10,'min#Delta#phi(AK4 jet,E_{T}^{miss})','Events'))
+        plot.add_distribution(FDistribution('jetNMBtags',0,5,5,'nmbtag jets','Events'))
+        plot.add_distribution(FDistribution('jetNBtags',0,5,5,'nbtag jets','Events'))
         
     elif any([x in region for x in ['zee','zmm']]):
         recoil=VDistribution("pfUZmag",recoilBins,"PF U(%s%s) [GeV]"%(lep,lep),"Events/GeV")
