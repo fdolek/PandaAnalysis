@@ -21,7 +21,8 @@ d = {
     'TTbar_FXFX'          : ['TTbar_FXFX'],
     'TTbar_Herwig'        : ['TTbar_Herwig'],
     'TTbar_Photon'        : ['TTbar_GJets'],
-    'QCD'                 : ['QCD_ht100to200','QCD_ht200to300','QCD_ht300to500','QCD_ht500to700',
+    #'QCD'                 : ['QCD_ht100to200','QCD_ht200to300','QCD_ht300to500','QCD_ht500to700',
+    'QCD'                 : ['QCD_ht200to300','QCD_ht300to500','QCD_ht500to700',
                               'QCD_ht700to1000','QCD_ht1000to1500','QCD_ht1500to2000','QCD_ht2000toinf'],
 
     'ZHbb'                : ['ZH'],
@@ -33,8 +34,8 @@ d = {
     'WmH'                 : ['WmH'],
 
     'GJets'               : ['GJets_ht100to200','GJets_ht200to400','GJets_ht400to600','GJets_ht600toinf'],
-    'WJets'               : ['WJets_ht100to200','WJets_ht200to400','WJets_ht400to600','WJets_ht600to800',
-                             'WJets_ht800to1200','WJets_ht1200to2500','WJets_ht2500toinf'],
+    'WJets'               : ['WJets_ht100to200','WJets_ht200to400','WJets_ht400to600','WJets_ht600to800'],
+    #'WJets'               : ['WJets_ht600to800'],
     'WJets_nlo'           : ['WJets_pt%sto%s'%(str(x[0]),str(x[1])) for x in 
                              [(100,250),(250,400),(400,600),(600,'inf')] ],
     'ZJets'               : ['ZJets_ht%sto%s'%(str(x[0]),str(x[1])) for x in 
