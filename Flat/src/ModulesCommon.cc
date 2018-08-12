@@ -141,7 +141,7 @@ void PandaAnalyzer::RegisterTriggers()
 
 bool PandaAnalyzer::RecoilPresel() 
 {
-  if ( (preselBits&kMET) || (preselBits&kSingleEle) || (preselBits&kSingleMu) || (preselBits&kDiEle) || (preselBits&kDiMu) || (preselBits&kPho) || (preselBits&kOpposite) || (preselBits&kHad || (preselBits&kLepMonoTop) ) 
+  if ( (preselBits&kMET) || (preselBits&kSingleEle) || (preselBits&kSingleMu) || (preselBits&kDiEle) || (preselBits&kDiMu) || (preselBits&kPho) || (preselBits&kOpposite) || (preselBits&kHad) || (preselBits&kLepMonoTop) ) 
     {
        if (event.recoil.max<175)
          return false;

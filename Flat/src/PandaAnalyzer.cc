@@ -773,7 +773,9 @@ bool PandaAnalyzer::PassPreselection()
 
   if (preselBits & kHad) {
     if (fj1Pt>450) {
-      isGood = true;
+      if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
+        isGood = true;
+      }
     }
   }
 
