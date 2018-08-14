@@ -21,8 +21,8 @@ cuts = {
 
 for r in ['signal','zmm','zee','wmn','wen','tem','tme','pho']:
     cuts[r+'_0tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==0')
-    cuts[r+'_1tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==1')
-    cuts[r+'_2tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==2')
+    cuts[r+'_1tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==1 && Sum$(jetPt>30)<3')
+    cuts[r+'_2tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==2 && Sum$(jetPt>30)>1 && Sum$(jetPt>30)<4')
 
 weights = {
   'signal'         : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_metTrig',

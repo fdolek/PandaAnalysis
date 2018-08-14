@@ -25,7 +25,7 @@ fi
 export PATH=${PATH}:${CMSSW_BASE}/src/PandaCore/bin/
 
 #submission number
-export SUBMIT_NAME="80X-v1.2"
+export SUBMIT_NAME="80X-v1.3"
 #scratch space
 export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
@@ -40,15 +40,15 @@ then
 else
     export PANDA_CFG="/uscms_data/d1/lpcmetx/catalog/20180801_${REGION}.cfg"
 fi
-#export PANDA_CFG="http://home.fnal.gov/~shoh//DarkHiggs_cfg/versionControl/panda009/COMPLETE-BASED-ON-UI/DarkHiggs-MZprim-1K_Mhs-90_Mchi-50-100-250-400.cfg"
+export PANDA_CFG="/uscms_data/d3/lpcmetx/catalog/20180810_resolved_missing.cfg"
  
 #skim
 if [ $REGION = 'elemu' ]
 then
-    export SUBMIT_TMPL="skim_monojet_oppositesign_tmpl.py"
+    export SUBMIT_TMPL="skim_${ANALYSIS}_opposite_tmpl.py"
 elif [ $REGION = 'muele' ]
 then
-export SUBMIT_TMPL="skim_monojet_oppositesign_tmpl.py"
+export SUBMIT_TMPL="skim_${ANALYSIS}_opposite_tmpl.py"
 else
     export SUBMIT_TMPL="skim_${ANALYSIS}_${REGION}_tmpl.py"
 fi
