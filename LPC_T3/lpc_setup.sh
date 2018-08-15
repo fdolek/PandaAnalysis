@@ -40,7 +40,6 @@ then
 else
     export PANDA_CFG="/uscms_data/d1/lpcmetx/catalog/20180801_${REGION}.cfg"
 fi
-export PANDA_CFG="/uscms_data/d3/lpcmetx/catalog/20180810_resolved_missing.cfg"
  
 #skim
 if [ $REGION = 'elemu' ]
