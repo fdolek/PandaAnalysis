@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+x#!/usr/bin/env python
 
 from os import system,getenv
 from sys import argv
@@ -104,33 +104,43 @@ def normalPlotting(region):
     wjets         = Process('W+jets',root.kWjets,None,root.kGreen-10)
     diboson       = Process('Diboson',root.kDiboson,None,root.kYellow-9)
     ttbar         = Process('t#bar{t}',root.kTTbar,None,root.kOrange-4)
+    ttbar1l       = Process('t#bar{t} 1l',root.kTTbar1l,None,root.kOrange-3)
+    ttbar2l       = Process('t#bar{t} 2l',root.kTTbar2l,None,root.kOrange-5)
     #ttg           = Process('t#bar{t}#gamma',root.kTTbar,root.kOrange-4)
     singletop     = Process('Single t',root.kST,None,root.kRed-9)
     #singletopg    = Process('t#gamma',root.kST,root.kRed-9)
     qcd           = Process("QCD",root.kQCD,None,root.kMagenta-10)
-    gjets         = Process('#gamma+jets',root.kGjets)
+    gjets         = Process('#gamma+jets',root.kGjets,None,root.kBlue)
     data          = Process("Data",root.kData)
+    signal        = Process('m_{Zp}=1.0 TeV,m_{h}=90 GeV, m_{#chi}=400 GeV',root.kSignal)
     #signal        = Process('m_{V}=1.75 TeV, m_{#chi}=1 GeV',root.kSignal)
-    processes = [qcd,diboson,singletop,wjets,ttbar,zjets]
 
-    if 'qcd' in region:
-        processes = [diboson,singletop,wjets,ttbar,zjets,qcd]
-
-    ### ASSIGN FILES TO PROCESSES ###
-    if 'qcd' in region:
-        processes = [diboson,singletop,wjets,ttbar,zjets,qcd]
-    if 'zee' in region or 'zmm' in region or 'tme' in region or 'tem' in region:
+    processes = []
+    if 'zee' in region or 'zmm' in region:
         processes = [diboson,ttbar,zjets]
+        if args.analysis == "monojet": processes = [diboson,ttbar1l,ttbar2l,zjets]
+    if 'tme' in region or 'tem' in region:
+        processes = [diboson,ttbar,singletop]
+        if args.analysis == "monojet": [diboson,ttbar1,ttbar2l,singletop]
     if 'wen'in region or 'wmn' in region:
         processes = [qcd,diboson,singletop,zjets,ttbar,wjets]
+        if args.analysis == "monojet": [qcd,diboson,singletop,zjets,ttbar1l,ttbar2l,wjets]
+
     ### ASSIGN FILES TO PROCESSES ###
     if 'signal' in region or 'qcd' in region:
-        processes = [qcd,zjets,singletop,ttbar,diboson,wjets,znunu]
+        if args.analysis == "monojet":
+            processes = [qcd,zjets,singletop,ttbar1l,ttbar2l,diboson,wjets,znunu]
+        else:
+            processes = [qcd,zjets,singletop,ttbar,diboson,wjets,znunu]
         znunu.add_file(baseDir+'ZtoNuNu.root')
 
     zjets.add_file(baseDir+'ZJets.root')
     diboson.add_file(baseDir+'Diboson.root')
     ttbar.add_file(baseDir+'TTbar%s.root'%(args.tt)); print 'TTbar%s.root'%(args.tt)
+    ttbar1l.add_file(baseDir+'TTbar_L.root')
+    ttbar2l.add_file(baseDir+'TTbar_2L.root')
+    singletop.add_file(baseDir+'SingleTop.root')
+    wjets.add_file(baseDir+'WJets.root')
     if 'pho' in region:
        #processes = [qcd,singletopg,ttg,gjets]
         processes = [qcd,gjets]
@@ -139,15 +149,12 @@ def normalPlotting(region):
         qcd.additional_cut = sel.phoTrigger
         qcd.use_common_weight = False
         qcd.additional_weight = 'sf_phoPurity'
-    elif 'signal' in region or 'wen' in region or 'wmn' in region:
+    elif 'signal' in region or 'wen' in region or 'wmn' in region or 'ten' in region or 'tmn' in region:
         qcd.add_file(baseDir+'QCD.root')
-        singletop.add_file(baseDir+'SingleTop.root')
-        wjets.add_file(baseDir+'WJets.root')
     
     if any([x in region for x in ['signal','wmn','zmm','tmn','qcd','tme']]):
         if not blind:
             data.add_file(dataDir+'MET.root')
-
         data.additional_cut = sel.metTrigger
         lep='#mu'
     elif any([x in region for x in ['wen','zee','ten','tem']]):
@@ -160,7 +167,9 @@ def normalPlotting(region):
 
     if not blind:
         processes.append(data)
-    if SIGNAL:
+    if 'signal' in region:
+        SIGNAL=True
+        signal.add_file(baseDir+'BBbarDM_MZprime-1000_Mhs-90_Mchi-400.root')
         processes.append(signal)
     #    #processes.append(signal1)
 
@@ -168,7 +177,10 @@ def normalPlotting(region):
        #print "processess considered -> ", p
         plot.add_process(p)
 
-    recoilBins = [250,270,350,475,1000]
+    if args.analysis == "monojet" or args.analysis == "resolved":
+        recoilBins = [250,280,310,340,370,400,430,470,510,550,590,640,690,740,790,840,900,960,1020,1090,1160,1250,1400]
+    if args.analysis == "boosted":
+        recoilBins = [250,270,350,475,1000]
     fatjetBins = [25,75,100,150,600]
     nRecoilBins = len(recoilBins)-1
 
@@ -186,6 +198,8 @@ def normalPlotting(region):
             plot.add_distribution(FDistribution('electronPt[0]',0,400,15,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
             plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
         plot.add_distribution(FDistribution('dphipfUW',0,3.14,10,'min#Delta#phi(AK4 jet,E_{T}^{miss})','Events'))
+        plot.add_distribution(FDistribution('jetNMBtags',0,5,5,'nmbtag jets','Events'))
+        plot.add_distribution(FDistribution('jetNBtags',0,5,5,'nbtag jets','Events'))
         
     elif any([x in region for x in ['zee','zmm']]):
         recoil=VDistribution("pfUZmag",recoilBins,"PF U(%s%s) [GeV]"%(lep,lep),"Events/GeV")
@@ -195,8 +209,19 @@ def normalPlotting(region):
             plot.add_distribution(FDistribution('muonEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
         else:
             plot.add_distribution(FDistribution('electronPt[0]',0,400,15,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
-            plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
+            #plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
         plot.add_distribution(FDistribution('dphipfUZ',0,3.14,10,'min#Delta#phi(AK4 jet,E_{T}^{miss})','Events'))
+
+    elif any([x in region for x in ['tem','tme']]):
+        recoil=VDistribution("pfUWWmag",recoilBins,"PF U(%s%s) [GeV]"%(lep,lep),"Events/GeV")
+        #plot.add_distribution(FDistribution('diLepMass',60,120,20,'m_{ll} [GeV]','Events/3 GeV'))
+        if not lep=="e":
+            plot.add_distribution(FDistribution('muonPt[0]',0,400,15,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
+            plot.add_distribution(FDistribution('muonEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
+        else:
+            plot.add_distribution(FDistribution('electronPt[0]',0,400,15,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
+            plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,10,'%s #eta'%lep,'Events'))
+        plot.add_distribution(FDistribution('dphipfUWW',0,3.14,10,'min#Delta#phi(AK4 jet,E_{T}^{miss})','Events'))
 
     elif 'pho' in region:
         recoil=VDistribution("pfUAmag",recoilBins,"PF U(#gamma) [GeV]","Events/GeV")
@@ -230,8 +255,8 @@ def normalPlotting(region):
     #plot.add_distribution(FDistribution('nLooseMuon',-0.5,4.5,5,'Number of loose Muon','Events/bin'))
 
     #fatjet
-    if args.analysis == "boosted":
-        plot.add_distribution(FDistribution('fj1MSD',0,600,20,'fatjet m_{SD} [GeV]','Events'))
+#    if args.analysis == "boosted":
+#        plot.add_distribution(FDistribution('fj1MSD',0,600,20,'fatjet m_{SD} [GeV]','Events'))
 
     #fjmass=VDistribution("fj1MSD",fatjetBins,"fatjet m_{SD} [GeV]","Events")
     #plot.add_distribution(fjmass)
@@ -246,7 +271,7 @@ def normalPlotting(region):
     #Cutflow
     plot.add_distribution(FDistribution("1",0,2,1,"dummy","dummy"))
     system('mkdir -p %s/%s/%s' %(args.outdir,args.analysis,region))
-    plot.draw_all(args.outdir+'/'+args.analysis+'/'+region+'/')
+    plot.draw_all(args.outdir+'/'+args.analysis+'/'+args.region+'/')
 
 def fromLimit(region):
     region=region
@@ -260,9 +285,9 @@ def fromLimit(region):
     singletop     = Process('Single t',root.kST,'ST_'+region,root.kRed-9)
     #singletopg    = Process('t#gamma',root.kST,args.region)
     qcd           = Process('QCD',root.kQCD,'QCD_'+region,root.kMagenta-10)
-    #gjets         = Process('#gamma+jets',root.kGjets,args.region)
+    gjets         = Process('#gamma+jets',root.kGjets,None,root.kBlue)
     data          = Process("Data",root.kData,'Data_'+region)
-    #signal        = Process('m_{V}=1.75 TeV, m_{#chi}=1 GeV',root.kSignal,args.region)
+    signal        = Process('m_{Zp}=1.0 TeV,m_{h}=90 GeV, m_{#chi}=400 GeV',root.kSignal)
     processes = [qcd,diboson,singletop,wjets,ttbar,zjets]
 
     
@@ -286,8 +311,10 @@ def fromLimit(region):
     data.additional_weight='weight'
     processes.append(data)
     plot.add_process(data)
-
-    recoilBins = [250,280,310,350,400,450,600,1000]
+    if args.analysis == "monojet":
+        recoilBins = [250,280,310,340,370,400,430,470,510,550,590,640,690,740,790,840,900,960,1020,1090,1160,1250,1400]
+    if args.analysis == "boosted":
+        recoilBins = [250,280,310,350,400,450,600,1000]
     nRecoilBins = len(recoilBins)-1
     plot.add_distribution(FDistribution('fjpt',200,700,15,'fatjet p_{T} [GeV]','Events/25 GeV'))
     plot.add_distribution(FDistribution('fjmass',0,600,20,'fatjet m_{SD} [GeV]','Events'))
@@ -305,6 +332,3 @@ if not args.fromlimit:
     normalPlotting(region)
 else:
     fromLimit(region)
-
-#  LocalWords:  muonPt GeV lep FDistribution muonEta electronPt electronEta AK4
-#  LocalWords:  dphipfUZ

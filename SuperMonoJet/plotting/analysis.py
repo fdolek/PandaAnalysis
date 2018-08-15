@@ -104,6 +104,8 @@ def normalPlotting(region):
     wjets         = Process('W+jets',root.kWjets,None,root.kGreen-10)
     diboson       = Process('Diboson',root.kDiboson,None,root.kYellow-9)
     ttbar         = Process('t#bar{t}',root.kTTbar,None,root.kOrange-4)
+    ttbar1l       = Process('t#bar{t} 1l',root.kTTbar1l,None,root.kOrange-3)
+    ttbar2l       = Process('t#bar{t} 2l',root.kTTbar2l,None,root.kOrange-5)
     #ttg           = Process('t#bar{t}#gamma',root.kTTbar,root.kOrange-4)
     singletop     = Process('Single t',root.kST,None,root.kRed-9)
     #singletopg    = Process('t#gamma',root.kST,root.kRed-9)
@@ -112,28 +114,37 @@ def normalPlotting(region):
     data          = Process("Data",root.kData)
     signal        = Process('m_{Zp}=1.0 TeV,m_{h}=90 GeV, m_{#chi}=400 GeV',root.kSignal)
     #signal        = Process('m_{V}=1.75 TeV, m_{#chi}=1 GeV',root.kSignal)
-    processes = [qcd,diboson,singletop,wjets,ttbar,zjets]
 
-    if 'qcd' in region:
-        processes = [diboson,singletop,wjets,ttbar,zjets,qcd]
-
-    ### ASSIGN FILES TO PROCESSES ###
-    if 'qcd' in region:
-        processes = [diboson,singletop,wjets,ttbar,zjets,qcd]
+    processes = []
     if 'zee' in region or 'zmm' in region:
         processes = [diboson,ttbar,zjets]
+        if args.analysis == "monojet": processes = [diboson,ttbar1l,ttbar2l,zjets]
     if 'tme' in region or 'tem' in region:
-        processes = [diboson,ttbar]
+        if args.analysis == "monojet": 
+            processes = [diboson,ttbar1l,ttbar2l,singletop]
+        else:
+            processes = [diboson,ttbar,singletop]
     if 'wen'in region or 'wmn' in region:
-        processes = [qcd,diboson,singletop,zjets,ttbar,wjets]
+        if args.analysis == "monojet": 
+            processes = [qcd,diboson,singletop,zjets,ttbar1l,ttbar2l,wjets]
+        else:
+            processes = [qcd,diboson,singletop,zjets,ttbar,wjets]
+
     ### ASSIGN FILES TO PROCESSES ###
     if 'signal' in region or 'qcd' in region:
-        processes = [qcd,zjets,singletop,ttbar,diboson,wjets,znunu]
+        if args.analysis == "monojet":
+            processes = [qcd,zjets,singletop,ttbar1l,ttbar2l,diboson,wjets,znunu]
+        else:
+            processes = [qcd,zjets,singletop,ttbar,diboson,wjets,znunu]
         znunu.add_file(baseDir+'ZtoNuNu.root')
 
     zjets.add_file(baseDir+'ZJets.root')
     diboson.add_file(baseDir+'Diboson.root')
     ttbar.add_file(baseDir+'TTbar%s.root'%(args.tt)); print 'TTbar%s.root'%(args.tt)
+    ttbar1l.add_file(baseDir+'TTbar_L.root')
+    ttbar2l.add_file(baseDir+'TTbar_2L.root')
+    singletop.add_file(baseDir+'SingleTop.root')
+    wjets.add_file(baseDir+'WJets.root')
     if 'pho' in region:
        #processes = [qcd,singletopg,ttg,gjets]
         processes = [qcd,gjets]
@@ -144,8 +155,6 @@ def normalPlotting(region):
         qcd.additional_weight = 'sf_phoPurity'
     elif 'signal' in region or 'wen' in region or 'wmn' in region or 'ten' in region or 'tmn' in region:
         qcd.add_file(baseDir+'QCD.root')
-        singletop.add_file(baseDir+'SingleTop.root')
-        wjets.add_file(baseDir+'WJets.root')
     
     if any([x in region for x in ['signal','wmn','zmm','tmn','qcd','tme']]):
         if not blind:
@@ -250,8 +259,8 @@ def normalPlotting(region):
     #plot.add_distribution(FDistribution('nLooseMuon',-0.5,4.5,5,'Number of loose Muon','Events/bin'))
 
     #fatjet
-    if args.analysis == "boosted":
-        plot.add_distribution(FDistribution('fj1MSD',0,600,20,'fatjet m_{SD} [GeV]','Events'))
+#    if args.analysis == "boosted":
+#        plot.add_distribution(FDistribution('fj1MSD',0,600,20,'fatjet m_{SD} [GeV]','Events'))
 
     #fjmass=VDistribution("fj1MSD",fatjetBins,"fatjet m_{SD} [GeV]","Events")
     #plot.add_distribution(fjmass)
@@ -266,7 +275,7 @@ def normalPlotting(region):
     #Cutflow
     plot.add_distribution(FDistribution("1",0,2,1,"dummy","dummy"))
     system('mkdir -p %s/%s/%s' %(args.outdir,args.analysis,region))
-    plot.draw_all(args.outdir+'/'+args.analysis+'/'+region+'/')
+    plot.draw_all(args.outdir+'/'+args.analysis+'/'+args.region+'/')
 
 def fromLimit(region):
     region=region

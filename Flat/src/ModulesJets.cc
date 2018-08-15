@@ -49,6 +49,7 @@ void PandaAnalyzer::JetBasics()
   jetDown1=0; jetDown2=0;
   gt->dphipuppimet=999; gt->dphipfmet=999;
   gt->dphipuppiUW=999; gt->dphipfUW=999;
+  gt->dphipuppiUWW=999; gt->dphipfUWW=999;
   gt->dphipuppiUZ=999; gt->dphipfUZ=999;
   gt->dphipuppiUA=999; gt->dphipfUA=999;
   float maxJetEta = (analysis->vbf) ? 4.7 : 4.5;
@@ -194,9 +195,11 @@ void PandaAnalyzer::JetBasics()
           if (analysis->recoil) {
             gt->dphipuppiUA = std::min(fabs(vJet.DeltaPhi(vpuppiUA)),(double)gt->dphipuppiUA);
             gt->dphipuppiUW = std::min(fabs(vJet.DeltaPhi(vpuppiUW)),(double)gt->dphipuppiUW);
+            gt->dphipuppiUWW = std::min(fabs(vJet.DeltaPhi(vpuppiUWW)),(double)gt->dphipuppiUWW);
             gt->dphipuppiUZ = std::min(fabs(vJet.DeltaPhi(vpuppiUZ)),(double)gt->dphipuppiUZ);
             gt->dphipfUA = std::min(fabs(vJet.DeltaPhi(vpfUA)),(double)gt->dphipfUA);
             gt->dphipfUW = std::min(fabs(vJet.DeltaPhi(vpfUW)),(double)gt->dphipfUW);
+            gt->dphipfUWW = std::min(fabs(vJet.DeltaPhi(vpfUWW)),(double)gt->dphipfUWW);
             gt->dphipfUZ = std::min(fabs(vJet.DeltaPhi(vpfUZ)),(double)gt->dphipfUZ);
           }
         }
@@ -237,6 +240,10 @@ void PandaAnalyzer::JetBasics()
     case 2:
       gt->dphipuppiU = gt->dphipuppiUZ;
       gt->dphipfU = gt->dphipfUZ;
+      break;
+    case 3:
+      gt->dphipuppiU = gt->dphipuppiUWW;
+      gt->dphipfU = gt->dphipfUWW;
       break;
     default: // c'est impossible !
       break;
@@ -345,9 +352,10 @@ void PandaAnalyzer::JetVBFBasics(panda::Jet& jet)
 void PandaAnalyzer::IsoJet(panda::Jet& jet) 
 {
   float maxIsoEta = (analysis->boosted || analysis->boson) ? 4.5 : 2.4;
-  bool isIsoJet = ( (gt->nFatjet==0) || (bosonpt<0) ||
+  bool isIsoJet = ( (gt->nFatjet==0) || (gt->bosonpt<0) ||
       (fabs(jet.eta())<maxIsoEta && DeltaR2(gt->fj1Eta,gt->fj1Phi,jet.eta(),jet.phi())>FATJETMATCHDR2) ||
-      (DeltaR2(gt->jetEta[gt->bosonjtidx[0]],gt->jetPhi[gt->bosonjtidx[0]],jet.eta(),jet.phi())>0.01 && DeltaR2(gt->jetEta[gt->bosonjtidx[1]],gt->jetPhi[gt->bosonjtidx[1]],jet.eta(),jet.phi())>0.01); 
+      (DeltaR2(gt->jetEta[gt->bosonjtidx[0]],gt->jetPhi[gt->bosonjtidx[0]],jet.eta(),jet.phi())>0.01 && DeltaR2(gt->jetEta[gt->bosonjtidx[1]],gt->jetPhi[gt->bosonjtidx[1]],jet.eta(),jet.phi())>0.01)
+		  ); 
 
   if (isIsoJet) {
     isoJets.push_back(&jet);

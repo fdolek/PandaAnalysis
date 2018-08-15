@@ -25,8 +25,8 @@ counter=0
 for k in keys:
 	sample = samples[k]
 	configs = sample.get_config(args.nfiles,suffix='_%i')
-	if 'MET' in k or 'Znunu' in k or 'ZJets' in k or 'WJets' in k or 'GJets' in k: configs = sample.get_config(args.nfiles*2,suffix='_%i')
-	if 'SingleElectron' in k: configs = sample.get_config(args.nfiles*4,suffix='_%i')
+	if 'MET' in k or 'Znunu' in k or 'ZJets' in k or 'WJets' in k: configs = sample.get_config(args.nfiles*2,suffix='_%i')
+	if 'SingleElectron' in k: configs = sample.get_config(args.nfiles*3,suffix='_%i')
 	for c in configs:
 		fout.write(c%(counter,counter))
 		counter += 1
