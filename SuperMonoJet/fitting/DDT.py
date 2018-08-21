@@ -111,10 +111,7 @@ for bks,B in Bkgs_tags:
                         sys.stdout.flush()
 		'''
 		T.GetEntry(j)
-		if 'Single' not in bks:
-			weight = T.normalizedWeight*T.sf_pu*T.sf_ewkV*T.sf_qcdV
-		else:
-			weight = 1
+		weight = T.normalizedWeight*T.sf_pu*T.sf_ewkV*T.sf_qcdV
 		PT = T.fj1Pt
 		preRHO = T.fj1MSD_corr*T.fj1MSD_corr/T.fj1Pt/T.fj1Pt
 		if preRHO > 0. and T.fj1ECFN_1_2_10 != 0.:
