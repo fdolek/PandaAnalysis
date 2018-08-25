@@ -118,24 +118,10 @@ def normalPlotting(region):
     processes = []
     if 'zee' in region or 'zmm' in region:
         processes = [diboson,ttbar,zjets]
-        if args.analysis == "monojet": processes = [diboson,ttbar1l,ttbar2l,zjets]
-    if 'tme' in region or 'tem' in region:
-        if args.analysis == "monojet": 
-            processes = [diboson,ttbar1l,ttbar2l,singletop]
-        else:
-            processes = [diboson,ttbar,singletop]
-    if 'wen'in region or 'wmn' in region:
-        if args.analysis == "monojet": 
-            processes = [qcd,diboson,singletop,zjets,ttbar1l,ttbar2l,wjets]
-        else:
-            processes = [qcd,diboson,singletop,zjets,ttbar,wjets]
-
-    ### ASSIGN FILES TO PROCESSES ###
+    if 'wen'in region or 'wmn' in region or 'ten'in region or 'tmn' in region :
+        processes = [qcd,diboson,singletop,zjets,ttbar,wjets]
     if 'signal' in region or 'qcd' in region:
-        if args.analysis == "monojet":
-            processes = [qcd,zjets,singletop,ttbar1l,ttbar2l,diboson,wjets,znunu]
-        else:
-            processes = [qcd,zjets,singletop,ttbar,diboson,wjets,znunu]
+        processes = [qcd,zjets,singletop,ttbar,diboson,wjets,znunu]
         znunu.add_file(baseDir+'ZtoNuNu.root')
 
     zjets.add_file(baseDir+'ZJets.root')

@@ -317,6 +317,7 @@ private:
     Analysis *analysis = 0; //!< configure what to run
     TimeReporter *tr = 0; //!< profile time usage
     float FATJETMATCHDR2 = 2.25;
+    float NARROWJETMATCHDR2 = 0.16;
 
     //////////////////////////////////////////////////////////////////////////////////////
 

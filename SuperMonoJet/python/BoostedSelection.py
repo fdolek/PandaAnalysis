@@ -13,7 +13,7 @@ presel = 'nFatjet>0 && fj1Pt>200 && nTau==0  && jet1IsTight==1'
 cuts = {
  'signal' : tAND(metFilter,tAND(presel,'nLooseLep==0 && nLooseElectron==0 && nLoosePhoton==0 && pfmet>250 && dphipfmet>0.8')), 
  'mn'      : tAND(metFilter,tAND(presel,'nLoosePhoton==0 && nTau==0 && nLooseLep==1 && nTightMuon==1 && pfUWmag>250 && dphipfUW>0.8 && mT<160')),
- 'en'      : tAND(metFilter,tAND(presel,'nLoosePhoton==0 && nTau==0 && nLooseLep==1 && nTightElectron==1 && pfmet>50 && pfUWmag>250 && dphipfUW>0.8 && mT<160')),
+ 'en'      : tAND(metFilter,tAND(presel,'nLoosePhoton==0 && nTau==0 && nLooseLep==1 && nTightElectron==1 && pfmet>50 && pfUWmag>250 && dphipfUW>0.4 && mT<160')),
  'zmm'    : tAND(metFilter,tAND(presel,'pfUZmag>250 && dphipfUZ>0.8 && nLooseElectron==0 && nLoosePhoton==0 && nTau==0 && nLooseMuon==2 && nTightLep>0 && 60<diLepMass && diLepMass<120')),
  'zee'    : tAND(metFilter,tAND(presel,'pfUZmag>250 && dphipfUZ>0.8 && nLooseMuon==0 && nLoosePhoton==0 && nTau==0 && nLooseElectron==2 && nTightLep>0 && 60<diLepMass && diLepMass<120')),
  'tme'    : tAND(metFilter,tAND(presel,'pfUWWmag>250 && dphipfUWW>0.8 && nLoosePhoton==0 && nLooseElectron==1 && nTightMuon==1')),# && Sum$(jetPt>30 && jetCSV>0.54 && abs(jetEta)<2.4 && jetIso)==2')),
@@ -24,9 +24,9 @@ cuts = {
 
 for r in ['mn','en']:
 	cuts['w'+r] = tAND(cuts[r],'Sum$(jetPt>30 && jetCSV>0.54 && abs(jetEta)<2.4 && jetIso)==0')
-	cuts['t'+r]     = tAND(cuts[r],'Sum$(jetPt>30 && jetCSV>0.54 && abs(jetEta)<2.4 && jetIso)==1')
-#        cuts['t'+r]     = tAND(cuts[r],'isojetNBtags>0')
-
+	cuts['t'+r]     = tAND(cuts[r],'Sum$(jetPt>30 && jetCSV>0.54 && abs(jetEta)<2.4 && jetIso)>0')
+#        cuts['t'+r]     = tAND(cuts[r],'isojetNBtags>-1')
+#	cuts['t'+r]     =  cuts[r]
 for r in ['signal','zmm','zee','pho']:
         cuts[r] = tAND(cuts[r],'Sum$(jetPt>30 && jetCSV>0.54 && abs(jetEta)<2.4 && jetIso)==0')
 
