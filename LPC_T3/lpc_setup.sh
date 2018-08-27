@@ -58,10 +58,10 @@ export PANDA_FLATDIR="/uscms_data/d3/${USER}/panda/${SUBMIT_NAME}/${ANALYSIS}_${
 export SUBMIT_OUTDIR="/store/user/lpcmetx/panda/${SUBMIT_NAME}/${ANALYSIS}_${REGION}/batch/" 
 
 #condor's
-export SUBMIT_WORKDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}_${REGION}_2/work/"
-export SUBMIT_LOGDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}_${REGION}_2/logs/"
+export SUBMIT_WORKDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}_${REGION}/work/"
+export SUBMIT_LOGDIR="${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}/${ANALYSIS}_${REGION}/logs/"
 mkdir -p $PANDA_FLATDIR $SUBMIT_WORKDIR $SUBMIT_LOGDIR
-chmod -R 777 $PANDA_FLATDIR $SUBMIT_WORKDIR $SUBMIT_LOGDIR
+chmod -R 777 /uscms_data/d3/${USER}/panda/${SUBMIT_NAME} ${scratch_area}/lpcmetx/condor/${SUBMIT_NAME}
 eosmkdir -p $SUBMIT_OUTDIR
 
 export SUBMIT_CONFIG=T2  # allow running on T3 or T2. if $SUBMIT_CONFIG==T3, then only run on T3
