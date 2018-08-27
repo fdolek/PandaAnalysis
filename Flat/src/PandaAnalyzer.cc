@@ -772,8 +772,8 @@ bool PandaAnalyzer::PassPreselection()
   }
 
   if (preselBits & kHad) {
-    if !( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 ){
-      if (fj1Pt>450 || bosonpt>450) {
+    if (!( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 )){
+      if (gt->fj1Pt>450 || gt->bosonpt>450) {
         if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
         isGood = true;
         }
