@@ -1,4 +1,4 @@
-#!/bin/bash
+x#!/bin/bash
 
 ANALYSIS=$1
 REGION=$2
@@ -25,7 +25,7 @@ fi
 export PATH=${PATH}:${CMSSW_BASE}/src/PandaCore/bin/
 
 #submission number
-export SUBMIT_NAME="80X-v1.5"
+export SUBMIT_NAME="80X-v1.4"
 #scratch space
 export scratch_area="/uscms_data/d3"
 export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
