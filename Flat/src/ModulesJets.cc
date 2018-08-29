@@ -351,9 +351,9 @@ void PandaAnalyzer::JetVBFBasics(panda::Jet& jet)
 
 void PandaAnalyzer::IsoJet(panda::Jet& jet) 
 {
-  float maxIsoEta = (analysis->boosted || analysis->boson) ? 4.5 : 2.4;
-  bool isIsoJet = ( (analysis->boosted && fabs(jet.eta())<maxIsoEta && DeltaR2(gt->fj1Eta,gt->fj1Phi,jet.eta(),jet.phi())>FATJETMATCHDR2) ||
-		    (analysis->boson && fabs(jet.eta())<maxIsoEta && DeltaR2(gt->jetEta[gt->bosonjtidx[0]],gt->jetPhi[gt->bosonjtidx[0]],jet.eta(),jet.phi())>NARROWJETMATCHDR2 && DeltaR2(gt->jetEta[gt->bosonjtidx[1]],gt->jetPhi[gt->bosonjtidx[1]],jet.eta(),jet.phi())>NARROWJETMATCHDR2) );
+  float maxIsoEta = (analysis->boosted) ? 4.5 : 2.4;
+  bool isIsoJet = ( (analysis->boosted && fabs(jet.eta())<maxIsoEta && DeltaR2(gt->fj1Eta,gt->fj1Phi,jet.eta(),jet.phi())>FATJETMATCHDR2) ); 
+  //		    (analysis->boson && fabs(jet.eta())<maxIsoEta && DeltaR2(gt->jetEta[gt->bosonjtidx[0]],gt->jetPhi[gt->bosonjtidx[0]],jet.eta(),jet.phi())>NARROWJETMATCHDR2 && DeltaR2(gt->jetEta[gt->bosonjtidx[1]],gt->jetPhi[gt->bosonjtidx[1]],jet.eta(),jet.phi())>NARROWJETMATCHDR2) );
 
   if (isIsoJet) {
     isoJets.push_back(&jet);

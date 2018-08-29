@@ -25,7 +25,7 @@ Load('PandaAnalyzer')
 
 skimmer = root.PandaAnalyzer(debug_level)
 
-analysis = boosted(True)
+analysis = resolved(True)
 #analysis = resolved(True)
 #analysis = monojet(True)
 #analysis = monojet(True)
@@ -36,7 +36,7 @@ skimmer.isData=False
 #skimmer.SetPreselectionBit(root.PandaAnalyzer.kBoosted)
 #skimmer.SetPreselectionBit(root.PandaAnalyzer.kResolved)
 #skimmer.SetPreselectionBit(root.PandaAnalyzer.kMonojet)
-skimmer.SetPreselectionBit(root.PandaAnalyzer.kOpposite)
+skimmer.SetPreselectionBit(root.PandaAnalyzer.kMET)
 if skimmer.isData:
     with open(getenv('CMSSW_BASE')+'/src/PandaAnalysis/data/certs/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt') as jsonFile:
         payload = json.load(jsonFile)
