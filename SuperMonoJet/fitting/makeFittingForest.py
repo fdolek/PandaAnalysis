@@ -179,13 +179,9 @@ elif 'pho' in region:
     factory.add_process(f('QCD'),'QCD')
 
 
-elif 'signal' not in region:
-    factory.add_process(f('ZtoNuNu'),'Zvv')
+else:
     factory.add_process(f('ZJets'),'Zll')
-    factory.add_process(f('WJets'),'Wlv')
-    factory.add_process(f('SingleTop'),'ST')
     factory.add_process(f('Diboson'),'Diboson')
-    factory.add_process(f('QCD'),'QCD')
     factory.add_process(f('TTbar'),'ttbar')
 
     if 'zee' in region or 'te' in region or 'wen' in region:
@@ -193,16 +189,16 @@ elif 'signal' not in region:
 
     if 'zmm' in region or 'tm' in region or 'wmn' in region:
         factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
-	
-elif 'signal' in region:
-    factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
-    factory.add_process(f('ZtoNuNu'),'Zvv')
-    factory.add_process(f('TTbar'),'ttbar')
-    factory.add_process(f('ZJets'),'Zll')
-    factory.add_process(f('WJets'),'Wlv')
-    factory.add_process(f('SingleTop'),'ST')
-    factory.add_process(f('Diboson'),'Diboson')
-    factory.add_process(f('QCD'),'QCD')
+    
+    if 'signal' in region or 'te' in region or 'wen' in region or 'tm' in region or 'wmn' in region:
+        factory.add_process(f('WJets'),'Wlv')
+        factory.add_process(f('SingleTop'),'ST')
+        factory.add_process(f('QCD'),'QCD')
+        if 'signal' in region:
+            factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
+            factory.add_process(f('ZtoNuNu'),'Zvv')
+
+
 
 forestDir = basedir + '/limits/'
 os.system('mkdir -p %s'%(forestDir))
