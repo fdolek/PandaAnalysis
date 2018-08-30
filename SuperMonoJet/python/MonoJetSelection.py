@@ -10,19 +10,17 @@ presel = '!(nFatjet==1 && fj1Pt>200) && jet1Pt>100 && abs(jet1Eta)<2.4 && jet1Is
 
 cuts = {
     'signal' : tAND(metFilter,tAND(presel,'nLooseMuon==0 && nLooseElectron==0 && nLoosePhoton==0 && pfmet>250 && dphipfmet>0.5')),
-    'wmn'    : tAND(metFilter,tAND(presel,'nLoosePhoton==0 && nLooseElectron==0 && nLooseMuon==1 && nTightMuon==1 && pfUWmag>250 && dphipfUW>0.5')),
-    'wen'    : tAND(metFilter,tAND(presel,'nLoosePhoton==0 && nLooseMuon==0 && nLooseElectron==1 && nTightElectron==1 && pfmet>50 && pfUWmag>250 && dphipfUW>0.5')),
+    'mn'    : tAND(metFilter,tAND(presel,'nLoosePhoton==0 && nLooseElectron==0 && nLooseMuon==1 && nTightMuon==1 && pfUWmag>250 && dphipfUW>0.5')),
+    'en'    : tAND(metFilter,tAND(presel,'nLoosePhoton==0 && nLooseMuon==0 && nLooseElectron==1 && nTightElectron==1 && pfmet>50 && pfUWmag>250 && dphipfUW>0.5')),
     'zmm'    : tAND(metFilter,tAND(presel,'pfUZmag>250 && dphipfUZ>0.5 && nLooseElectron==0 && nLoosePhoton==0 && nLooseMuon==2 && nTightLep>0 && 60<diLepMass && diLepMass<120')),
     'zee'    : tAND(metFilter,tAND(presel,'pfUZmag>250 && dphipfUZ>0.5 && nLoosePhoton==0 && nLooseMuon==0 && nLooseElectron==2 && nTightLep>0 && 60<diLepMass && diLepMass<120')),
-    'tme'    : tAND(metFilter,tAND(presel,'pfUWWmag>250 && dphipfUWW>0.5 && nLoosePhoton==0 && nLooseLep==2 && nTightMuon==1')),
-    'tem'    : tAND(metFilter,tAND(presel,'pfUWWmag>250 && dphipfUWW>0.5 && nLoosePhoton==0 && nLooseMuon==1 && nTightElectron==1 && pfmet>50')),
     'pho'    : tAND(metFilter,tAND(presel,'pfUAmag>250 && dphipfUA>0.5 && nLooseLep==0 && nLoosePhoton==1 && loosePho1IsTight==1 && fabs(loosePho1Eta)<1.4442')),
     }
 
-for r in ['signal','zmm','zee','wmn','wen','tem','tme','pho']:
+for r in ['signal','zmm','zee','mn','en','pho']:
     cuts[r+'_0tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==0')
-    cuts[r+'_1tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==1 && Sum$(jetPt>30)<3')
-    cuts[r+'_2tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==2 && Sum$(jetPt>30)>1 && Sum$(jetPt>30)<4')
+    cuts[r+'_1tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==1')
+    cuts[r+'_2tag'] = tAND(cuts[r],'Sum$(jetPt>20 && jetCSV>0.8 && abs(jetEta)<2.4)==2')
 
 weights = {
   'signal'         : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_metTrig',
@@ -30,18 +28,18 @@ weights = {
   'pho'            : '%f*sf_pu*normalizedWeight*sf_ewkV*sf_qcdV*sf_pho*sf_phoTrig *sf_qcdV2j', # add the additional 2-jet kfactor
 }
 
-for x in ['tme','tem','wmn','wen','zee','zmm']:
-	if 'em' in x or 'en' in x or 'ee' in x:
+for x in ['mn','en','zee','zmm']:
+	if 'en' in x or 'ee' in x:
 	  weights[x] = tTIMES(weights['control'],'sf_eleTrig')
 	else:
 	  weights[x] = tTIMES(weights['control'],'sf_metTrig')
 
-for x in ['signal','tme','tem','wmn','wen','zee','zmm','pho']:
+for x in ['signal','mn','en','zee','zmm','pho']:
     weights[x+'_0tag'] = tTIMES(weights[x],'sf_btag0')
     weights[x+'_1tag'] = tTIMES(weights[x],'sf_btag1')
     weights[x+'_2tag'] = tTIMES(weights[x],'sf_btag2')
 
-for x in ['signal','tme','tem','wmn','wen','zee','zmm','pho']:
+for x in ['signal','mn','en','zee','zmm','pho']:
     for y in ['0tag','1tag','2tag']:
         r = x+'_'+y
         for shift in ['BUp','BDown','MUp','MDown']:
