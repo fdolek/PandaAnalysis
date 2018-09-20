@@ -30,7 +30,8 @@ argv=[]
 import PandaAnalysis.Flat.fitting_forest as forest 
 from PandaCore.Tools.Misc import *
 import PandaCore.Tools.Functions # kinematics
-import PandaAnalysis.SuperMonoJet.BoostedSelection as sel
+#import PandaAnalysis.SuperMonoJet.BoostedSelection as sel
+import PandaAnalysis.SuperMonoJet.MonoJetSelection as sel
 
 if args.analysis == "boosted":
     import PandaAnalysis.SuperMonoJet.BoostedSelection as sel                            
@@ -39,7 +40,7 @@ if args.analysis == "resolved":
     import PandaAnalysis.SuperMonoJet.ResolvedSelection as sel
     drddt = True
 if args.analysis == "monojet":
-    import PandaAnalysis.SuperMonoJet.MonojetSelection as sel
+    import PandaAnalysis.SuperMonoJet.MonoJetSelection as sel
 
 basedir = args.input
 lumi = 35900
