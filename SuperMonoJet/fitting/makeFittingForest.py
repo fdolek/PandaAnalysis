@@ -30,7 +30,8 @@ argv=[]
 import PandaAnalysis.Flat.fitting_forest as forest 
 from PandaCore.Tools.Misc import *
 import PandaCore.Tools.Functions # kinematics
-import PandaAnalysis.SuperMonoJet.BoostedSelection as sel
+#import PandaAnalysis.SuperMonoJet.BoostedSelection as sel
+import PandaAnalysis.SuperMonoJet.MonoJetSelection as sel
 
 if args.analysis == "boosted":
     import PandaAnalysis.SuperMonoJet.BoostedSelection as sel                            
@@ -39,7 +40,7 @@ if args.analysis == "resolved":
     import PandaAnalysis.SuperMonoJet.ResolvedSelection as sel
     drddt = True
 if args.analysis == "monojet":
-    import PandaAnalysis.SuperMonoJet.MonojetSelection as sel
+    import PandaAnalysis.SuperMonoJet.MonoJetSelection as sel
 
 basedir = args.input
 lumi = 35900
@@ -197,6 +198,7 @@ else:
         if 'signal' in region:
             factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
             factory.add_process(f('ZtoNuNu'),'Zvv')
+            factory.add_process(f('BBbarDM_MZprime-1000_Mhs-90_Mchi-400'),'hsDM_1000_90_400_signal')
 
 
 
