@@ -197,8 +197,10 @@ else:
         if 'signal' in region:
             factory.add_process(f('MET'),'Data',is_data=True,extra_cut=sel.metTrigger)
             factory.add_process(f('ZtoNuNu'),'Zvv')
-
-
+            with open('../../LPC_T3/merging/signals.txt', 'r') as signal_file:
+                for line in signal_file:
+                    name = line.rstrip()
+                    factory.add_process(f(name),name)
 
 forestDir = basedir + '/limits/'
 os.system('mkdir -p %s'%(forestDir))
