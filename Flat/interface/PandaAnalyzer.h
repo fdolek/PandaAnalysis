@@ -59,9 +59,8 @@ public :
      kDiMu       =(1<<4),
      kPho        =(1<<5),
      kOpposite   =(1<<6),
-     kHad        =(1<<7),
-     kLepMonoTop =(1<<8),
-     kPassTrig   =(1<<9)
+     kLepMonoTop =(1<<7),
+     kPassTrig   =(1<<8)
     };
     
     enum LepSelectionBit {
@@ -460,4 +459,3 @@ private:
 #include "TemplatedPandaAnalyzer.h"
 
 #endif
-

@@ -771,15 +771,6 @@ bool PandaAnalyzer::PassPreselection()
     }
   }
 
-  if (preselBits & kHad) {
-    if (!( max_pfDown>250 || max_pf>250 || max_pfUp>250 || max_puppi>250 )){
-      if (gt->fj1Pt>450 || gt->bosonpt>450) {
-        if ( gt->nLooseMuon == 0 && gt->nLooseElectron == 0 && gt->nLoosePhoton == 0 && gt->nTau == 0 ) {
-        isGood = true;
-        }
-      }
-    }
-  }
 
   if (preselBits & kLepMonoTop){
     if (gt->nJet>=1 && gt->jet1Pt>25){
@@ -1206,4 +1197,3 @@ void PandaAnalyzer::Run()
   if (DEBUG) { PDebug("PandaAnalyzer::Run","Done with entry loop"); }
 
 } // Run()
-
