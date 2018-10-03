@@ -39,7 +39,7 @@ for r in ['signal','zmm','zee','wen','wmn','pho','signal_fail','wmn_fail','wen_f
 
 for r in ['tmn','ten','tmn_fail','ten_fail']:
 	if 'fail' in r:
-          cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.4)==1')
+          cuts[r] = tAND(cuts[r],'Sum$(jetCSV>0.8484 && jetEta<2.4)>0')
 	else:
           cuts[r] = tAND(cuts[r],
                          '(((jetCSV[bosonjtidx[0]]>0.8484 && jetEta[bosonjtidx[0]]<2.4)&&!(jetCSV[bosonjtidx[1]]>0.8484 && jetEta[bosonjtidx[1]]<2.4) && Sum$(jetCSV>0.8484 && jetEta<2.4)>1) ||
