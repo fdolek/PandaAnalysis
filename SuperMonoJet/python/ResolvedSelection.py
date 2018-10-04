@@ -13,14 +13,14 @@ triggers = {}
 baseline = 'metFilter==1 && nTau==0 && bosonpt>150 && Sum$(jetPt>30)>1 && !(fj1Pt>200) && jet1IsTight==1 '
 
 #cuts for specific regions
-cuts['signal'] = tAND(baseline,'nLooseLep==0 && nLooseElectron==0 && nLoosePhoton==0 && pfmet>250 && dphipfmet>0.8')
-cuts['tmn'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==1 && nTightMuon==1 && pfUWmag>250 && dphipfUW>0.8')
-cuts['ten'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron==1 && nTightElectron==1 && pfUWmag>250 && dphipfUW>0.8 && pfmet>50')
-cuts['wmn'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==1 && nTightMuon==1 && pfUWmag>250 && dphipfUW>0.8')
-cuts['wen'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron==1 && nTightElectron==1 && pfUWmag>250 && dphipfUW>0.8 && pfmet>50')
-cuts['zmm'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==2 && nTightMuon==1 && pfUZmag>250 && dphipfUZ>0.8 && diLepMass>80 && diLepMass<100')
-cuts['zee'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron==2 && nTightElectron==1 && pfUZmag>250 && dphipfUZ>0.8 && diLepMass>80 && diLepMass<100')
-cuts['pho'] = tAND(baseline,'(nLooseMuon+nLooseElectron+nTau)==0 && nLoosePhoton==1 && loosePho1IsTight==1 && pfUAmag>250 && dphipfUA>0.8')
+cuts['signal'] = tAND(baseline,'nLooseLep==0 && nLooseElectron==0 && nLoosePhoton==0 && pfmet>200 && dphipfmet>0.8')
+cuts['tmn'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==1 && nTightMuon==1 && pfUWmag>200 && dphipfUW>0.8')
+cuts['ten'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron==1 && nTightElectron==1 && pfUWmag>200 && dphipfUW>0.8 && pfmet>50')
+cuts['wmn'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==1 && nTightMuon==1 && pfUWmag>200 && dphipfUW>0.8')
+cuts['wen'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron==1 && nTightElectron==1 && pfUWmag>200 && dphipfUW>0.8 && pfmet>50')
+cuts['zmm'] = tAND(baseline,'(nLooseElectron+nLoosePhoton+nTau)==0 && nLooseMuon==2 && nTightMuon==1 && pfUZmag>200 && dphipfUZ>0.8 && diLepMass>80 && diLepMass<100')
+cuts['zee'] = tAND(baseline,'(nLooseMuon+nLoosePhoton+nTau)==0 && nLooseElectron==2 && nTightElectron==1 && pfUZmag>200 && dphipfUZ>0.8 && diLepMass>80 && diLepMass<100')
+cuts['pho'] = tAND(baseline,'(nLooseMuon+nLooseElectron+nTau)==0 && nLoosePhoton==1 && loosePho1IsTight==1 && pfUAmag>200 && dphipfUA>0.8')
 
 
 for r in ['signal','tmn','ten','zmm','zee','wen','wmn','pho']:
