@@ -5,6 +5,8 @@ REGION=$2
 
 source ../lpc_setup.sh $ANALYSIS $REGION
 
+echo $ANALYSIS $REGION
+
 if [ "$REGION" == "met" ];then
     echo MET TTbar ZtoNuNu ZJets WJets SingleTop QCD Diboson ZnunuH ZllH WmH WpH ttH ggH VBFH| xargs -n 1 -P 10 python merge.py
     while read p; do                                                                                                                                                                                     
@@ -20,7 +22,7 @@ elif [ "$REGION" == "diele" ];then
     echo SingleElectron TTbar ZJets Diboson ZllH ttH | xargs -n 1 -P 10 python merge.py
 elif [ "$REGION" == "dimu" ];then
     echo MET TTbar ZJets Diboson ZllH ttH | xargs -n 1 -P 10 python merge.py
-elif ["$REGION" == "monotop"];then
+elif [ "$REGION" == "monotop" ];then
     echo SingleElectron SingleMuon TTbar_L TTbar_2L ZJets WJets SingleTop QCD Diboson | xargs -n 1 -P 10 python merge.py
 fi
 
