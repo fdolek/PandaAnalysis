@@ -111,12 +111,13 @@ def merge(shortnames,mergedname):
         if 'monotop' in shortname:
             pd = shortname
             xsec = 1
-        elif 'Vector' in shortname:
+        elif 'vector' in shortname:
             tmp_ = shortname
             replacements = {
-                'Vector_MonoTop_NLO_Mphi-':'',
-                '_gSM-0p25_gDM-1p0_13TeV-madgraph':'',
-                '_Mchi-':'_',
+                'Vector_MonoTop_Leptonic_NLO_Mphi_':'',
+		'_Mchi_':'_',
+		'_gSM_0p25_gDM_1p0_13TeV_madgraph':'',
+	#	'_Mchi_':'_',
                 }
             for k,v in replacements.iteritems():
                 tmp_ = tmp_.replace(k,v)
@@ -180,4 +181,5 @@ for pd in args:
     hadd(merged_file ,outbase+pd+'.root') # really an mv
     system('rm -f %s'%merged_file)
     PInfo(sname,'finished with '+pd)
+
 

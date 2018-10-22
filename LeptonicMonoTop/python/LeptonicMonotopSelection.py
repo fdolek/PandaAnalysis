@@ -1,42 +1,38 @@
 from PandaCore.Tools.Misc import *
 from re import sub
 
-eleTrigger='(trigger&2)!=0'
-muTrigger='(trigger&8)!=0'
+eleTrigger='( trigger&2 )!=0'
+muTrigger ='( trigger&8 )!=0'
 
 presel = 'nTau==0 && Sum$(jetPt>25)>0' #Need to check
 
-cuts = {
-    'nLep_e': tAND(presel,'nTightLep==1 && nTightElectron==1 && mT>=160'),
-    'nLep_m': tAND(presel,'nTightLep==1 && nTightMuon==1 && mT>=160'),
-    'nLep2' : tAND(presel,'nLooseLep==2 && mT>=160'),
-    }
+cuts = {}
 
-cuts['signale']  = tAND(nLep_e,'Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==1')
-cuts['signalm']  = tAND(nLep_m,'Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==1')
-cuts['wen']      = tAND(nLep_e,'Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==0')
-cuts['wmn']      = tAND(nLep_m,'Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==0')
-cuts['ten']  = tAND(nLep_e,'Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==2')
-cuts['tmn']  = tAND(nLep_m,'Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==2')
-cuts['tee'] = tAND(nLep2,'nTightElectron==1 && nLooseElectron==2 && Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==1')
-cuts['tmm'] = tAND(nLep2,'nTightMuon==1 && nLooseMuon==2 && Sum$(jetCSV>0.8 && abs(jetEta)<2.5)==1')
+cuts['signale']= tAND(presel,'nTightLep==1 && nTightElectron==1 && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1                     ')
+cuts['ten']    = tAND(presel,'nTightLep==1 && nTightElectron==1 && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==2                     ')
+cuts['wen']    = tAND(presel,'nTightLep==1 && nTightElectron==1 && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==0                     ')
+cuts['tee']    = tAND(presel,'nLooseLep==2 && nTightElectron==1 && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1 && nLooseElectron==2')
+cuts['signalm']= tAND(presel,'nTightLep==1 && nTightMuon==1     && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1                     ')
+cuts['tmn']    = tAND(presel,'nTightLep==1 && nTightMuon==1     && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==2                     ')
+cuts['wmn']    = tAND(presel,'nTightLep==1 && nTightMuon==1     && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==0                     ')
+cuts['tmm']    = tAND(presel,'nLooseLep==2 && nTightMuon==1     && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1 && nLooseMuon==2    ')
 
 weights = {
-    'signale'  : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag1*sf_eleTrig',
-    'signalm'  : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT*sf_btag1*sf_muTrig',
-    'control'  : '%f*sf_pu*sf_tt*normalizedWeight*sf_lepID*sf_lepIso*sf_lepTrack*sf_ewkV*sf_qcdV*sf_qcdTT',
+    'signale'  : '%f*sf_pu*sf_tt*normalizedWeight*sf_ewkV*sf_qcdV*sf_qcdTT*sf_eleTrig',
+    'signalm'  : '%f*sf_pu*sf_tt*normalizedWeight*sf_ewkV*sf_qcdV*sf_qcdTT*sf_muTrig',
+    'control'  : '%f*sf_pu*sf_tt*normalizedWeight*sf_ewkV*sf_qcdV*sf_qcdTT',
 }
 
 for x in ['wen','wmn','ten','tmn','tee','tmm']:
-	if 'en' in x or 'ee' in x:
-	  weights[x] = tTIMES(weights['control'],'sf_eleTrig')
-	else:
+        if 'en' in x or 'ee' in x:
+          weights[x] = tTIMES(weights['control'],'sf_eleTrig')
+        else:
           weights[x] = tTIMES(weights['control'],'sf_muTrig')
 
 for x in ['wen','wmn','ten','tmn','tee','tmm']:
         if 'en' in x or 'mn' in x:
           weights[x] = tTIMES(weights[x],'sf_btag0')
-        else: 
+        else:
           weights[x] = tTIMES(weights[x],'sf_btag2')
 
 for r in ['signale','signalm','wmn','wen','ten','tmn','tee','tmm']:
