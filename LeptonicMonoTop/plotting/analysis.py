@@ -131,9 +131,9 @@ def normalPlotting(region):
     if 'tee' in region or 'tmm' in region:    
         processes = [qcd,diboson,singletop,wjets,ttbar2l,ttbar1l,zjets]
         zjets.add_file          (baseDir+'ZJets.root')
-	    ttbar1l.add_file        (baseDir+'TTbar_L.root')
-	    ttbar2l.add_file        (baseDir+'TTbar_2L.root')
-	    wjets.add_file          (baseDir+'WJets.root')
+	ttbar1l.add_file        (baseDir+'TTbar_L.root')
+	ttbar2l.add_file        (baseDir+'TTbar_2L.root')
+	wjets.add_file          (baseDir+'WJets.root')
         singletop.add_file      (baseDir+'SingleTop.root')
         diboson.add_file        (baseDir+'Diboson.root')
         qcd.add_file            (baseDir+'QCD.root')        
@@ -149,14 +149,14 @@ def normalPlotting(region):
         diboson.add_file        (baseDir+'Diboson.root') 
 
     if 'wen' in region or 'wmn' in region:	
-	   processes = [qcd,diboson,singletop,zjets,ttbar2l,ttbar1l,wjets]
-	   wjets.add_file          (baseDir+'WJets.root')
-	   zjets.add_file          (baseDir+'ZJets.root')
-	   ttbar1l.add_file        (baseDir+'TTbar_L.root')
-	   ttbar2l.add_file        (baseDir+'TTbar_2L.root')
-	   singletop.add_file      (baseDir+'SingleTop.root')
-	   qcd.add_file            (baseDir+'QCD.root')
-	   diboson.add_file        (baseDir+'Diboson.root') 
+	processes = [qcd,diboson,singletop,zjets,ttbar2l,ttbar1l,wjets]
+	wjets.add_file          (baseDir+'WJets.root')
+	zjets.add_file          (baseDir+'ZJets.root')
+	ttbar1l.add_file        (baseDir+'TTbar_L.root')
+	ttbar2l.add_file        (baseDir+'TTbar_2L.root')
+	singletop.add_file      (baseDir+'SingleTop.root')
+	qcd.add_file            (baseDir+'QCD.root')
+	diboson.add_file        (baseDir+'Diboson.root') 
 
 
         #qcd.add_file(baseDir+'SingleTop.root')
