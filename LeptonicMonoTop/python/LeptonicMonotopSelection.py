@@ -4,17 +4,17 @@ from re import sub
 eleTrigger='( trigger&2 )!=0'
 muTrigger ='( trigger&8 )!=0'
 
-presel = 'nLoosePhoton==0 && nTau==0 && Sum$(jetPt>25)>0' #Need to check
+presel = 'nTau==0 && Sum$(jetPt>25)>0' #Need to check nLoosePhoton==0 
 
 cuts = {}
 
 cuts['signale']= tAND(presel,'nTightLep==1 && nTightElectron==1 && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1                     ')
 cuts['ten']    = tAND(presel,'nTightLep==1 && nTightElectron==1 && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==2                     ')
-cuts['wen']    = tAND(presel,'nLooseLep==1 && nTightElectron==1 && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1                     ')
+cuts['wen']    = tAND(presel,'nLooseLep==1 && nTightElectron==1 && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==0                     ')
 cuts['tee']    = tAND(presel,'nLooseLep==2 && nTightElectron==1 && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1 && nLooseElectron==2')
 cuts['signalm']= tAND(presel,'nTightLep==1 && nTightMuon==1     && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1                     ')
 cuts['tmn']    = tAND(presel,'nTightLep==1 && nTightMuon==1     && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==2                     ')
-cuts['wmn']    = tAND(presel,'nLooseLep==1 && nTightMuon==1     && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1                     ')
+cuts['wmn']    = tAND(presel,'nLooseLep==1 && nTightMuon==1     && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==0                     ')
 cuts['tmm']    = tAND(presel,'nLooseLep==2 && nTightMuon==1     && mT>=160 && Sum$(jetCSV>0.8   &&  abs(jetEta)<2.5)==1 && nLooseMuon==2    ')
 
 weights = {
