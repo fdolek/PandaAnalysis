@@ -197,13 +197,13 @@ def normalPlotting(region):
         #plot.add_distribution(FDistribution('dphipfmet',0,3.14,10,'min#Delta#phi(AK4 jet,E_{T}^{miss})','Events'))
     #elif any([x in region for x in ['wen','wmn','ten','tmn']]):
     #    recoil=VDistribution("pfUWmag",recoilBins,"PF U(%s) [GeV]"%(lep),"Events/GeV")
-        plot.add_distribution(FDistribution('mT',0,500,25,'Transverse Mass of W [GeV]','Events'))
+        plot.add_distribution(FDistribution('mT',160,660,25,'Transverse Mass of W [GeV]','Events'))
         if not lep=="e":
             plot.add_distribution(FDistribution('muonPt[0]',-10,800,30,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
-            plot.add_distribution(FDistribution('muonEta[0]',-2.7,2.7,15,'%s #eta'%lep,'Events'))
+            plot.add_distribution(FDistribution('muonEta[0]',-2.5,2.5,15,'%s #eta'%lep,'Events'))
         else:
             plot.add_distribution(FDistribution('electronPt[0]',-10,800,30,'Leading %s p_{T} [GeV]'%lep,'Events/25 GeV'))
-            plot.add_distribution(FDistribution('electronEta[0]',-2.7,2.7,15,'%s #eta'%lep,'Events'))
+            plot.add_distribution(FDistribution('electronEta[0]',-2.5,2.5,15,'%s #eta'%lep,'Events'))
         #plot.add_distribution(FDistribution('dphipfUW',0,3.14,10,'min#Delta#phi(AK4 jet,E_{T}^{miss})','Events'))
         #plot.add_distribution(FDistribution('jetNMBtags',0,5,5,'nmbtag jets','Events'))
         #plot.add_distribution(FDistribution('jetNBtags',0,5,5,'nbtag jets','Events'))
@@ -213,8 +213,11 @@ def normalPlotting(region):
 
 
     plot.add_distribution(FDistribution("1",0,2,1,"dummy","dummy"))
-    system('mkdir -p %s/%s/%s' %(args.outdir,args.analysis,region))
+    system('mkdir -p %s/%s' %(args.outdir,region))
     plot.draw_all(args.outdir+'/'+args.region+'/')
+
+    #system('mkdir -p %s/%s/%s' %(args.outdir,args.analysis,region))
+    #plot.draw_all(args.outdir+'/'+args.region+'/')
 
 def fromLimit(region):
     region=region
